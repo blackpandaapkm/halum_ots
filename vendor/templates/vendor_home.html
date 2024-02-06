@@ -122,12 +122,14 @@
                             <div class="serv-cove shadow-md rounded bg-white text-center p-4 w-100">
                                 <div class="d-flex align-items-center">
                                     <div class="serv-thumbnail">
-                                        <img src="{{ hotel.profile_pic.url }}" class="img-thumbnail"style="height: 300px; width: 300px;" alt="{{hotel.name}}">
+                                        <img src="{{ hotel.hotel_picture.url }}" class="img-thumbnail"style="height: 200px; width: 200px;" alt="{{hotel.name}}">
                                     </div>
                                     <div class="serv-info ms-4">
                                         <h5 class="mt-3 fs-6 fw-bold">{{hotel.name}}</h5>
                                         <h5 class="mt-3 fs-6 fw-bold">Price : {{hotel.price}}</h5>
                                         <p>{{hotel.description}}</p>
+                                        <a href="{% url 'vendor_edithotel' %}?code={{ hotel.code }}" type="button" class="btn btn-primary">Edit</a>
+                                        <a href="{% url 'vendor_deletehotel'%}?code={{ hotel.code }}" type="button" class="btn btn-danger">Delete</a>
                                     </div>
                                 </div>
                             </div>

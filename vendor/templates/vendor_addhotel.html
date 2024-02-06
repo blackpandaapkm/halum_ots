@@ -111,7 +111,7 @@
                        
                             <div class="custom-block bg-white shadow-lg p-5">
                                 <h3 class="text-center mb-5">Add Room</h3>
-                                <form  method="POST">
+                                <form  method="POST" action="{% url 'vendor_addhotel' %}" enctype="multipart/form-data">
                                     
                                     {% csrf_token %}
                                     <div class="row">
@@ -122,8 +122,8 @@
                                             </div>
                                             
                                             <div class="mb-3">
-                                                <label for="phone" class="form-label">Phone</label>
-                                                <input type="tel" class="form-control" id="phone" name="phone">
+                                                <label for="code" class="form-label">Code</label>
+                                                <input type="tel" class="form-control" id="code" name="code">
                                             </div>
             
                                             <div class="mb-3">
@@ -154,7 +154,7 @@
             
                                             <div class="mb-3">
                                                 <label for="picture" class="form-label">Picture</label>
-                                                <input type="file" class="form-control" id="picture" name="picture">
+                                                <input type="file" class="form-control" id="hotel_picture" name="hotel_picture">
                                             </div>
             
                                             <div class="mb-3">

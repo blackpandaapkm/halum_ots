@@ -108,7 +108,7 @@
             <section class="section-padding section-bg d-flex justify-content-center align-items-center">
                 <div class="container">
                     <div class="custom-block bg-white shadow-lg">
-                        <form method="POST" enctype="multipart/form-data">
+                        <form method="POST" action="{% url 'vendor_register' %}" enctype="multipart/form-data" >
                             {% csrf_token %}
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
@@ -123,10 +123,10 @@
                             <div class="mb-3">
                                 <label for="vendor-type" class="form-label">Vendor Type</label>
                                 <select class="form-control" id="vendor-type" name ="vendor_type">
-                                    <option value="hotel">Airlines</option>
-                                    <option value="restaurant">Bus</option>
-                                    <option value="bar">Train</option>
-                                    <option value="cafe">Hotel</option>
+                                    <option value="Airlines">Airlines</option>
+                                    <option value="Bus">Bus</option>
+                                    <option value="Train">Train</option>
+                                    <option value="Hotel">Hotel</option>
                                 </select>
                             </div>
             

@@ -108,7 +108,7 @@
             <section class="section-padding section-bg d-flex justify-content-center align-items-center">
                 <div class="container">
                     <div class="custom-block bg-white shadow-lg d-flex align-items-start">
-                        <form method="POST" class="w-100">
+                        <form method="POST" class="w-100" action="{% url 'vendor_updateprofile' %}" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="row">
                                 <div class="col-md-6">

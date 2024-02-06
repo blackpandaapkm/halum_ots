@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse,redirect,HttpResponseRedirect
+from django.shortcuts import render,HttpResponse,redirect,HttpResponseRedirect,get_object_or_404
 from vendor.models import *
 import os,pathlib
 # Create your views here.
@@ -134,30 +134,32 @@ def vendor_logout(request):
     return redirect(vendor_login)
 
 def vendor_addhotel(request):
+
     if request.method == "POST":
         name = request.POST.get('name')
-        phone = request.POST.get('phone')
+        code = request.POST.get('code')
         address = request.POST.get('address')
         room_number = request.POST.get('room_number')
         price = request.POST.get('price')
         status = request.POST.get('status')
         description = request.POST.get('description')
-        picture = request.FILES.get('picture')
         email = request.session['email']
+        hotel_picture = request.FILES.get('hotel_picture')
 
         hotel = Hotel(
             name=name,
-            phone=phone,
+            code=code,
             address=address,
             room_number=room_number,
             price=price,
             status=status,
             description=description,
-            picture=picture,
+            hotel_picture=hotel_picture,
             email=email
         )
-
+        
         hotel.save()
+
         return redirect(vendor_home)
 
     return  render(request, 'vendor_addhotel.html')
@@ -189,3 +191,92 @@ def vendor_chnagepassword(request):
         
         
     return render(request,'vendor_changepassword.html')
+
+def vendor_deletehotel(request):
+    if request.method == 'GET':
+        code = request.GET.get('code') 
+        if 'email' in request.session:
+            email = request.session['email']
+            hotel = Hotel.objects.filter(email=email,code=code).first()
+            hotel.delete()
+            return redirect(vendor_home)
+
+
+# def vendor_edithotel(request,code):
+#     if request.method == 'GET':
+#         if 'email' in request.session:
+#             email = request.session['email']
+#             hotel = Hotel.objects.filter(email=email,code=code).first()
+#             return render(request,'vendor_edithotel.html', {'hotel': hotel})
+        
+#     if request.method == 'POST':
+#         name = request.POST.get('name')
+#         address = request.POST.get('address')
+#         room_number = request.POST.get('room_number')
+#         price = request.POST.get('price')
+#         status = request.POST.get('status')
+#         description = request.POST.get('description')
+#         email = request.session['email']
+#         hotel_picture = request.FILES.get('hotel_picture')
+
+#         hotel = Hotel.objects.filter(email=email,code=code).first()
+#         vendor = Vendor.objects.filter(email=email).first()
+
+#         if 'password' in request.POST:
+#             password = request.POST.get('password')
+#             if password == vendor.password:
+#                 hotel.name = name
+#                 hotel.address = address
+#                 hotel.room_number = room_number
+#                 hotel.price = price
+#                 hotel.status = status
+#                 hotel.description = description
+
+
+#                 if hotel_picture:
+#                     hotel.hotel_picture = hotel_picture
+#                 hotel.save()
+#                 return redirect(vendor_home)
+#             else:
+#                 return HttpResponse("wrong password")
+#     return render(request,'vendor_edithotel.html')
+
+def vendor_edithotel(request):
+    if request.method == 'GET':
+        code = request.GET.get('code') 
+        if 'email' in request.session:
+            email = request.session['email']
+            hotel = get_object_or_404(Hotel, email=email, code=code)
+            print(code,email)
+            return render(request, 'vendor_edithotel.html', {'hotel': hotel})
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        address = request.POST.get('address')
+        room_number = request.POST.get('room_number')
+        price = request.POST.get('price')
+        status = request.POST.get('status')
+        description = request.POST.get('description')
+        email = request.session['email']
+        hotel_picture = request.FILES.get('hotel_picture', None)
+
+        hotel = Hotel.objects.filter(email=email, code=code).first()
+        vendor = Vendor.objects.filter(email=email).first()
+
+        if 'password' in request.POST:
+            password = request.POST.get('password')
+            if password == vendor.password:
+                hotel.name = name
+                hotel.address = address
+                hotel.room_number = room_number
+                hotel.price = price
+                hotel.status = status
+                hotel.description = description
+                if hotel_picture:
+                    hotel.hotel_picture = hotel_picture
+                hotel.save()
+                return redirect(vendor_home)
+            else:
+                return HttpResponse("wrong password")
+
+

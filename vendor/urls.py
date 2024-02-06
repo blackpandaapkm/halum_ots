@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from .views import *
 
 
@@ -12,5 +14,10 @@ urlpatterns=[
     path('vendor_addhotel/',vendor_addhotel,name='vendor_addhotel'),
     path('vendor_logout/',vendor_logout,name='vendor_logout'),
     path('vendor_chnagepassword/',vendor_chnagepassword,name='vendor_chnagepassword'),
+    path('vendor_edithotel/',vendor_edithotel,name='vendor_edithotel'),
+    path('vendor_deletehotel/',vendor_deletehotel,name='vendor_deletehotel'),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
