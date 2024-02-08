@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>HALUM OTS - VENDOR</title>
+
+    <!-- CSS FILES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap"
+        rel="stylesheet">
+
+    <link href="{% static 'assets/mainfilecss/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'assets/mainfilecss/css/bootstrap-icons.css' %}" rel="stylesheet">
+
+    <link href="{% static 'assets/mainfilecss/css/templatemo-topic-listing.css' %}" rel="stylesheet">
+</head>
+
+<body id="top">
+
+    <main>
+
+        {% include 'vendor_navbar.html'%}
+
+        <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-8 col-12 mx-auto">
+                        <h1 class="text-white text-center">Vendor Add Train</h1>
+
+                        <h6 class="text-center">platform for creatives around the world</h6>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <section class="section-padding section-bg d-flex justify-content-center align-items-center">
+            <div class="container">
+                <div class="custom-block bg-white shadow-lg">
+                    <form method="POST" action="{% url 'vendor_addtrain' %}" enctype="multipart/form-data">
+                        <div class="row">
+                            {% csrf_token %}
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="code" class="form-label">Code</label>
+                                    <input type="text" class="form-control" id="code" name="code" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Address</label>
+                                    <input type="text" class="form-control" id="address" name="address" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="sit_number" class="form-label">Sit Number</label>
+                                    <input type="text" class="form-control" id="sit_number" name="sit_number" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="bus_from" class="form-label">Train From</label>
+                                    <input type="text" class="form-control" id="train_from" name="train_from" required>
+                                </div>
+
+                                
+
+                            </div>
+
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="bus_to" class="form-label">Train To</label>
+                                    <input type="text" class="form-control" id="train_to" name="train_to" required>
+                                </div>
+                               
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">Price</label>
+                                    <input type="number" class="form-control" id="price" name="price" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-select" id="status" name="status" required>
+                                        <option value="True">Active</option>
+                                        <option value="False">Inactive</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="description" rows="3"
+                                        name="description" required></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="train_picture" class="form-label">Train Picture</label>
+                                    <input type="file" class="form-control" id="train_picture" name="train_picture" required>
+                                </div>
+
+                                
+                            </div>
+                            <button type="submit" class="btn custom-btn">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    {% include 'vendor_footer.html'%}
+
+    <!-- JAVASCRIPT FILES -->
+    <script src="{% static 'assets/mainfilecss/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/jquery.sticky.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/click-scroll.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/custom.js ' %}"></script>
+</body>
+
+</html>

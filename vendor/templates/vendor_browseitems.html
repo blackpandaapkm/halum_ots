@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>HALUM OTS - VENDOR</title>
+
+    <!-- CSS FILES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap"
+        rel="stylesheet">
+
+    <link href="{% static 'assets/mainfilecss/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'assets/mainfilecss/css/bootstrap-icons.css' %}" rel="stylesheet">
+
+    <link href="{% static 'assets/mainfilecss/css/templatemo-topic-listing.css' %}" rel="stylesheet">
+</head>
+
+<body id="top">
+
+    <main>
+
+        {% include 'vendor_navbar.html'%}
+
+        <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-8 col-12 mx-auto">
+                        <h1 class="text-white text-center">Browse Items</h1>
+
+                        <h6 class="text-center">platform for creatives around the world</h6>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <section class="explore-section section-padding" id="section_2">
+            <div class="container">
+
+
+            </div>
+            </div>
+
+            <div class="container-fluid">
+                <div class="row">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="Airlines-tab" data-bs-toggle="tab"
+                                data-bs-target="#Airlines-tab-pane" type="button" role="tab"
+                                aria-controls="Airlines-tab-pane" aria-selected="true">Airlines</button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="Bus-tab" data-bs-toggle="tab" data-bs-target="#Bus-tab-pane"
+                                type="button" role="tab" aria-controls="Bus-tab-pane" aria-selected="false">Bus</button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="Train-tab" data-bs-toggle="tab"
+                                data-bs-target="#Train-tab-pane" type="button" role="tab" aria-controls="Train-tab-pane"
+                                aria-selected="false">Train</button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="Hotel-tab" data-bs-toggle="tab"
+                                data-bs-target="#Hotel-tab-pane" type="button" role="tab" aria-controls="Hotel-tab-pane"
+                                aria-selected="false">Hotel</button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="Package-tab" data-bs-toggle="tab"
+                                data-bs-target="#Package-tab-pane" type="button" role="tab"
+                                aria-controls="Package-tab-pane" aria-selected="false">Package</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="Airlines-tab-pane" role="tabpanel"
+                                aria-labelledby="Airlines-tab" tabindex="0">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
+                                        <div class="custom-block bg-white shadow-lg">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <h5 class="mb-2">Economy</h5>
+
+                                                    <p class="mb-0">Standard seating.</p>
+                                                </div>
+                                            </div>
+
+                                            <img src="{% static 'assets\mainfilecss\site_image\economy.jpg' %}"
+                                                class="custom-block-image img-fluid" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
+                                        <div class="custom-block bg-white shadow-lg">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <h5 class="mb-2">Bussiness</h5>
+
+                                                    <p class="mb-0">Enhanced comfort.</p>
+                                                </div>
+                                            </div>
+
+                                            <img src="{% static 'assets\mainfilecss\site_image\business.jpg' %}"
+                                                class="custom-block-image img-fluid" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6 col-12">
+                                        <div class="custom-block bg-white shadow-lg">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <h5 class="mb-2">First Class</h5>
+
+                                                    <p class="mb-0">Ultimate luxury.</p>
+                                                </div>
+                                            </div>
+
+                                            <img src="{% static 'assets\mainfilecss\site_image\First class.jpg' %}"
+                                                class="custom-block-image img-fluid" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="Bus-tab-pane" role="tabpanel" aria-labelledby="Bus-tab"
+                                tabindex="0">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-3">
+                                        <div class="custom-block bg-white shadow-lg">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <h5 class="mb-2">Standard</h5>
+
+                                                    <p class="mb-0">Standard seating.</p>
+                                                </div>
+                                            </div>
+
+                                            <img src="{% static 'assets\mainfilecss\site_image\Standard.jpg' %}"
+                                                class="custom-block-image img-fluid" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-3">
+                                        <div class="custom-block bg-white shadow-lg">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <h5 class="mb-2">Premium</h5>
+
+                                                    <p class="mb-0">Enhanced comfort.</p>
+                                                </div>
+                                            </div>
+
+                                            <img src="{% static 'assets\mainfilecss\site_image\Premium.jpg' %}"
+                                                class="custom-block-image img-fluid" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6 col-12">
+                                        <div class="custom-block bg-white shadow-lg">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <h5 class="mb-2">VIP</h5>
+                                                    <p class="mb-0">Ultimate luxury.</p>
+                                                </div>
+                                            </div>
+
+                                            <img src="{% static 'assets\mainfilecss\site_image\VIP.jpg' %}"
+                                                class="custom-block-image img-fluid" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="Train-tab-pane" role="tabpanel" aria-labelledby="Train-tab"
+                                tabindex="0">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-3">
+                                        <div class="custom-block bg-white shadow-lg">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <h5 class="mb-2">Coach</h5>
+                                                    <p class="mb-0">Standard seating.</p>
+                                                </div>
+
+                                            </div>
+                                            <img src="{% static 'assets\mainfilecss\site_image\couch.jpg' %}"
+                                                class="custom-block-image img-fluid" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-3">
+                                        <div class="custom-block bg-white shadow-lg">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <h5 class="mb-2">Business</h5>
+                                                    <p class="mb-0">Enhanced comfort.</p>
+                                                </div>
+
+                                            </div>
+                                            <img src="{% static 'assets\mainfilecss\site_image\businessclasstrain.jpg' %}"
+                                                class="custom-block-image img-fluid" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 col-12">
+                                        <div class="custom-block bg-white shadow-lg">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <h5 class="mb-2">First Class</h5>
+
+                                                    <p class="mb-0">Ultimate luxury.</p>
+                                                </div>
+
+                                            </div>
+
+                                            <img src="{% static 'assets\mainfilecss\site_image\first class train.jpg' %}"
+                                                class="custom-block-image img-fluid" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="Hotel-tab-pane" role="tabpanel" aria-labelledby="Hotel-tab"
+                                tabindex="0">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-3">
+                                        <div class="custom-block bg-white shadow-lg">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <h5 class="mb-2">Budget</h5>
+                                                    <p class="mb-0">Affordable lodging.</p>
+                                                </div>
+                                            </div>
+                                            <img src="{% static 'assets\mainfilecss\site_image\Budget.jpg' %}"
+                                                class="custom-block-image img-fluid" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-3">
+                                        <div class="custom-block bg-white shadow-lg">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <h5 class="mb-2">Boutique</h5>
+                                                    <p class="mb-0">Unique ambiance.</p>
+                                                </div>
+
+                                            </div>
+                                            <img src="{% static 'assets\mainfilecss\site_image\Boutique.jpg' %}"
+                                                class="custom-block-image img-fluid" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 col-12">
+                                        <div class="custom-block bg-white shadow-lg">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <h5 class="mb-2">Luxury</h5>
+                                                    <p class="mb-0">Exclusive amenities.</p>
+                                                </div>
+                                            </div>
+                                            <img src="{% static 'assets\mainfilecss\site_image\Luxury.png' %}"
+                                                class="custom-block-image img-fluid" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="Package-tab-pane" role="tabpanel"
+                                aria-labelledby="Package-tab" tabindex="0">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12 mb-4 mb-lg-3">
+                                        <div class="custom-block bg-white shadow-lg">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <h5 class="mb-2">Standard</h5>
+                                                    <p class="mb-0">Moderate inclusions.</p>
+                                                </div>
+                                            </div>
+                                            <img src="{% static 'assets\mainfilecss\site_image\businessclasstrain.jpg' %}"
+                                                class="custom-block-image img-fluid" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="custom-block bg-white shadow-lg">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <h5 class="mb-2">Premium</h5>
+
+                                                    <p class="mb-0">Exclusive benefits.</p>
+                                                </div>
+                                            </div>
+
+                                            <img src="{% static 'assets\mainfilecss\site_image\businessclasstrain.jpg' %}"
+                                                class="custom-block-image img-fluid" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+        </section>
+    </main>
+
+    {% include 'vendor_footer.html'%}
+
+
+    <!-- JAVASCRIPT FILES -->
+    <!-- JAVASCRIPT FILES -->
+    <script src="{% static 'assets/mainfilecss/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/jquery.sticky.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/click-scroll.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/custom.js ' %}"></script>
+
+</body>
+
+</html>

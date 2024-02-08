@@ -33,4 +33,50 @@ class Hotel(models.Model):
     def __str__(self):
         return self.name
     
+class Bus(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    code = models.CharField(max_length=100)
+    address = models.CharField(max_length=100)
+    sit_number = models.CharField(max_length=100, null=True)
+    bus_from = models.CharField(max_length=100,null=True)
+    bus_to = models.CharField(max_length=100,null=True)
+    price = models.FloatField(null=True)
+    status = models.BooleanField(null=True)
+    description = models.TextField(max_length=100)
+    bus_picture =  models.ImageField(upload_to='bus_pictures/',max_length=200,null=True, blank=True)
+
+    def __str__(self):
+        return self.name
     
+
+class Airline(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    code = models.CharField(max_length=100)
+    sit_number = models.CharField(max_length=100, null=True)
+    airline_from = models.CharField(max_length=100,null=True)
+    airline_to = models.CharField(max_length=100,null=True)
+    price = models.FloatField(null=True)
+    status = models.BooleanField(null=True)
+    description = models.TextField(max_length=100)
+    airline_picture =  models.ImageField(upload_to='airline_pictures/',max_length=200,null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+    
+
+class Train(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    code = models.CharField(max_length=100)
+    sit_number = models.CharField(max_length=100, null=True)
+    train_from = models.CharField(max_length=100,null=True)
+    train_to = models.CharField(max_length=100,null=True)
+    price = models.FloatField(null=True)
+    status = models.BooleanField(null=True)
+    description = models.TextField(max_length=100)
+    train_picture =  models.ImageField(upload_to='train_pictures/',max_length=200,null=True, blank=True)
+
+    def __str__(self):
+        return self.name
