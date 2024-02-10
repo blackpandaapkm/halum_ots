@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>HALUM OTS</title>
+
+    <!-- CSS FILES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      href="{% static 'assets/mainfilecss/css/bootstrap.min.css' %}"
+      rel="stylesheet"
+    />
+
+    <link
+      href="{% static 'assets/mainfilecss/css/bootstrap-icons.css' %}"
+      rel="stylesheet"
+    />
+
+    <link
+      href="{% static 'assets/mainfilecss/css/templatemo-topic-listing.css' %}"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body id="top">
+    <main>
+      {% include 'navbar.html'%}
+
+      <section
+        class="hero-section d-flex justify-content-center align-items-center"
+        id="section_1"
+      >
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8 col-12 mx-auto">
+              <h1 class="text-white text-center">Register</h1>
+
+              <h6 class="text-center">
+                platform for creatives around the world
+              </h6>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        class="section-padding section-bg d-flex justify-content-center align-items-center"
+      >
+        <div class="container">
+          <div class="custom-block bg-white shadow-lg d-flex">
+            <div class="form-column" style="flex: 1">
+              <form
+                method="POST"
+                action="{% url 'register' %}"
+                enctype="multipart/form-data"
+              >
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label for="name" class="form-label">Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    name="username"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="usermail" class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="usermail"
+                    name="usermail"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="address" class="form-label">Address</label>
+                  <textarea
+                    class="form-control"
+                    id="address"
+                    rows="3"
+                    name="address"
+                    required
+                  ></textarea>
+                </div>
+
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="confirm_password" class="form-label"
+                    >Confirm Password</label
+                  >
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="confirm_password"
+                    name="confirm_password"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="birthday" class="form-label">Birthday</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="birthday"
+                    name="birthday"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="gender" class="form-label">Gender</label>
+                  <select
+                    class="form-control"
+                    id="gender"
+                    name="gender"
+                    required
+                  >
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="user_picture" class="form-label"
+                    >Profile Picture</label
+                  >
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="user_picture"
+                    name="user_picture"
+                    required
+                  />
+                </div>
+                <button type="submit" class="btn custom-btn">Register</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    {% include 'footer.html'%}
+
+    <!-- JAVASCRIPT FILES -->
+    <script src="{% static 'assets/mainfilecss/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/jquery.sticky.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/click-scroll.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/custom.js ' %}"></script>
+  </body>
+</html>

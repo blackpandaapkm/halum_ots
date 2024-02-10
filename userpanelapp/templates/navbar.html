@@ -1,0 +1,98 @@
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">
+            <i class="bi-back"></i>
+            <span>HALUM OTS</span>
+        </a>
+        <style>
+            .nav-item.active .nav-link {
+  color: #fff;
+  background-color: #00BFA6;
+}
+
+.nav-item.active .nav-link:hover {
+  color: #fff;
+  background-color: #07264b;
+}
+.nav-link {
+  color: #333;
+}
+
+.nav-link:hover {
+  color: #007bff;
+}
+        </style>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                <li class="nav-item {% if request.resolver_match.view_name == 'vendor_index' %}active{% endif %}">
+                    <a class="nav-link click-scroll" href="{% url 'index' %}"></a>
+                </li>
+                <li class="nav-item {% if request.resolver_match.view_name == 'vendor_browseitems' %}active{% endif %}">
+                    <a class="nav-link click-scroll" href="{% url 'browseitems' %}">Browse Items</a>
+                </li>
+                
+                <li class="nav-item {% if request.resolver_match.view_name == 'vendor_howitworks' %}active{% endif %}">
+                    <a class="nav-link click-scroll" href="{% url 'howitworks' %}">How it works</a>
+                </li>
+                
+                <li class="nav-item {% if request.resolver_match.view_name == 'vendor_faqs' %}active{% endif %}">
+                    <a class="nav-link click-scroll" href="{% url 'faqs' %}">FAQs</a>
+                </li>
+                
+                <li class="nav-item {% if request.resolver_match.view_name == 'vendor_contact' %}active{% endif %}">
+                    <a class="nav-link click-scroll" href="{% url 'contact' %}">Contact</a>
+                </li>
+                <!-- <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
+
+                    <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
+                        <li><a class="dropdown-item" href="topics-listing.html">Topics Listing</a></li>
+
+                        <li><a class="dropdown-item" href="contact.html">Contact Form</a></li>
+                    </ul>
+                </li> -->
+            </ul>
+
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 profile-menu">
+                <li class="nav-item dropdown">
+                    {% if request.session.usermail %}
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{{user.user_picture.url}}" class="navbar-icon rounded-circle" alt="Profile">
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'home' %}"><i class="fas fa-sliders-h fa-fw"></i> Home</a>
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-sliders-h fa-fw"></i> Account</a>
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'updateprofile' %}"><i class="fas fa-cog fa-fw"></i> Settings</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}"><i
+                                    class="fas fa-sign-out-alt fa-fw"></i> Log Out</a></li>
+                    </ul>
+                    {% else %}
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="navbar-icon bg-black bi-person"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'register' %}"><i
+                                    class="fas fa-sliders-h fa-fw"></i> Register</a></li>
+                        <li><a class="dropdown-item" href="{% url 'login' %}"><i
+                                    class="fas fa-cog fa-fw"></i> Login</a></li>
+                    </ul>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
