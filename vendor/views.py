@@ -134,7 +134,7 @@ def vendor_updateprofile(request):
                     vendor.profile_pic = profile_pic
 
                 vendor.save()
-                return redirect(vendor_home)
+                return redirect(vendor_profile)
             else:
                 return redirect(vendor_errorpage)
     else:

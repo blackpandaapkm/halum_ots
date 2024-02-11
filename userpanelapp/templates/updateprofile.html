@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Topic Listing Bootstrap 5 Template</title>
+    <title>HALUM OTS</title>
 
     <!-- CSS FILES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,14 +30,14 @@
 
     <main>
 
-        {% include 'vendor_navbar.html'%}
+        {% include 'navbar.html'%}
 
         <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
             <div class="container">
                 <div class="row">
 
                     <div class="col-lg-8 col-12 mx-auto">
-                        <h1 class="text-white text-center">Vendor update Profile</h1>
+                        <h1 class="text-white text-center">Update Profile</h1>
 
                         <h6 class="text-center">platform for creatives around the world</h6>
                     </div>
@@ -48,19 +48,29 @@
         <section class="section-padding section-bg d-flex justify-content-center align-items-center">
             <div class="container">
                 <div class="custom-block bg-white shadow-lg d-flex align-items-start">
-                    <form method="POST" class="w-100" action="{% url 'vendor_updateprofile' %}" enctype="multipart/form-data">
+                    <form method="POST" class="w-100" action="{% url 'updateprofile' %}" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" value="{{vendor.name}}" required>
+                                    <input type="text" class="form-control" id="username" name="username" value="{{user.username}}" required>
                                 </div>
                     
                                 <div class="mb-3">
                                     <label for="address" class="form-label">Address</label>
-                                    <input type="text" class="form-control" id="address" name="address" value="{{vendor.address}}" required>
+                                    <input type="text" class="form-control" id="address" name="address" value="{{user.address}}" required>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="birthday" class="form-label">Birthday : {{user.birthday}} </label>
+                                    <input
+                                      type="date"
+                                      class="form-control"
+                                      id="birthday"
+                                      name="birthday"
+                                      required
+                                    />
+                                  </div>
                     
                                 <div class="mb-3">
                                     <label for="gender" class="form-label">Gender</label>
@@ -84,8 +94,8 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="profile-pic" class="form-label">Profile Picture</label>
-                                    <img src="{{ vendor.profile_pic.url }}" alt="{{ vendor.name }}" height="250" width="250" class="img-thumbnail">
-                                    <input type="file" class="form-control" id="profile_pic" name="profile_pic" required>
+                                    <img src="{{ user.user_picture.url }}" alt="{{ user.username }}" height="250" width="250" class="img-thumbnail">
+                                    <input type="file" class="form-control" id="user_picture" name="user_picture" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Enter your password</label>
@@ -104,7 +114,7 @@
         </section>
     </main>
 
-    {% include 'vendor_footer.html'%}
+    {% include 'footer.html'%}
 
     <!-- JAVASCRIPT FILES -->
     <script src="{% static 'assets/mainfilecss/js/jquery.min.js' %}"></script>

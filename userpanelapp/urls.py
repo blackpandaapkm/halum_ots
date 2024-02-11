@@ -15,6 +15,8 @@ urlpatterns=[
     path('contact/', contact, name='contact'),
     path('updateprofile/', updateprofile, name='updateprofile'),
     path('logout/', logout, name='logout'),
+    path('changepassword/', changepassword, name='changepassword'),
+    path('wrongpassword/', wrongpassword, name='wrongpassword'),
 
 
     

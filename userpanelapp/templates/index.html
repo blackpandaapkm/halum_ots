@@ -88,71 +88,83 @@
                                     <div class="row align-items-center">
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="economy-type" class="form-label">Type of Seat</label>
-                                                <select class="form-control" id="economy-type" name="type">
-                                                    <option value="standard">Standard</option>
-                                                    <option value="premium">Premium</option>
-                                                    <option value="extra-legroom">Extra Legroom</option>
+                                                <label for="sit_type" class="form-label">Type of Seat</label>
+                                                <select class="form-control" id="sit_type" name="type">
+                                                    <option value="Economy">Economy</option>
+                                                    <option value="Bussiness">Bussiness</option>
+                                                    <option value="First Class">First Class</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="economy-from" class="form-label">From</label>
-                                                <input type="date" class="form-control" id="economy-from" name="from"
-                                                    required>
+                                                <label for="airline_from" class="form-label">From</label>
+                                                <select class="form-control" id="airline_from" name="airline_from">
+                                                    {% for airline in airlines %}
+                                                        <option value="{{ airline.airline_from }}">{{ airline.airline_from}}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="economy-to" class="form-label">To</label>
-                                                <input type="date" class="form-control" id="economy-to" name="to"
-                                                    required>
+                                                <label for="airline_to" class="form-label">To</label>
+                                                <select class="form-control" id="airline_to" name="airline_to">
+                                                    {% for airline in airlines %}
+                                                        <option value="{{ airline.airline_to }}">{{airline.airline_to}}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="economy-persons" class="form-label">Number of
-                                                    Persons</label>
-                                                <input type="number" class="form-control" id="economy-persons"
-                                                    name="persons" min="1" required>
+                                                <label for="airline_date" class="form-label">Date</label>
+                                                <input type="date" class="form-control" id="airline_date" name="airline_date" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="economy-persons" class="form-label">Number of Persons</label>
+                                                <input type="number" class="form-control" id="economy-persons" name="persons" min="1" required>
                                             </div>
                                         </div>
-
-
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <button type="submit" class="btn custom-btn">Search</button>
                                     </div>
                                 </form>
-
                             </div>
+
                             <div class="tab-pane fade" id="Bus-tab-pane" role="tabpanel" aria-labelledby="Bus-tab"
                                 tabindex="0">
                                 <form class="custom-block bg-white shadow-lg p-4">
                                     <div class="row align-items-center">
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="economy-type" class="form-label">Type of Seat</label>
-                                                <select class="form-control" id="economy-type" name="type">
+                                                <label for="sit_type" class="form-label">Type of Seat</label>
+                                                <select class="form-control" id="sit_type" name="sit_type">
                                                     <option value="standard">Standard</option>
                                                     <option value="premium">Premium</option>
-                                                    <option value="extra-legroom">Extra Legroom</option>
+                                                    <option value="VIP">VIP</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="economy-from" class="form-label">From</label>
-                                                <input type="date" class="form-control" id="economy-from" name="from"
-                                                    required>
+                                                <label for="bus_from" class="form-label">From</label>
+                                                <select class="form-control" id="bus_from" name="bus_from">
+                                                    {% for bus in buss %}
+                                                        <option value="{{ bus.bus_from }}">{{ bus.bus_from}}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="economy-to" class="form-label">To</label>
-                                                <input type="date" class="form-control" id="economy-to" name="to"
-                                                    required>
+                                                <label for="bus_to" class="form-label">To</label>
+                                                <select class="form-control" id="bus_to" name="bus_to">
+                                                    {% for bus in buss %}
+                                                        <option value="{{ bus.bus_to }}">{{ bus.bus_to}}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -161,10 +173,13 @@
                                                     Persons</label>
                                                 <input type="number" class="form-control" id="economy-persons"
                                                     name="persons" min="1" required>
+                                                    
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="airline_date" class="form-label">Date</label>
+                                                <input type="date" class="form-control" id="airline_date" name="airline_date" required>
                                             </div>
                                         </div>
-
-
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <button type="submit" class="btn custom-btn">Search</button>
@@ -178,26 +193,32 @@
                                     <div class="row align-items-center">
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="economy-type" class="form-label">Type of Seat</label>
-                                                <select class="form-control" id="economy-type" name="type">
-                                                    <option value="standard">Standard</option>
-                                                    <option value="premium">Premium</option>
-                                                    <option value="extra-legroom">Extra Legroom</option>
+                                                <label for="sit_type" class="form-label">Type of Seat</label>
+                                                <select class="form-control" id="sit_type" name="sit_type">
+                                                    <option value="Coach">Coach</option>
+                                                    <option value="Bussiness">Bussiness</option>
+                                                    <option value="First Class">First Class</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="economy-from" class="form-label">From</label>
-                                                <input type="date" class="form-control" id="economy-from" name="from"
-                                                    required>
+                                                <label for="train_from" class="form-label">From</label>
+                                                <select class="form-control" id="train_from" name="train_from">
+                                                    {% for train in trains %}
+                                                        <option value="{{ train.train_from }}">{{ train.train_from}}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="economy-to" class="form-label">To</label>
-                                                <input type="date" class="form-control" id="economy-to" name="to"
-                                                    required>
+                                                <label for="train_to" class="form-label">To</label>
+                                                <select class="form-control" id="train_to" name="train_to">
+                                                    {% for train in trains %}
+                                                        <option value="{{ train.train_to }}">{{ train.train_to}}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -206,10 +227,13 @@
                                                     Persons</label>
                                                 <input type="number" class="form-control" id="economy-persons"
                                                     name="persons" min="1" required>
+                                                    
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="airline_date" class="form-label">Date</label>
+                                                <input type="date" class="form-control" id="airline_date" name="airline_date" required>
                                             </div>
                                         </div>
-
-
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <button type="submit" class="btn custom-btn">Search</button>
@@ -222,26 +246,30 @@
                                     <div class="row align-items-center">
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="economy-type" class="form-label">Type of Seat</label>
-                                                <select class="form-control" id="economy-type" name="type">
-                                                    <option value="standard">Standard</option>
-                                                    <option value="premium">Premium</option>
-                                                    <option value="extra-legroom">Extra Legroom</option>
+                                                <label for="sit_type" class="form-label">Type of Hotel</label>
+                                                <select class="form-control" id="sit_type" name="sit_type">
+                                                    <option value="Budget">Budget</option>
+                                                    <option value="Boutique">Boutique</option>
+                                                    <option value="Luxury">Luxury</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="economy-from" class="form-label">From</label>
-                                                <input type="date" class="form-control" id="economy-from" name="from"
-                                                    required>
+                                                <label for="bus_from" class="form-label">city</label>
+                                                <select class="form-control" id="hotel_city" name="bus_from">
+                                                    {% for hotel in hotels %}
+                                                        <option value="{{ hotel.address }}">{{ hotel.address}}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="economy-to" class="form-label">To</label>
-                                                <input type="date" class="form-control" id="economy-to" name="to"
-                                                    required>
+                                                <div class="mb-3">
+                                                    <label for="airline_date" class="form-label">Date</label>
+                                                    <input type="date" class="form-control" id="airline_date" name="airline_date" required>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -250,10 +278,9 @@
                                                     Persons</label>
                                                 <input type="number" class="form-control" id="economy-persons"
                                                     name="persons" min="1" required>
+                                                    
                                             </div>
                                         </div>
-
-
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <button type="submit" class="btn custom-btn">Search</button>

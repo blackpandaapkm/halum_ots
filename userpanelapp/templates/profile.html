@@ -30,13 +30,13 @@
 
     <main>
 
-        {% include 'vendor_navbar.html'%}
+        {% include 'navbar.html'%}
         <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
             <div class="container">
                 <div class="row">
 
                     <div class="col-lg-8 col-12 mx-auto">
-                        <h1 class="text-white text-center">Vendor Profile</h1>
+                        <h1 class="text-white text-center">Profile</h1>
 
                         <h6 class="text-center">platform for creatives around the world</h6>
                     </div>
@@ -45,41 +45,36 @@
             </div>
         </section>
         <section class="section-padding section-bg d-flex justify-content-center align-items-center">
-            <!-- <div class="container">
+            <div class="container">
                 <div class="custom-block bg-white shadow-lg d-flex align-items-start">
                     <form method="POST" class="w-100">
                         {% csrf_token %}
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <h5 for="name" class="form-label">Name : {{vendor.name}} </h5>
+                                    <h5 for="name" class="form-label">Name : {{user.username}} </h5>
 
                                 </div>
 
                                 <div class="mb-3">
-                                    <h5 for="email" class="form-label">Email address :{{vendor.email}} </h5>
+                                    <h5 for="email" class="form-label">Email address :{{user.usermail}} </h5>
+
+                                </div>
+
+
+                                <div class="mb-3">
+                                    <h5 for="address" class="form-label">Address :{{user.address}} </h5>
 
                                 </div>
 
                                 <div class="mb-3">
-                                    <h5 for="vendor-type" class="form-label">Vendor Type : {{vendor.vendor_type}}
-                                    </h5>
-
-                                </div>
-
-                                <div class="mb-3">
-                                    <h5 for="address" class="form-label">Address :{{vendor.address}} </h5>
-
-                                </div>
-
-                                <div class="mb-3">
-                                    <h5 for="gender" class="form-label ">Gender : {{vendor.gender}} </h5>
+                                    <h5 for="gender" class="form-label ">Gender : {{user.gender}} </h5>
 
                                 </div>
                             </div>
                             <div class="col-md-6 d-flex justify-content-center align-items-center" style="height: 300px;">
                                 <div class="mb-3">
-                                    <img src="{{ vendor.profile_pic.url }}" alt="{{ vendor.name }}" height="250px" width="250px" style="border-radius: 20px;">
+                                    <img src="{{ user.user_picture.url }}" alt="{{ user.username }}" height="250px" width="250px" style="border-radius: 20px;">
                                 </div>
                                 <div class="mb-3">
                                     
@@ -88,16 +83,16 @@
                         </div>
                         <div class="d-flex justify-content-around align-items-center">
                             <a href="{% url 'updateprofile' %}" class="btn custom-btn">UPDATE</a>
-                            <a href="{% url 'chnagepassword' %}" class="btn custom-btn">CHANGE PASSWORD</a>
+                            <a href="{% url 'changepassword' %}" class="btn custom-btn">CHANGE PASSWORD</a>
                         </div>
                     </form>
                 </div>
-            </div> -->
+            </div>
             
         </section>
     </main>
 
-    {% include 'vendor_footer.html'%}
+    {% include 'footer.html'%}
 
     <!-- JAVASCRIPT FILES -->
     <script src="{% static 'assets/mainfilecss/js/jquery.min.js' %}"></script>
