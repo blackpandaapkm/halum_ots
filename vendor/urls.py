@@ -31,8 +31,11 @@ urlpatterns=[
     path('vendor_howitworks/',vendor_howitworks,name='vendor_howitworks'),
     path('vendor_contact/',vendor_contact,name='vendor_contact'),
     path('vendor_faqs/',vendor_faqs,name='vendor_faqs'),
+    path('vendor_busroots/',vendor_busroots,name='vendor_busroots'),
+    path('vendor_deletebusroot/',vendor_deletebusroot,name='vendor_deletebusroot'),
+    path('vendor_editbusroot/',vendor_editbusroot,name='vendor_editbusroot'),
 
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

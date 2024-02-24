@@ -12,6 +12,8 @@
     <title>HALUM OTS</title>
 
     <!-- CSS FILES -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,7 +86,8 @@
                             <div class="tab-pane fade show active" id="Airlines-tab-pane" role="tabpanel"
                                 aria-labelledby="Airlines-tab" tabindex="0">
 
-                                <form class="custom-block bg-white shadow-lg p-4">
+                                <form class="custom-block bg-white shadow-lg p-4" method="POST" action="{% url 'searchresult' %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
                                     <div class="row align-items-center">
                                         <div class="col-md-3">
                                             <div class="mb-3">
@@ -101,7 +104,8 @@
                                                 <label for="airline_from" class="form-label">From</label>
                                                 <select class="form-control" id="airline_from" name="airline_from">
                                                     {% for airline in airlines %}
-                                                        <option value="{{ airline.airline_from }}">{{ airline.airline_from}}</option>
+                                                    <option value="{{ airline.airline_from }}">{{ airline.airline_from}}
+                                                    </option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
@@ -111,7 +115,8 @@
                                                 <label for="airline_to" class="form-label">To</label>
                                                 <select class="form-control" id="airline_to" name="airline_to">
                                                     {% for airline in airlines %}
-                                                        <option value="{{ airline.airline_to }}">{{airline.airline_to}}</option>
+                                                    <option value="{{ airline.airline_to }}">{{airline.airline_to}}
+                                                    </option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
@@ -119,16 +124,20 @@
                                         <div class="col-md-3">
                                             <div class="mb-3">
                                                 <label for="airline_date" class="form-label">Date</label>
-                                                <input type="date" class="form-control" id="airline_date" name="airline_date" required>
+                                                <input type="date" class="form-control" id="airline_date"
+                                                    name="airline_date" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="economy-persons" class="form-label">Number of Persons</label>
-                                                <input type="number" class="form-control" id="economy-persons" name="persons" min="1" required>
+                                                <label for="economy-persons" class="form-label">Number of
+                                                    Persons</label>
+                                                <input type="number" class="form-control" id="persons"
+                                                    name="persons" min="1" max="4" required>
+                                                <input type="hidden" class="form-control" id="type" name="type" value="Airline" required>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-center">
-                                        <button type="submit" class="btn custom-btn">Search</button>
+                                        <button type="submit" class="btn custom-btn" >Search</button>
                                     </div>
                                 </form>
                             </div>
@@ -151,8 +160,8 @@
                                             <div class="mb-3">
                                                 <label for="bus_from" class="form-label">From</label>
                                                 <select class="form-control" id="bus_from" name="bus_from">
-                                                    {% for bus in buss %}
-                                                        <option value="{{ bus.bus_from }}">{{ bus.bus_from}}</option>
+                                                    {% for root in roots %}
+                                                    <option value="{{ root.root_from }}">{{ root.root_from }}</option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
@@ -161,8 +170,8 @@
                                             <div class="mb-3">
                                                 <label for="bus_to" class="form-label">To</label>
                                                 <select class="form-control" id="bus_to" name="bus_to">
-                                                    {% for bus in buss %}
-                                                        <option value="{{ bus.bus_to }}">{{ bus.bus_to}}</option>
+                                                    {% for root in roots %}
+                                                    <option value="{{ root.root_to }}">{{root.root_to}}</option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
@@ -173,11 +182,12 @@
                                                     Persons</label>
                                                 <input type="number" class="form-control" id="economy-persons"
                                                     name="persons" min="1" required>
-                                                    
+
                                             </div>
                                             <div class="mb-3">
                                                 <label for="airline_date" class="form-label">Date</label>
-                                                <input type="date" class="form-control" id="airline_date" name="airline_date" required>
+                                                <input type="date" class="form-control" id="airline_date"
+                                                    name="airline_date" required>
                                             </div>
                                         </div>
                                     </div>
@@ -206,7 +216,8 @@
                                                 <label for="train_from" class="form-label">From</label>
                                                 <select class="form-control" id="train_from" name="train_from">
                                                     {% for train in trains %}
-                                                        <option value="{{ train.train_from }}">{{ train.train_from}}</option>
+                                                    <option value="{{ train.train_from }}">{{ train.train_from}}
+                                                    </option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
@@ -216,7 +227,7 @@
                                                 <label for="train_to" class="form-label">To</label>
                                                 <select class="form-control" id="train_to" name="train_to">
                                                     {% for train in trains %}
-                                                        <option value="{{ train.train_to }}">{{ train.train_to}}</option>
+                                                    <option value="{{ train.train_to }}">{{ train.train_to}}</option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
@@ -227,11 +238,12 @@
                                                     Persons</label>
                                                 <input type="number" class="form-control" id="economy-persons"
                                                     name="persons" min="1" required>
-                                                    
+
                                             </div>
                                             <div class="mb-3">
                                                 <label for="airline_date" class="form-label">Date</label>
-                                                <input type="date" class="form-control" id="airline_date" name="airline_date" required>
+                                                <input type="date" class="form-control" id="airline_date"
+                                                    name="airline_date" required>
                                             </div>
                                         </div>
                                     </div>
@@ -259,7 +271,7 @@
                                                 <label for="bus_from" class="form-label">city</label>
                                                 <select class="form-control" id="hotel_city" name="bus_from">
                                                     {% for hotel in hotels %}
-                                                        <option value="{{ hotel.address }}">{{ hotel.address}}</option>
+                                                    <option value="{{ hotel.address }}">{{ hotel.address}}</option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
@@ -268,7 +280,8 @@
                                             <div class="mb-3">
                                                 <div class="mb-3">
                                                     <label for="airline_date" class="form-label">Date</label>
-                                                    <input type="date" class="form-control" id="airline_date" name="airline_date" required>
+                                                    <input type="date" class="form-control" id="airline_date"
+                                                        name="airline_date" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -278,7 +291,7 @@
                                                     Persons</label>
                                                 <input type="number" class="form-control" id="economy-persons"
                                                     name="persons" min="1" required>
-                                                    
+
                                             </div>
                                         </div>
                                     </div>
@@ -292,75 +305,10 @@
                 </div>
             </div>
         </section>
+
         <div id="search-results" style="display:none;">
-            <div id="Hotel" class="service px-4 bg-white py-5">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 mb-4">
-                            <h1 class="text-center mb-5">Hotels</h1>
-                        </div>
-                    </div>
-                    <div class="row gy-4">
-                        {% for hotel in hotels %}
-                            <div class="col-lg-4 col-md-6">
-                                <div class="card shadow-md rounded">
-                                    <div class="card-body text-center">
-                                        <img src="{{ hotel.hotel_picture.url }}" class="img-thumbnail mb-4"
-                                            style="height: 200px; width: 200px;" alt="{{hotel.name}}">
-                                        <h5 class="card-title fs-6 fw-bold">{{hotel.name}}</h5>
-                                        <h5 class="card-title fs-6 fw-bold">Price: {{hotel.price}}</h5>
-                                        <p class="card-text">{{hotel.description|truncatewords:30}}</p>
-                                        <div class="d-flex justify-content-center">
-                                            <a href="{% url 'vendor_edithotel' %}?code={{ hotel.code }}" type="button"
-                                                class="btn btn-primary me-2">Edit</a>
-                                            <a href="{% url 'vendor_deletehotel'%}?code={{ hotel.code }}" type="button"
-                                                class="btn btn-danger">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% empty %}
-                            <div class="col-lg-12 col-md-12">
-                                <p class="text-center">No hotels found.</p>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="hero-section px-4 bg-white py-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 mb-4">
-                        <h1 class="text-center mb-5">Available Packages</h1>
-                    </div>
-                </div>
-                <div class="row gy-4">
-                    {% for hotel in hotels %}
-                        <div class="col-lg-4 col-md-6">
-                            <div class="card shadow-md rounded">
-                                <div class="card-body text-center">
-                                    <img src="{{ hotel.hotel_picture.url }}" class="img-thumbnail mb-4"
-                                        style="height: 200px; width: 200px;" alt="{{hotel.name}}">
-                                    <h5 class="card-title fs-6 fw-bold">{{hotel.name}}</h5>
-                                    <h5 class="card-title fs-6 fw-bold">Price: {{hotel.price}}</h5>
-                                    <p class="card-text">{{hotel.description|truncatewords:30}}</p>
-                                    <div class="d-flex justify-content-center">
-                                        <a href="{% url 'vendor_edithotel' %}?code={{ hotel.code }}" type="button"
-                                            class="btn btn-primary me-2">Edit</a>
-                                        <a href="{% url 'vendor_deletehotel'%}?code={{ hotel.code }}" type="button"
-                                            class="btn btn-danger">Delete</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% empty %}
-                        <div class="col-lg-12 col-md-12">
-                            <p class="text-center">No PackAge found.</p>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
+        
+        </section>
         </div>
 
 
@@ -440,6 +388,35 @@
                 </div>
             </div>
         </section>
+
+
+
+
+        <!-- The Modal  Display Search Result -->
+        <div class="modal" id="bussearchresult">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Available Bus</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                       
+
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </main>
 
     {% include 'footer.html'%}
@@ -453,20 +430,8 @@
     <script src="{% static 'assets/mainfilecss/js/jquery.sticky.js' %}"></script>
     <script src="{% static 'assets/mainfilecss/js/click-scroll.js' %}"></script>
     <script src="{% static 'assets/mainfilecss/js/custom.js ' %}"></script>
-    <script>
-        $(document).ready(function () {
-            $('form').on('submit', function (e) {
-                e.preventDefault(); // prevent the form from submitting normally
 
-                // show the search results section
-                $('#search-results').show();
-
-                // do your search logic here, then populate the search results section with the results
-                // for example:
-                // $('#search-results').html('<p>Search results:</p>');
-            });
-        });
-    </script>
+   
 
 
 </body>

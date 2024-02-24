@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
 from vendor.models import *
 from userpanelapp.models import *
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -11,13 +12,14 @@ def index(request):
     buss = Bus.objects.all()
     trains = Train.objects.all()
     airlines = Airline.objects.all()
-    context = {'hotels': hotels,'buss':buss,'trains':trains,'airlines':airlines}
+    roots = BusRoots.objects.all()
+    context = {'hotels': hotels,'buss':buss,'trains':trains,'airlines':airlines,'roots':roots}
         
     if request.method == 'GET':
         if 'usermail' in request.session:
             usermail = request.session['usermail']
             user = Person.objects.filter(usermail=usermail).first()
-            context = {'user': user, 'hotels': hotels,'buss':buss,'trains':trains,'airlines':airlines}
+            context = {'user': user, 'hotels': hotels,'buss':buss,'trains':trains,'airlines':airlines,'roots':roots}
             return render(request, 'index.html', context)
     return render(request,'index.html',context)
         
@@ -183,3 +185,43 @@ def profile(request):
             user = Person.objects.filter(usermail=usermail).first()
             return render(request, 'profile.html', {'user': user})
     
+def searchresult(request):
+    if request.method == 'GET':
+        if 'usermail' in request.session:
+            usermail = request.session['usermail']
+            user = Person.objects.filter(usermail=usermail).first()
+            return render(request, 'searchresult.html', {'user': user})
+    
+    if request.method == 'POST':
+        sit_type = request.POST.get('sit_type')
+        airline_from = request.POST.get('airline_from')
+        airline_to = request.POST.get('airline_to')
+        airline_date = request.POST.get('airline_date')
+        persons = request.POST.get('persons')
+        type = request.POST.get('type')
+
+        if type == 'hotels':
+            hotels = Hotel.objects.filter(name__icontains=sit_type)
+            return render(request,'searchresult.html', {'hotels': hotels})
+        elif type == 'buss':
+            buss = Bus.objects.filter(name__icontains=sit_type)
+            return render(request,'searchresult.html', {'buss': buss})
+        elif type == 'trains':
+            trains = Train.objects.filter(name__icontains=sit_type)
+            return render(request,'searchresult.html', {'trains': trains})
+        elif type == 'Airline':
+            airline = Airline.objects.filter(airline_from=airline_from,airline_to=airline_to)
+            type = 'Airline'
+
+            airline_paginator = Paginator(airline,6)
+            page_number = request.GET.get('page')
+            airlines = airline_paginator.get_page(page_number)
+            totalairlinepage = airlines.paginator.num_pages
+
+            context = {
+                'airlines': airlines,
+                'type': type,
+                'totalairlinepage':totalairlinepage,
+                'totalairlinepagelist':[n+1 for n in range(totalairlinepage)]
+                }
+            return render(request,'searchresult.html', context)

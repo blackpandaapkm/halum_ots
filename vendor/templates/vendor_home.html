@@ -78,6 +78,41 @@
                     </div>
                     {% endfor %}
                 </div>
+                <div class="col-lg-12 col-12">
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination justify-content-center mb-0">
+                        {% if hotels.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="/vendor_home/?page=1" aria-label="First">
+                              <span aria-hidden="true"><<</span>
+                            </a>
+                          </li>
+                        <li class="page-item">
+                          <a class="page-link" href="/vendor_home/?page={{hotels.previous_page_number}}" aria-label="Previous">
+                            <span aria-hidden="true">Prev</span>
+                          </a>
+                        </li>
+                        {% endif %}
+                        {% for i in totalhotelpagelist %}
+                        <li class="page-item " aria-current="page">
+                          <a class="page-link" href="/vendor_home/?page={{i}}">{{i}}</a>
+                        </li>
+                        {% endfor %}
+                        {% if hotels.has_next %}
+                        <li class="page-item">
+                          <a class="page-link" href="/vendor_home/?page={{hotels.next_page_number}}" aria-label="Next">
+                            <span aria-hidden="true">Next</span>
+                          </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/vendor_home/?page={{totalhotelpage}}" aria-label="Last">
+                              <span aria-hidden="true">>></span>
+                            </a>
+                          </li>
+                          {% endif %}
+                      </ul>
+                    </nav>
+                  </div>
             </div>
         </section>
         {% elif vendor.vendor_type == "Airlines" %}
@@ -103,7 +138,7 @@
                                         <h5 class="mt-3 fs-6 fw-bold">Price : {{airline.price}}</h5>
                                         <h5 class="mt-3 fs-6 fw-bold">From : {{airline.airline_from}}</h5>
                                         <h5 class="mt-3 fs-6 fw-bold">To : {{airline.airline_to}}</h5>
-                                        <p>{{hotel.description}}</p>
+                                        <p>{{airline.description}}</p>
                                         <a href="{% url 'vendor_editairline' %}?code={{ airline.code }}" type="button"
                                             class="btn btn-primary">Edit</a>
                                         <a href="{% url 'vendor_deleteairline'%}?code={{ airline.code }}" type="button"
@@ -115,6 +150,41 @@
                     </div>
                     {% endfor %}
                 </div>
+                <div class="col-lg-12 col-12">
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination justify-content-center mb-0">
+                        {% if airlines.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="/vendor_home/?page=1" aria-label="First">
+                              <span aria-hidden="true"><<</span>
+                            </a>
+                          </li>
+                        <li class="page-item">
+                          <a class="page-link" href="/vendor_home/?page={{airlines.previous_page_number}}" aria-label="Previous">
+                            <span aria-hidden="true">Prev</span>
+                          </a>
+                        </li>
+                        {% endif %}
+                        {% for i in totalairlinepagelist %}
+                        <li class="page-item " aria-current="page">
+                          <a class="page-link" href="/vendor_home/?page={{i}}">{{i}}</a>
+                        </li>
+                        {% endfor %}
+                        {% if airlines.has_next %}
+                        <li class="page-item">
+                          <a class="page-link" href="/vendor_home/?page={{airlines.next_page_number}}" aria-label="Next">
+                            <span aria-hidden="true">Next</span>
+                          </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/vendor_home/?page={{totalairlinepage}}" aria-label="Last">
+                              <span aria-hidden="true">>></span>
+                            </a>
+                          </li>
+                          {% endif %}
+                      </ul>
+                    </nav>
+                  </div>
             </div>
         </section>
         {% elif vendor.vendor_type == "Bus" %}
@@ -132,18 +202,20 @@
                             <div class="serv-cove shadow-md rounded bg-white text-center p-4 w-100">
                                 <div class="d-flex align-items-center">
                                     <div class="serv-thumbnail">
-                                        <img src="{{ bus.bus_picture.url }}" class="img-thumbnail"
+                                        <img src="{{ bus.bus_picture_1.url }}" class="img-thumbnail"
                                             style="height: 200px; width: 200px;" alt="{{bus.name}}">
                                     </div>
                                     <div class="serv-info ms-4">
                                         <h5 class="mt-3 fs-6 fw-bold">{{bus.name}}</h5>
-                                        <h5 class="mt-3 fs-6 fw-bold">Price : {{bus.price}}</h5>
-                                        <h5 class="mt-3 fs-6 fw-bold">From : {{bus.bus_from}}</h5>
-                                        <h5 class="mt-3 fs-6 fw-bold">To : {{bus.bus_to}}</h5>
-                                        <p>{{hotel.description}}</p>
-                                        <a href="{% url 'vendor_editbus' %}?code={{ bus.code }}" type="button"
+                                        <h5 class="mt-3 fs-6 fw-bold">Bus Code : {{bus.bus_code}}</h5>
+                                        <h5 class="mt-3 fs-6 fw-bold">Bus Class : {{bus.bus_class}}</h5>
+                                        <h5 class="mt-3 fs-6 fw-bold">Status : {{bus.status}}</h5>
+                                        <p>{{bus.description}}</p>
+                                        <a href="{% url 'vendor_editbus' %}?code={{ bus.bus_code }}" type="button"
                                             class="btn btn-primary">Edit</a>
-                                        <a href="{% url 'vendor_deletebus'%}?code={{ bus.code }}" type="button"
+                                            <a href="{% url 'vendor_busroots' %}?code={{ bus.bus_code }}" type="button"
+                                            class="btn btn-primary">Roots</a>
+                                        <a href="{% url 'vendor_deletebus'%}?code={{ bus.bus_code }}" type="button"
                                             class="btn btn-danger">Delete</a>
                                     </div>
                                 </div>
@@ -152,6 +224,41 @@
                     </div>
                     {% endfor %}
                 </div>
+                <div class="col-lg-12 col-12">
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination justify-content-center mb-0">
+                        {% if buss.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="/vendor_home/?page=1" aria-label="First">
+                              <span aria-hidden="true"><<</span>
+                            </a>
+                          </li>
+                        <li class="page-item">
+                          <a class="page-link" href="/vendor_home/?page={{buss.previous_page_number}}" aria-label="Previous">
+                            <span aria-hidden="true">Prev</span>
+                          </a>
+                        </li>
+                        {% endif %}
+                        {% for i in totalbuspagelist %}
+                        <li class="page-item " aria-current="page">
+                          <a class="page-link" href="/vendor_home/?page={{i}}">{{i}}</a>
+                        </li>
+                        {% endfor %}
+                        {% if buss.has_next %}
+                        <li class="page-item">
+                          <a class="page-link" href="/vendor_home/?page={{buss.next_page_number}}" aria-label="Next">
+                            <span aria-hidden="true">Next</span>
+                          </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/vendor_home/?page={{totalbuspage}}" aria-label="Last">
+                              <span aria-hidden="true">>></span>
+                            </a>
+                          </li>
+                          {% endif %}
+                      </ul>
+                    </nav>
+                  </div>
             </div>
         </section>
         {% elif vendor.vendor_type == "Train" %}
@@ -177,7 +284,7 @@
                                         <h5 class="mt-3 fs-6 fw-bold">Price : {{train.price}}</h5>
                                         <h5 class="mt-3 fs-6 fw-bold">From : {{train.train_from}}</h5>
                                         <h5 class="mt-3 fs-6 fw-bold">To : {{train.train_to}}</h5>
-                                        <p>{{hotel.description}}</p>
+                                        <p>{{train.description}}</p>
                                         <a href="{% url 'vendor_edittrain' %}?code={{ train.code }}" type="button"
                                             class="btn btn-primary">Edit</a>
                                         <a href="{% url 'vendor_deletetrain'%}?code={{ train.code }}" type="button"
@@ -189,6 +296,41 @@
                     </div>
                     {% endfor %}
                 </div>
+                <div class="col-lg-12 col-12">
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination justify-content-center mb-0">
+                        {% if trains.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="/vendor_home/?page=1" aria-label="First">
+                              <span aria-hidden="true"><<</span>
+                            </a>
+                          </li>
+                        <li class="page-item">
+                          <a class="page-link" href="/vendor_home/?page={{trains.previous_page_number}}" aria-label="Previous">
+                            <span aria-hidden="true">Prev</span>
+                          </a>
+                        </li>
+                        {% endif %}
+                        {% for i in totaltrainpagelist %}
+                        <li class="page-item " aria-current="page">
+                          <a class="page-link" href="/vendor_home/?page={{i}}">{{i}}</a>
+                        </li>
+                        {% endfor %}
+                        {% if trains.has_next %}
+                        <li class="page-item">
+                          <a class="page-link" href="/vendor_home/?page={{trains.next_page_number}}" aria-label="Next">
+                            <span aria-hidden="true">Next</span>
+                          </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/vendor_home/?page={{totaltrainpage}}" aria-label="Last">
+                              <span aria-hidden="true">>></span>
+                            </a>
+                          </li>
+                          {% endif %}
+                      </ul>
+                    </nav>
+                  </div>
             </div>
         </section>
         {% endif %}

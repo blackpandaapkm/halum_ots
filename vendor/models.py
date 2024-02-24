@@ -36,19 +36,37 @@ class Hotel(models.Model):
 class Bus(models.Model):
     name = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
-    code = models.CharField(max_length=100)
+    bus_code = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
-    sit_number = models.CharField(max_length=100, null=True)
-    bus_from = models.CharField(max_length=100,null=True)
-    bus_to = models.CharField(max_length=100,null=True)
-    price = models.FloatField(null=True)
-    status = models.BooleanField(null=True)
+    bus_class = models.CharField(max_length=100, null=True)
+    status = models.CharField(max_length=100, null=True)
     description = models.TextField(max_length=100)
-    bus_picture =  models.ImageField(upload_to='bus_pictures/',max_length=200,null=True, blank=True)
+    bus_picture_1 =  models.ImageField(upload_to='bus_pictures/',max_length=200,null=True, blank=True)
+    bus_picture_2 =  models.ImageField(upload_to='bus_pictures/',max_length=200,null=True, blank=True)
+    bus_picture_3 =  models.ImageField(upload_to='bus_pictures/',max_length=200,null=True, blank=True)
 
     def __str__(self):
         return self.name
     
+class BusRoots(models.Model):
+    root_code = models.CharField(max_length=100)
+    root_from = models.CharField(max_length=100,null=True)
+    root_to = models.CharField(max_length=100,null=True)
+    Distance = models.FloatField(null=True)
+    price = models.FloatField(null=True)
+    bus_code = models.CharField(max_length=100,null=True)
+    root_date = models.DateTimeField()
+
+    def __str__(self):
+        return self.root_code
+
+class BusClasses(models.Model):
+    bus_code = models.CharField(max_length = 100)
+    total_sit = models.IntegerField(null=True)
+    bus_class = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.bus_class
 
 class Airline(models.Model):
     name = models.CharField(max_length=100)
@@ -80,3 +98,4 @@ class Train(models.Model):
 
     def __str__(self):
         return self.name
+    

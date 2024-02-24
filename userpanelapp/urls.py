@@ -17,6 +17,7 @@ urlpatterns=[
     path('logout/', logout, name='logout'),
     path('changepassword/', changepassword, name='changepassword'),
     path('wrongpassword/', wrongpassword, name='wrongpassword'),
+    path('searchresult/', searchresult, name='searchresult'),
 
 
     

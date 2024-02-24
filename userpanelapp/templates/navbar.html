@@ -31,7 +31,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-lg-5 me-lg-auto">
                 <li class="nav-item {% if request.resolver_match.view_name == 'vendor_index' %}active{% endif %}">
-                    <a class="nav-link click-scroll" href="{% url 'index' %}"></a>
+                    <a class="nav-link click-scroll" href="{% url 'index' %}">.</a>
                 </li>
                 <li class="nav-item {% if request.resolver_match.view_name == 'vendor_browseitems' %}active{% endif %}">
                     <a class="nav-link click-scroll" href="{% url 'browseitems' %}">Browse Items</a>

@@ -1,6 +1,7 @@
 from django.shortcuts import render,HttpResponse,redirect,HttpResponseRedirect,get_object_or_404
 from vendor.models import *
-import os,pathlib
+import os,pathlib,random
+from django.core.paginator import Paginator
 # Create your views here.
 def vendor_index(request):
     if request.method == 'GET' :
@@ -33,17 +34,57 @@ def vendor_wrongpassword(request):
             vendor = Vendor.objects.filter(email=email).first()
             return render(request,'vendor_wrongpassword.html',{'vendor': vendor})
     return render(request,'vendor_wrongpassword.html')
+
+
+
+
 def vendor_home(request):
 
    if request.method == 'GET':
     if 'email' in request.session:
         email = request.session['email']
         vendor = Vendor.objects.filter(email=email).first()
-        hotels = Hotel.objects.filter(email=email)
-        buss = Bus.objects.filter(email=email)
-        trains = Train.objects.filter(email=email)
-        airlines = Airline.objects.filter(email=email)
-        context = {'vendor': vendor, 'hotels': hotels,'buss':buss,'trains':trains,'airlines':airlines}
+        hotel = Hotel.objects.filter(email=email)
+        bus = Bus.objects.filter(email=email)
+        train = Train.objects.filter(email=email)
+        airline = Airline.objects.filter(email=email)
+
+
+        airline_paginator = Paginator(airline,6)
+        hotel_paginator = Paginator(hotel,6)
+        bus_paginator = Paginator(bus,6)
+        train_paginator = Paginator(train,6)
+
+        page_number = request.GET.get('page')
+
+        airlines = airline_paginator.get_page(page_number)
+        hotels = hotel_paginator.get_page(page_number)
+        buss = bus_paginator.get_page(page_number)
+        trains = train_paginator.get_page(page_number)
+
+        totalairlinepage = airlines.paginator.num_pages
+        totalhotelpage = hotels.paginator.num_pages
+        totalbuspage = buss.paginator.num_pages
+        totaltrainpage = trains.paginator.num_pages
+
+        context = {
+            'vendor': vendor,
+            'hotels': hotels,
+            'buss':buss,
+            'trains':trains,
+            'airlines':airlines,
+
+            'totalairlinepage':totalairlinepage,
+            'totalhotelpage':totalhotelpage,
+            'totalbuspage':totalbuspage,
+            'totaltrainpage':totaltrainpage,
+
+            'totalairlinepagelist':[n+1 for n in range(totalairlinepage)],
+            'totalhotelpagelist':[n+1 for n in range(totalhotelpage)],
+            'totalbuspagelist':[n+1 for n in range(totalbuspage)],
+            'totaltrainpagelist':[n+1 for n in range(totaltrainpage)]
+
+            }
         return render(request, 'vendor_home.html', context)
    else:
     return redirect(vendor_errorpage)
@@ -283,33 +324,31 @@ def vendor_addbus(request):
 
     if request.method == "POST":
         name = request.POST.get('name')
-        code = request.POST.get('code')
+        email = request.session['email']
+        bus_code = request.POST.get('bus_code')
         address = request.POST.get('address')
-        sit_number = request.POST.get('sit_number')
-        bus_from = request.POST.get('bus_from')
-        bus_to = request.POST.get('bus_to')
-        price = request.POST.get('price')
+        bus_class = request.POST.get('bus_class')
         status = request.POST.get('status')
         description = request.POST.get('description')
-        email = request.session['email']
-        bus_picture = request.FILES.get('bus_picture')
 
+        bus_picture_1 = request.FILES.get('bus_picture_1')
+        bus_picture_2 = request.FILES.get('bus_picture_2')
+        bus_picture_3 = request.FILES.get('bus_picture_3')
+        
         bus = Bus(
             name=name,
-            code=code,
+            email=email,
+            bus_code=bus_code,
             address=address,
-            sit_number=sit_number,
-            bus_from=bus_from,
-            bus_to=bus_to,
-            price=price,
+            bus_class=bus_class,
             status=status,
             description=description,
-            bus_picture=bus_picture,
-            email=email
-        )
-        
-        bus.save()
 
+            bus_picture_1=bus_picture_1,
+            bus_picture_2=bus_picture_2,
+            bus_picture_3=bus_picture_3,
+        )
+        bus.save()
         return redirect(vendor_home)
 
     return  render(request, 'vendor_addbus.html')
@@ -321,46 +360,51 @@ def vendor_editbus(request):
         email = request.session['email']
 
     if request.method == 'GET':
-        code = request.GET.get('code')
-        pcode = code
-        bus = get_object_or_404(Bus, email=email, code=code)
+        bus_code = request.GET.get('code')
+        print(bus_code,email)
+        bus = Bus.objects.filter(email=email, bus_code=bus_code).first()
         vendor = Vendor.objects.filter(email=email).first()
         context = {'bus': bus,'vendor': vendor}
-        print(email,pcode,code)
         return render(request, 'vendor_editbus.html', context)
     
     
 
     if request.method == 'POST':
         name = request.POST.get('name')
+        email = request.session['email']
+        bus_code = request.POST.get('bus_code')
         address = request.POST.get('address')
-        sit_number = request.POST.get('sit_number')
-        price = request.POST.get('price')
+        bus_class = request.POST.get('bus_class')
         status = request.POST.get('status')
         description = request.POST.get('description')
-        code = request.POST.get('code')
-        bus_picture = request.FILES.get('bus_picture', None)
 
-        if email is not None:
-            vendor = Vendor.objects.filter(email=email).first()
-            bus = get_object_or_404(Bus, email=email, code=code)
-            print(email,pcode,code)
+        bus_picture_1 = request.FILES.get('bus_picture_1')
+        bus_picture_2 = request.FILES.get('bus_picture_2')
+        bus_picture_3 = request.FILES.get('bus_picture_3')
 
-            if 'password' in request.POST:
-                password = request.POST.get('password')
-                if password == vendor.password:
-                    bus.name = name
-                    bus.address = address
-                    bus.sit_number = sit_number
-                    bus.price = price
-                    bus.status = status
-                    bus.description = description
-                    if bus_picture:
-                        bus.bus_picture = bus_picture
-                    bus.save()
-                    return redirect(vendor_home)
-                else:
-                    return redirect(vendor_wrongpassword)
+        bus = Bus.objects.filter(email=email, bus_code=bus_code).first()
+        vendor = Vendor.objects.filter(email=email).first()
+
+        if bus and vendor:
+            bus.name = name
+            bus.email = email
+            bus.bus_code = bus_code
+            bus.address = address
+            bus.bus_class = bus_class
+            bus.status = status
+            bus.description = description
+
+            if bus_picture_1:
+                bus.bus_picture_1 = bus_picture_1
+            if bus_picture_2:
+                bus.bus_picture_2 = bus_picture_2
+            if bus_picture_3:
+                bus.bus_picture_3 = bus_picture_3
+
+            bus.save()
+            return redirect(vendor_home)
+        else:
+            return redirect(vendor_errorpage)
 
     return render(request, 'vendor_edithotel.html')
 
@@ -369,9 +413,139 @@ def vendor_deletebus(request):
         code = request.GET.get('code') 
         if 'email' in request.session:
             email = request.session['email']
-            bus = Bus.objects.filter(email=email,code=code).first()
+            bus = Bus.objects.filter(email=email,bus_code=code).first()
+            roots = BusRoots.objects.filter(bus_code=code)
             bus.delete()
+            roots.delete()
             return redirect(vendor_home)
+        
+
+def vendor_busroots(request):
+    email = None
+    bus_code = None
+    if 'email' in request.session:
+        email = request.session['email']
+
+    if request.method == 'GET':
+        bus_code = request.GET.get('code')
+        print("get area")
+        print(bus_code,email)
+        vendor = Vendor.objects.filter(email=email).first()
+        bus = Bus.objects.filter(email=email,bus_code=bus_code).first()
+        roots = BusRoots.objects.filter(bus_code=bus_code)
+        context = {'bus': bus,'vendor': vendor,'roots':roots}
+        return render(request, 'vendor_busroots.html', context)
+
+    if request.method == 'POST':
+        root_code = ''.join(random.choices('0123456789', k=9))
+        root_from = request.POST.get('root_from')
+        root_to = request.POST.get('root_to')
+        Distance = request.POST.get('Distance')
+        price = request.POST.get('price')
+        root_date = request.POST.get('root_date')
+        bus_code = request.POST.get('bus_code')
+
+        bus = Bus.objects.filter(email=email, bus_code=bus_code).first()
+        root = BusRoots.objects.filter(root_code=root_code, bus_code=bus_code).first()
+
+        if root is None:
+            rootdata = BusRoots(
+                root_code = root_code,
+                root_from = root_from,
+                root_to = root_to,
+                Distance = Distance,
+                price = price,
+                root_date = root_date,
+                bus_code = bus_code,
+            )
+            print("prepare for save")
+            rootdata.save()
+            vendor = Vendor.objects.filter(email=email).first()
+            bus = Bus.objects.filter(email=email,bus_code=bus_code).first()
+            roots = BusRoots.objects.filter(bus_code=bus_code)
+            context = {'bus': bus,'vendor': vendor,'roots':roots}
+            return render(request, 'vendor_busroots.html', context)
+        else:
+            vendor = Vendor.objects.filter(email=email).first()
+            bus = Bus.objects.filter(email=email,bus_code=bus_code).first()
+            roots = BusRoots.objects.filter(bus_code=bus_code)
+            context = {'bus': bus,'vendor': vendor,'roots':roots}
+            return render(request, 'vendor_busroots.html', context)
+        
+    return  render(request, 'vendor_busroots.html')
+
+
+
+
+def vendor_deletebusroot(request):
+    email = None
+    if request.method == 'GET':
+        bus_code = request.GET.get('code') 
+        root_code = request.GET.get('r_code')
+        
+        if 'email' in request.session:
+            email = request.session['email']
+            print(root_code,bus_code)
+            data = BusRoots.objects.filter(bus_code=bus_code, root_code=root_code).first()
+            print(data)
+            
+            
+            # Check if both the bus and root objects exist
+            if data is not None:
+                data.delete()
+
+                vendor = Vendor.objects.filter(email=email).first()
+                bus = Bus.objects.filter(email=email, bus_code=bus_code).first()
+                roots = BusRoots.objects.filter(bus_code=bus_code)
+                context = {'bus': bus,'vendor': vendor,'roots':roots}
+                return render(request, 'vendor_busroots.html', context)
+            
+
+
+def vendor_editbusroot(request):
+    email = None
+    bus_code = None
+    root_code = None
+
+    if request.method == 'GET':
+        bus_code = request.GET.get('code') 
+        root_code = request.GET.get('r_code')
+        
+    if 'email' in request.session:
+        email = request.session['email']
+   
+    if request.method == 'POST':
+        root_code = request.POST.get('root-code')
+        root_from = request.POST.get('root_from')
+        root_to = request.POST.get('root_to')
+        Distance = request.POST.get('Distance')
+        price = request.POST.get('price')
+        root_date = request.POST.get('root_date')
+        bus_code = request.POST.get('bus-code')
+        
+        
+        bus = Bus.objects.filter(email=email, bus_code=bus_code).first()
+        root = BusRoots.objects.filter(root_code=root_code, bus_code=bus_code).first()
+
+        if bus and root:
+            root.bus_code = bus_code
+            root.root_code = root_code
+            root.root_from = root_from
+            root.root_to = root_to
+            root.Distance = Distance
+            root.price = price
+            root.root_date = root_date
+
+            root.save()
+
+            vendor = Vendor.objects.filter(email=email).first()
+            bus = Bus.objects.filter(email=email, bus_code=bus_code).first()
+            roots = BusRoots.objects.filter(bus_code=bus_code)
+            context = {'bus': bus,'vendor': vendor,'roots':roots}
+            return render(request,'vendor_busroots.html', context)
+        else:
+            return render(request,'vendor_errorpage.html')
+            
         
 
 
