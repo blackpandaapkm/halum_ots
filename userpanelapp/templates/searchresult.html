@@ -127,7 +127,7 @@
                             <div class="serv-cove shadow-md rounded bg-white text-center p-4 w-100">
                                 <div class="d-flex align-items-center">
                                     <div class="serv-thumbnail">
-                                        <img src="{{ airline.airline_picture.url }}" class="img-thumbnail"
+                                        <img src="{{ airline.airline_picture_1.url }}" class="img-thumbnail"
                                             style="height: 200px; width: 200px;" alt="{{airline.name}}">
                                     </div>
                                     <div class="serv-info ms-4">
@@ -182,13 +182,11 @@
                   </div>
             </div>
         </section>
-        {% elif vendor.vendor_type == "Bus" %}
+        {% elif type == "Bus" %}
         <section class="section-padding section-bg">
             <div id="Hotel" class="service px-4 bg-white py-5">
                 <div class="titie-row row mb-3">
-                    <h2 class="fw-bolder">{{vendor.vendor_type}}</h2>
-                    <p>Your {{vendor.vendor_type}} information available here.</p>
-                    <a href="{% url 'vendor_addbus' %}" type="button" class="btn btn-primary">ADD</a>
+                    <h2 class="fw-bolder"><center> Available BUSes Information</center></h2>
                 </div>
                 <div class="row mt-5" style="background-color:  #f9fafc;">
                     {% for bus in buss %}
@@ -207,11 +205,7 @@
                                         <h5 class="mt-3 fs-6 fw-bold">Status : {{bus.status}}</h5>
                                         <p>{{bus.description}}</p>
                                         <a href="{% url 'vendor_editbus' %}?code={{ bus.bus_code }}" type="button"
-                                            class="btn btn-primary">Edit</a>
-                                            <a href="{% url 'vendor_busroots' %}?code={{ bus.bus_code }}" type="button"
-                                            class="btn btn-primary">Roots</a>
-                                        <a href="{% url 'vendor_deletebus'%}?code={{ bus.bus_code }}" type="button"
-                                            class="btn btn-danger">Delete</a>
+                                            class="btn btn-primary">Book Now</a>
                                     </div>
                                 </div>
                             </div>

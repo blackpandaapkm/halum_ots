@@ -24,6 +24,14 @@
     <link href="{% static 'assets/mainfilecss/css/bootstrap-icons.css' %}" rel="stylesheet">
 
     <link href="{% static 'assets/mainfilecss/css/templatemo-topic-listing.css' %}" rel="stylesheet">
+    <style>
+        .img-preview {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+        }
+    </style>
+
 </head>
 
 <body id="top">
@@ -49,8 +57,8 @@
             <div class="container">
                 <div class="custom-block bg-white shadow-lg">
                     <form method="POST" action="{% url 'vendor_addairline' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
                         <div class="row">
-                            {% csrf_token %}
                             <div class="col">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Name</label>
@@ -58,29 +66,29 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="code" class="form-label">Code</label>
-                                    <input type="text" class="form-control" id="code" name="code" required>
+                                    <label for="airline_class" class="form-label">Class</label>
+                                    <select class="form-select" id="airline_class" name="airline_class" required>
+                                        {% for airline_class in airline_classes %}
+                                        <option value="{{ airline_class.airline_class }}">{{ airline_class.airline_class }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="sit_number" class="form-label">Sit Number</label>
-                                    <input type="text" class="form-control" id="sit_number" name="sit_number" required>
+                                    <label for="airline_from" class="form-label">From</label>
+                                    <select class="form-select" id="airline_from" name="airline_from" required>
+                                        {% for airport in airports %}
+                                        <option value="{{ airport.airport }}">{{ airport.airport }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="bus_from" class="form-label">Airline From</label>
-                                    <input type="text" class="form-control" id="airline_from" name="airline_from" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="bus_to" class="form-label">Airline To</label>
-                                    <input type="text" class="form-control" id="airline_to" name="airline_to" required>
-                                </div>
-                            </div>
-
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="price" class="form-label">Price</label>
-                                    <input type="number" class="form-control" id="price" name="price" required>
+                                 <div class="mb-3">
+                                    <label for="airline_to" class="form-label">To</label>
+                                    <select class="form-select" id="airline_to" name="airline_to" required>
+                                        {% for airport in airports %}
+                                        <option value="{{ airport.airport }}">{{ airport.airport }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
 
                                 <div class="mb-3">
@@ -93,20 +101,52 @@
 
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Description</label>
-                                    <textarea class="form-control" id="description" rows="3"
-                                        name="description" required></textarea>
+                                    <textarea class="form-control" id="description" rows="3" name="description"
+                                        required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="airline_date" class="form-label">Date</label>
+                                    <input type="date" class="form-control" id="airline_date" name="airline_date"
+                                        required></input>
+                                </div>
+                            </div>
+                            <div class="col" >
+                                <div class="row">
+                                    <div class="col">
+                                        <img id="preview-image-1" class="img-preview" alt="Image 1"
+                                            src="{%  static 'assets/mainfilecss/images/airline_logo.png'%}" style="margin: 20px;">
+                                    </div>
+                                    <div class="col">
+                                        <img id="preview-image-2" class="img-preview" alt="Image 2"
+                                            src="{%  static 'assets/mainfilecss/images/airline_logo.png'%}" style="margin: 20px;">
+                                    </div>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="airline_picture" class="form-label">Airline Picture</label>
-                                    <input type="file" class="form-control" id="airline_picture" name="airline_picture" required>
+                                <div class="row">
+                                    <div class="col">
+                                        <img id="preview-image-3" class="img-preview" alt="Image 3"
+                                            src="{%  static 'assets/mainfilecss/images/airline_logo.png'%}" style="margin: 20px;">
+                                    </div>
+                                    <div class="col">
+                                        <div class="img-preview d-flex justify-content-center align-items-center">
+                                            <div class="container">
+                                                <input type="file" class="form-control" id="airline_picture_1"
+                                                    name="airline_picture_1" required onchange="previewImage(event, 1)">
+                                                <input type="file" class="form-control" id="airline_picture_2"
+                                                    name="airline_picture_2" required onchange="previewImage(event, 2)">
+                                                <input type="file" class="form-control" id="airline_picture_3"
+                                                    name="airline_picture_3" required onchange="previewImage(event, 3)">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <!-- <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" required>
-                                </div> -->
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">Price</label>
+                                    <input type="number" class="form-control" id="price" name="price"
+                                        required></input>
+                                </div>
                             </div>
-                            <button type="submit" class="btn custom-btn">ADD </button>
+                            <button type="submit" class="btn custom-btn">ADD DATA</button>
                         </div>
                     </form>
                 </div>
@@ -116,6 +156,25 @@
 
     {% include 'vendor_footer.html'%}
     <!-- JAVASCRIPT FILES -->
+    <script>
+        function previewImage(event, index) {
+            const input = event.target;
+            const previewImage = document.getElementById(`preview-image-${index}`);
+            const addButton = document.getElementById(`add-button-${index}`);
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    addButton.style.display = "none";
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                previewImage.src = "123.jpg";
+                addButton.style.display = "block";
+            }
+        }
+    </script>
     <script src="{% static 'assets/mainfilecss/js/jquery.min.js' %}"></script>
     <script src="{% static 'assets/mainfilecss/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'assets/mainfilecss/js/jquery.sticky.js' %}"></script>

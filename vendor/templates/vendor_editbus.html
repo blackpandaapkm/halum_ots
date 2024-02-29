@@ -64,36 +64,25 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label for="name" class="form-label">Name</label>
+                                        <label for="name" class="form-label">Name : {{bus.name}}</label>
                                         <input type="text" class="form-control" id="name" name="name"
-                                            placeholder="{{bus.name}}">
+                                            required>
                                     </div>
-
                                     <div class="mb-3">
-                                        <label for="bus_code" class="form-label">Bus Code</label>
-                                        <input type="text" class="form-control" id="bus_code" name="bus_code"
-                                            placeholder="{{bus.bus_code}}" disabled>
-                                        <input type="hidden" class="form-control" id="bus_code" name="bus_code"
-                                            value="{{bus.bus_code}}">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="address" class="form-label">Number-plate</label>
+                                        <label for="address" class="form-label">Number-plate : {{bus.address}}</label>
                                         <input type="text" class="form-control" id="address" name="address"
-                                            placeholder="{{bus.address}}" required>
+                                         required>
                                     </div>
-
                                     <div class="mb-3">
-                                        <label for="bus_class" class="form-label">Bus Class</label>
-                                        <select class="form-select" id="bus_class" name="bus_class"
-                                            value="{{bus.bus_class}}" required>
-                                            <option value="Standard">Standard</option>
-                                            <option value="Premium">Premium</option>
-                                            <option value="VIP">VIP</option>
+                                        <label for="bus_class" class="form-label">Bus Class : {{bus.bus_class}}</label>
+                                        <select class="form-select" id="bus_class" name="bus_class" required>
+                                            {% for bus_class in bus_classes %}
+                                            <option value="{{ bus_class.bus_class }}">{{ bus_class.bus_class }}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="status" class="form-label">Status</label>
+                                        <label for="status" class="form-label">Status : {{ bus.status }}</label>
                                         <select class="form-select" id="status" name="status" 
                                             required>
                                             <option value="True">Active</option>
@@ -104,7 +93,14 @@
                                     <div class="mb-3">
                                         <label for="description" class="form-label">Description</label>
                                         <textarea class="form-control" id="description" rows="3" name="description"
-                                            required></textarea>
+                                           placeholder="{{ bus.description }}" required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="bus_date" class="form-label">Date : {{bus.bus_date}}</label>
+                                        <input type="date" class="form-control" id="bus_date" name="bus_date"
+                                        required></input>
+                                        <input type="hidden" class="form-control" id="bus_code" name="bus_code"
+                                            value="{{bus.bus_code}}">
                                     </div>
                                 </div>
                                 <div class="col">
@@ -139,7 +135,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn custom-btn">Edit DATA</button>
+                                <button type="submit" class="btn custom-btn">Save changes</button>
                             </div>
                         </form>
                     </div>

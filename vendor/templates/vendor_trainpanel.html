@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>HALUM OTS - VENDOR</title>
+
+    <!-- CSS FILES -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap"
+        rel="stylesheet">
+
+    <link href="{% static 'assets/mainfilecss/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'assets/mainfilecss/css/bootstrap-icons.css' %}" rel="stylesheet">
+
+    <link href="{% static 'assets/mainfilecss/css/templatemo-topic-listing.css' %}" rel="stylesheet">
+</head>
+
+<body id="top">
+
+    <main>
+
+        {% include 'vendor_navbar.html'%}
+        <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-12 mx-auto">
+                        <h1 class="text-white text-center">Vendor Train Panel</h1>
+                        <p class="lead text-white text-center">
+                            welcome mr {{vendor}}
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section> 
+        <section class="section-padding section-bg">
+            <div id="Hotel" class="service px-4 bg-white py-5">
+                <div class="titie-row row mb-3">
+                    <h2 class="fw-bolder">{{vendor.vendor_type}} = {{train.train_code}}</h2>
+                    <p>Your {{vendor.vendor_type}} information available here.</p>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addroot">
+                        Add Root
+                      </button>
+                <div class="row mt-5" style="background-color:  #f9fafc;">
+                    {% for root in roots %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="d-flex align-items-center h-100">
+                            <div class="serv-cove shadow-md rounded bg-white text-center p-4 w-100">
+                                <div class="d-flex align-items-center">
+                                    <div class="serv-info ms-4">
+                                        <h5 class="mt-3 fs-6 fw-bold">From</h5>
+                                        <h5 class="mt-3 fs-6 fw-bold">{{ root.root_from }}</h5>
+                                        <h5 class="mt-3 fs-6 fw-bold">To</h5>
+                                        <h5 class="mt-3 fs-6 fw-bold">{{ root.root_to }}</h5>
+                                    </div>
+                                    <div class="serv-info ms-4">
+                                        <h5 class="mt-3 fs-6 fw-bold">Root Code : {{ root.root_code }}</h5>
+                                        <h5 class="mt-3 fs-6 fw-bold">Price : {{ root.price }}</h5>
+                                        <h5 class="mt-3 fs-6 fw-bold">Date : {{ root.root_date }}</h5>
+                                        <h5 class="mt-3 fs-6 fw-bold">Status : {{ root.root_status }}</h5>
+                                    </div>
+                                    <div class="serv-info ms-4">
+                                        <a  type="button" class="btn btn-danger edit-button" id="edit-button" data-bs-toggle="modal" data-bs-target="#editroot" data-root-code="{{root.root_code}}" data-train-code="{{train.train_code}}">Edit</a>
+                                        <a href="{% url 'vendor_deletetrainroot' %}?r_code={{root.root_code}}&code={{train.train_code}}" type="button" class="btn btn-danger">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="col-lg-12 col-12">
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination justify-content-center mb-0">
+                        {% if buss.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="/vendor_home/?page=1" aria-label="First">
+                              <span aria-hidden="true"><<</span>
+                            </a>
+                          </li>
+                        <li class="page-item">
+                          <a class="page-link" href="/vendor_home/?page={{buss.previous_page_number}}" aria-label="Previous">
+                            <span aria-hidden="true">Prev</span>
+                          </a>
+                        </li>
+                        {% endif %}
+                        {% for i in totalbuspagelist %}
+                        <li class="page-item " aria-current="page">
+                          <a class="page-link" href="/vendor_home/?page={{i}}">{{i}}</a>
+                        </li>
+                        {% endfor %}
+                        {% if buss.has_next %}
+                        <li class="page-item">
+                          <a class="page-link" href="/vendor_home/?page={{buss.next_page_number}}" aria-label="Next">
+                            <span aria-hidden="true">Next</span>
+                          </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/vendor_home/?page={{totalbuspage}}" aria-label="Last">
+                              <span aria-hidden="true">>></span>
+                            </a>
+                          </li>
+                          {% endif %}
+                      </ul>
+                    </nav>
+                  </div>
+            </div>
+        </section>
+        <section class="section-padding section-bg">
+            <div id="Hotel" class="service px-4 bg-white py-5">
+                <div class="titie-row row mb-3">
+                    <h2 class="fw-bolder">{{vendor.vendor_type}} = {{train.train_code}}</h2>
+                    <p>Your {{vendor.vendor_type}} information available here.</p>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addchoch">
+                        Add Coach
+                      </button>
+                      
+                      
+                <div class="row mt-5" style="background-color:  #f9fafc;">
+                    {% for coach in coachs %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="d-flex align-items-center h-100">
+                            <div class="serv-cove shadow-md rounded bg-white text-center p-4 w-100">
+                                <div class="d-flex align-items-center">
+                                    <div class="serv-info ms-4">
+                                        <h5 class="mt-3 fs-6 fw-bold">{{ coach.coach_name }}</h5>
+                                    </div>
+                                    <div class="serv-info ms-4">
+                                        <h5 class="mt-3 fs-6 fw-bold">coach Code : {{ coach.coach_code }}</h5>
+                                        <h5 class="mt-3 fs-6 fw-bold">Train class : {{ coach.train_class }}</h5>
+                                        <h5 class="mt-3 fs-6 fw-bold">Total Sit : {{ root.root_date }}</h5>
+                                        <h5 class="mt-3 fs-6 fw-bold">Status : {{ coach.coach_status }}</h5>
+                                    </div>
+                                    <div class="serv-info ms-4">
+                                        <a  type="button" class="btn btn-danger edit-button" id="edit-button" data-bs-toggle="modal" data-bs-target="#editroot" data-root-code="{{root.root_code}}" data-train-code="{{train.train_code}}">Edit</a>
+                                        <a href="{% url 'vendor_deletetraincoach' %}?coach_code={{coach.coach_code}}&code={{train.train_code}}" type="button" class="btn btn-danger">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="col-lg-12 col-12">
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination justify-content-center mb-0">
+                        {% if buss.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="/vendor_home/?page=1" aria-label="First">
+                              <span aria-hidden="true"><<</span>
+                            </a>
+                          </li>
+                        <li class="page-item">
+                          <a class="page-link" href="/vendor_home/?page={{buss.previous_page_number}}" aria-label="Previous">
+                            <span aria-hidden="true">Prev</span>
+                          </a>
+                        </li>
+                        {% endif %}
+                        {% for i in totalbuspagelist %}
+                        <li class="page-item " aria-current="page">
+                          <a class="page-link" href="/vendor_home/?page={{i}}">{{i}}</a>
+                        </li>
+                        {% endfor %}
+                        {% if buss.has_next %}
+                        <li class="page-item">
+                          <a class="page-link" href="/vendor_home/?page={{buss.next_page_number}}" aria-label="Next">
+                            <span aria-hidden="true">Next</span>
+                          </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/vendor_home/?page={{totalbuspage}}" aria-label="Last">
+                              <span aria-hidden="true">>></span>
+                            </a>
+                          </li>
+                          {% endif %}
+                      </ul>
+                    </nav>
+                  </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- The Modal  Add Root-->
+    <div class="modal" id="addroot">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Modal Heading</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+                <section class=" section-bg d-flex justify-content-center align-items-center">
+                    <div class="container">
+                        <div class="row">
+                            <div class="custom-block bg-white shadow-lg">
+                                <form method="POST" action="{% url 'vendor_trainpanel' %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col">
+                                            
+        
+                                            <div class="mb-3">
+                                                <label for="root_from" class="form-label">From</label>
+                                                <select class="form-select" id="root_from" name="root_from" required>
+                                                    {% for train_station in train_stations %}
+                                                    <option value="{{ train_station.train_station }}">{{ train_station.train_station }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+        
+                                            <div class="mb-3">
+                                                <label for="root_to" class="form-label">To</label>
+                                                <select class="form-select" id="root_to" name="root_to" required>
+                                                    {% for train_station in train_stations %}
+                                                    <option value="{{ train_station.train_station }}">{{ train_station.train_station }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="root_status" class="form-label">Status</label>
+                                                <select class="form-select" id="root_status" name="root_status" required>
+                                                    <option value="True">Active</option>
+                                                    <option value="False">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3">
+                                                <label for="Distance" class="form-label">Distance</label>
+                                                <input type="number" class="form-control" id="Distance" name="Distance" required>
+                                            </div>
+        
+                                            <div class="mb-3">
+                                                <label for="price" class="form-label">Price</label>
+                                                <input type="number" class="form-control" id="price" name="price" required>
+                                                <input type="hidden" class="form-control" id="train_code" name="train_code" value="{{train.train_code}}" required>
+                                            </div>
+        
+                                            <div class="mb-3">
+                                                <label for="root_date" class="form-label">Date</label>
+                                                <input type="date" class="form-control" id="root_date" name="root_date" required>
+                                            </div>
+                                            
+                                        </div>
+                                        <button type="submit" class="btn custom-btn">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+             
+            </div>
+      
+          </div>
+        </div>
+    </div>
+
+    <!-- The Modal  Edit Root-->
+    <div class="modal" id="editroot">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Edit Bus Root</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+                <section class=" section-bg d-flex justify-content-center align-items-center">
+                    <div class="container">
+                        <div class="row">
+                            <div class="custom-block bg-white shadow-lg">
+                                <form method="POST" action="{% url 'vendor_traineditroot' %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="mb-3">
+                                                <label for="root-code" class="form-label">Root Code</label>
+                                                <input type="text" class="form-control" id="root-code" name="root-code" readonly>
+                                                <label for="train-code" class="form-label">Train Code</label>
+                                                <input type="text" class="form-control" id="train-code" name="train-code" readonly>
+                                            </div>
+        
+                                            <div class="mb-3">
+                                                <label for="root_from" class="form-label">From</label>
+                                                <select class="form-select" id="root_from" name="root_from" required>
+                                                    {% for train_station in train_stations %}
+                                                    <option value="{{ train_station.train_station }}">{{ train_station.train_station }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+        
+                                            <div class="mb-3">
+                                                <label for="root_to" class="form-label">To</label>
+                                                <select class="form-select" id="root_to" name="root_to" required>
+                                                    {% for train_station in train_stations %}
+                                                    <option value="{{ train_station.train_station }}">{{ train_station.train_station }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="root_status" class="form-label">Status</label>
+                                                <select class="form-select" id="root_status" name="root_status" required>
+                                                    <option value="True">Active</option>
+                                                    <option value="False">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3">
+                                                <label for="Distance" class="form-label">Distance</label>
+                                                <input type="number" class="form-control" id="Distance" name="Distance" required>
+                                            </div>
+        
+                                            <div class="mb-3">
+                                                <label for="price" class="form-label">Price</label>
+                                                <input type="number" class="form-control" id="price" name="price" required>
+                                            </div>
+        
+                                            <div class="mb-3">
+                                                <label for="root_date" class="form-label">Date</label>
+                                                <input type="date" class="form-control" id="root_date" name="root_date" required>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn custom-btn">Edit Root</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+             
+            </div>
+      
+          </div>
+        </div>
+    </div>
+    <!-- The Modal  Add choch -->
+    <div class="modal" id="addchoch">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Add Choach</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+                <section class=" section-bg d-flex justify-content-center align-items-center">
+                    <div class="container">
+                        <div class="row">
+                            <div class="custom-block bg-white shadow-lg">
+                                <form method="POST" action="{% url 'vendor_addtraincoach' %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="mb-3">
+                                                <label for="coach_name" class="form-label">Choch name</label>
+                                                <input type="text" class="form-control" id="coach_name" name="coach_name" required>
+                                                <input type="hidden" class="form-control" id="train_code" name="train_code" value="{{train.train_code}}" required>
+                                            </div>
+                                            
+                                            <div class="mb-3">
+                                                <label for="train_class" class="form-label">Train class</label>
+                                                <select class="form-select" id="train_class" name="train_class" required>
+                                                    {% for train_class in train_classes %}
+                                                    <option value="{{ train_class.train_class }}">{{ train_class.train_class }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+        
+                                            
+                                            <div class="mb-3">
+                                                <label for="coach_status" class="form-label">Status</label>
+                                                <select class="form-select" id="coach_status" name="coach_status" required>
+                                                    <option value="True">Active</option>
+                                                    <option value="False">Inactive</option>
+                                                </select>
+                                            </div>
+                                        
+                                        <button type="submit" class="btn custom-btn">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+             
+            </div>
+      
+          </div>
+        </div>
+    </div>
+        <!-- The Modal  Edit Root-->
+        <div class="modal" id="editcoach">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+              <div class="modal-content">
+          
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Edit coach</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+          
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <section class=" section-bg d-flex justify-content-center align-items-center">
+                        <div class="container">
+                            <div class="row">
+                                <div class="custom-block bg-white shadow-lg">
+                                    <form method="POST" action="{% url 'vendor_addtraincoach' %}" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label for="coach_name" class="form-label">Choch name</label>
+                                                    <input type="text" class="form-control" id="coach_name" name="coach_name" required>
+                                                    <input type="hidden" class="form-control" id="train_code" name="train_code" value="{{train.train_code}}" required>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <label for="train_class" class="form-label">Train class</label>
+                                                    <select class="form-select" id="train_class" name="train_class" required>
+                                                        {% for train_class in train_classes %}
+                                                        <option value="{{ train_class.train_class }}">{{ train_class.train_class }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+            
+                                                
+                                                <div class="mb-3">
+                                                    <label for="coach_status" class="form-label">Status</label>
+                                                    <select class="form-select" id="coach_status" name="coach_status" required>
+                                                        <option value="True">Active</option>
+                                                        <option value="False">Inactive</option>
+                                                    </select>
+                                                </div>
+                                            
+                                            <button type="submit" class="btn custom-btn">Save</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+          
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                 
+                </div>
+          
+              </div>
+            </div>
+        </div>
+
+
+    {% include 'vendor_footer.html'%}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const editButtons = document.querySelectorAll('.edit-button');
+    const rootCodeInput = document.getElementById('root-code');
+    const trainCodeInput = document.getElementById('train-code');
+
+    editButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const rootCode = this.getAttribute('data-root-code');
+            const trainCode = this.getAttribute('data-train-code');
+
+            rootCodeInput.value = rootCode;
+            trainCodeInput.value = trainCode;
+        });
+    });
+});
+</script>
+    
+    <script src="{% static 'assets/mainfilecss/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/jquery.sticky.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/click-scroll.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/custom.js' %}"></script>
+</body>
+
+</html>

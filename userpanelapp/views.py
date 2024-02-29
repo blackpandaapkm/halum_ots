@@ -13,13 +13,42 @@ def index(request):
     trains = Train.objects.all()
     airlines = Airline.objects.all()
     roots = BusRoots.objects.all()
-    context = {'hotels': hotels,'buss':buss,'trains':trains,'airlines':airlines,'roots':roots}
+    airports = Airport.objects.all()
+    citys = City.objects.all()
+    bus_Terminals = Bus_Terminal.objects.all()
+    airline_classes = Airline_class.objects.all()
+    busClasses = BusClasses.objects.all()
+    
+
+    context = {
+        'hotels': hotels,
+        'buss':buss,
+        'trains':trains,
+        'airlines':airlines,
+        'roots':roots,
+        'airports':airports,
+        'citys':citys,
+        'bus_Terminals':bus_Terminals,
+        'busClasses':busClasses,
+        'airline_classes':airline_classes
+        }
         
     if request.method == 'GET':
         if 'usermail' in request.session:
             usermail = request.session['usermail']
             user = Person.objects.filter(usermail=usermail).first()
-            context = {'user': user, 'hotels': hotels,'buss':buss,'trains':trains,'airlines':airlines,'roots':roots}
+            context = {
+                'hotels': hotels,
+                'buss':buss,
+                'trains':trains,
+                'airlines':airlines,
+                'roots':roots,
+                'airports':airports,
+                'citys':citys,
+                'bus_Terminals':bus_Terminals,
+                'busClasses':busClasses,
+                'airline_classes':airline_classes
+                }
             return render(request, 'index.html', context)
     return render(request,'index.html',context)
         
@@ -193,24 +222,48 @@ def searchresult(request):
             return render(request, 'searchresult.html', {'user': user})
     
     if request.method == 'POST':
-        sit_type = request.POST.get('sit_type')
+        type = request.POST.get('type')
+
         airline_from = request.POST.get('airline_from')
         airline_to = request.POST.get('airline_to')
         airline_date = request.POST.get('airline_date')
+        airline_class = request.POST.get('airline_class')
+
+        bus_from = request.POST.get('bus_from')
+        bus_to = request.POST.get('bus_to')
+        bus_date = request.POST.get('bus_date')
+        bus_class = request.POST.get('bus_class')
+
         persons = request.POST.get('persons')
-        type = request.POST.get('type')
+
+
 
         if type == 'hotels':
             hotels = Hotel.objects.filter(name__icontains=sit_type)
             return render(request,'searchresult.html', {'hotels': hotels})
-        elif type == 'buss':
-            buss = Bus.objects.filter(name__icontains=sit_type)
-            return render(request,'searchresult.html', {'buss': buss})
+        elif type == 'Bus':
+            bus = Bus.objects.filter(bus_code__in=BusRoots.objects.filter(root_from=bus_from, root_to=bus_to).values_list('bus_code', flat=True) , bus_class=bus_class )
+            print(bus_from,bus_to,bus_class)
+            print(bus)
+            type = 'Bus'
+            bus_paginator = Paginator(bus,6)
+            page_number = request.GET.get('page')
+            buss = bus_paginator.get_page(page_number)
+            totalbuspage = buss.paginator.num_pages
+
+            context = {
+                'buss': buss,
+                'type': type,
+                'totalbuspage':totalbuspage,
+                'totalbuspagelist':[n+1 for n in range(totalbuspage)]
+                }
+            
+            return render(request,'searchresult.html', context)
         elif type == 'trains':
             trains = Train.objects.filter(name__icontains=sit_type)
             return render(request,'searchresult.html', {'trains': trains})
         elif type == 'Airline':
-            airline = Airline.objects.filter(airline_from=airline_from,airline_to=airline_to)
+            airline = Airline.objects.filter(airline_from=airline_from,airline_to=airline_to,airline_class=airline_class)
             type = 'Airline'
 
             airline_paginator = Paginator(airline,6)

@@ -91,21 +91,20 @@
                                     <div class="row align-items-center">
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="sit_type" class="form-label">Type of Seat</label>
-                                                <select class="form-control" id="sit_type" name="type">
-                                                    <option value="Economy">Economy</option>
-                                                    <option value="Bussiness">Bussiness</option>
-                                                    <option value="First Class">First Class</option>
+                                                <label for="sit_type" class="form-label">Airline Class</label>
+                                                <select class="form-select" id="airline_class" name="airline_class" required>
+                                                    {% for airline_class in airline_classes %}
+                                                    <option value="{{ airline_class.airline_class }}">{{ airline_class.airline_class }}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="mb-3">
                                                 <label for="airline_from" class="form-label">From</label>
-                                                <select class="form-control" id="airline_from" name="airline_from">
-                                                    {% for airline in airlines %}
-                                                    <option value="{{ airline.airline_from }}">{{ airline.airline_from}}
-                                                    </option>
+                                                <select class="form-select" id="airline_from" name="airline_from" required>
+                                                    {% for airport in airports %}
+                                                    <option value="{{ airport.airport }}">{{ airport.airport }}</option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
@@ -113,10 +112,9 @@
                                         <div class="col-md-3">
                                             <div class="mb-3">
                                                 <label for="airline_to" class="form-label">To</label>
-                                                <select class="form-control" id="airline_to" name="airline_to">
-                                                    {% for airline in airlines %}
-                                                    <option value="{{ airline.airline_to }}">{{airline.airline_to}}
-                                                    </option>
+                                                <select class="form-select" id="airline_to" name="airline_to" required>
+                                                    {% for airport in airports %}
+                                                    <option value="{{ airport.airport }}">{{ airport.airport }}</option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
@@ -144,15 +142,16 @@
 
                             <div class="tab-pane fade" id="Bus-tab-pane" role="tabpanel" aria-labelledby="Bus-tab"
                                 tabindex="0">
-                                <form class="custom-block bg-white shadow-lg p-4">
+                                <form class="custom-block bg-white shadow-lg p-4" method="POST" action="{% url 'searchresult' %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
                                     <div class="row align-items-center">
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="sit_type" class="form-label">Type of Seat</label>
-                                                <select class="form-control" id="sit_type" name="sit_type">
-                                                    <option value="standard">Standard</option>
-                                                    <option value="premium">Premium</option>
-                                                    <option value="VIP">VIP</option>
+                                                <label for="sit_type" class="form-label">Class</label>
+                                                <select class="form-select" id="bus_class" name="bus_class" required>
+                                                    {% for bus_class in busClasses %}
+                                                    <option value="{{ bus_class.bus_class }}">{{ bus_class.bus_class }}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                         </div>
@@ -160,8 +159,8 @@
                                             <div class="mb-3">
                                                 <label for="bus_from" class="form-label">From</label>
                                                 <select class="form-control" id="bus_from" name="bus_from">
-                                                    {% for root in roots %}
-                                                    <option value="{{ root.root_from }}">{{ root.root_from }}</option>
+                                                    {% for bus_Terminal in bus_Terminals %}
+                                                    <option value="{{ bus_Terminal.bus_terminal }}">{{ bus_Terminal.bus_terminal }}</option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
@@ -170,8 +169,8 @@
                                             <div class="mb-3">
                                                 <label for="bus_to" class="form-label">To</label>
                                                 <select class="form-control" id="bus_to" name="bus_to">
-                                                    {% for root in roots %}
-                                                    <option value="{{ root.root_to }}">{{root.root_to}}</option>
+                                                    {% for bus_Terminal in bus_Terminals %}
+                                                    <option value="{{ bus_Terminal.bus_terminal }}">{{bus_Terminal.bus_terminal}}</option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
@@ -180,14 +179,15 @@
                                             <div class="mb-3">
                                                 <label for="economy-persons" class="form-label">Number of
                                                     Persons</label>
-                                                <input type="number" class="form-control" id="economy-persons"
-                                                    name="persons" min="1" required>
+                                                <input type="number" class="form-control" id="persons"
+                                                    name="persons" min="1" max="4" required>
 
                                             </div>
                                             <div class="mb-3">
-                                                <label for="airline_date" class="form-label">Date</label>
-                                                <input type="date" class="form-control" id="airline_date"
-                                                    name="airline_date" required>
+                                                <label for="bus_date" class="form-label">Date</label>
+                                                <input type="date" class="form-control" id="bus_date"
+                                                    name="bus_date" required>
+                                                <input type="hidden" class="form-control" id="type" name="type" value="Bus" required>
                                             </div>
                                         </div>
                                     </div>

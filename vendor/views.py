@@ -320,16 +320,22 @@ def vendor_addbus(request):
         if 'email' in request.session:
             email = request.session['email']
             vendor = Vendor.objects.filter(email=email).first()
-            return render(request,'vendor_addbus.html',{'vendor': vendor})
+            bus_classes = BusClasses.objects.all()
+            context = {
+                'bus_classes': bus_classes,
+                'vendor': vendor
+            }
+            return render(request,'vendor_addbus.html',context)
 
     if request.method == "POST":
         name = request.POST.get('name')
         email = request.session['email']
-        bus_code = request.POST.get('bus_code')
+        bus_code = ''.join(random.choices('0123456789ASDFG', k=9))
         address = request.POST.get('address')
         bus_class = request.POST.get('bus_class')
         status = request.POST.get('status')
         description = request.POST.get('description')
+        bus_date = request.POST.get('bus_date')
 
         bus_picture_1 = request.FILES.get('bus_picture_1')
         bus_picture_2 = request.FILES.get('bus_picture_2')
@@ -343,6 +349,7 @@ def vendor_addbus(request):
             bus_class=bus_class,
             status=status,
             description=description,
+            bus_date = bus_date,
 
             bus_picture_1=bus_picture_1,
             bus_picture_2=bus_picture_2,
@@ -355,7 +362,6 @@ def vendor_addbus(request):
 
 def vendor_editbus(request):
     email = None
-    pcode = None 
     if 'email' in request.session:
         email = request.session['email']
 
@@ -364,7 +370,8 @@ def vendor_editbus(request):
         print(bus_code,email)
         bus = Bus.objects.filter(email=email, bus_code=bus_code).first()
         vendor = Vendor.objects.filter(email=email).first()
-        context = {'bus': bus,'vendor': vendor}
+        bus_classes = BusClasses.objects.all()
+        context = {'bus': bus,'vendor': vendor,'bus_classes': bus_classes}
         return render(request, 'vendor_editbus.html', context)
     
     
@@ -377,6 +384,7 @@ def vendor_editbus(request):
         bus_class = request.POST.get('bus_class')
         status = request.POST.get('status')
         description = request.POST.get('description')
+        bus_date = request.POST.get('bus_date')
 
         bus_picture_1 = request.FILES.get('bus_picture_1')
         bus_picture_2 = request.FILES.get('bus_picture_2')
@@ -393,6 +401,7 @@ def vendor_editbus(request):
             bus.bus_class = bus_class
             bus.status = status
             bus.description = description
+            bus.bus_date = bus_date
 
             if bus_picture_1:
                 bus.bus_picture_1 = bus_picture_1
@@ -409,16 +418,26 @@ def vendor_editbus(request):
     return render(request, 'vendor_edithotel.html')
 
 def vendor_deletebus(request):
+
+    if 'email' in request.session:
+        email = request.session['email']
+
     if request.method == 'GET':
-        code = request.GET.get('code') 
-        if 'email' in request.session:
-            email = request.session['email']
-            bus = Bus.objects.filter(email=email,bus_code=code).first()
-            roots = BusRoots.objects.filter(bus_code=code)
+        bus_code = request.GET.get('code') 
+        bus = Bus.objects.filter(email=email, bus_code=bus_code).first()
+        print(bus_code,email)
+        if bus is not None:
+            roots = BusRoots.objects.filter(bus_code=bus_code)
+            print(bus_code,email)
+            if roots is not None:
+                roots.delete()
             bus.delete()
-            roots.delete()
             return redirect(vendor_home)
-        
+        else:
+            print("bus is none")
+    return redirect(vendor_home)
+
+
 
 def vendor_busroots(request):
     email = None
@@ -433,7 +452,13 @@ def vendor_busroots(request):
         vendor = Vendor.objects.filter(email=email).first()
         bus = Bus.objects.filter(email=email,bus_code=bus_code).first()
         roots = BusRoots.objects.filter(bus_code=bus_code)
-        context = {'bus': bus,'vendor': vendor,'roots':roots}
+        bus_Terminals = Bus_Terminal.objects.all()
+        context = {
+            'bus': bus,
+            'vendor': vendor,
+            'bus_Terminals': bus_Terminals,
+            'roots':roots
+            }
         return render(request, 'vendor_busroots.html', context)
 
     if request.method == 'POST':
@@ -447,6 +472,7 @@ def vendor_busroots(request):
 
         bus = Bus.objects.filter(email=email, bus_code=bus_code).first()
         root = BusRoots.objects.filter(root_code=root_code, bus_code=bus_code).first()
+        bus_Terminals = Bus_Terminal.objects.all()
 
         if root is None:
             rootdata = BusRoots(
@@ -463,13 +489,15 @@ def vendor_busroots(request):
             vendor = Vendor.objects.filter(email=email).first()
             bus = Bus.objects.filter(email=email,bus_code=bus_code).first()
             roots = BusRoots.objects.filter(bus_code=bus_code)
-            context = {'bus': bus,'vendor': vendor,'roots':roots}
+            bus_Terminals = Bus_Terminal.objects.all()
+            context = {'bus': bus,'vendor': vendor,'roots':roots,'bus_Terminals': bus_Terminals}
             return render(request, 'vendor_busroots.html', context)
         else:
             vendor = Vendor.objects.filter(email=email).first()
             bus = Bus.objects.filter(email=email,bus_code=bus_code).first()
             roots = BusRoots.objects.filter(bus_code=bus_code)
-            context = {'bus': bus,'vendor': vendor,'roots':roots}
+            bus_Terminals = Bus_Terminal.objects.all()
+            context = {'bus': bus,'vendor': vendor,'roots':roots,'bus_Terminals': bus_Terminals}
             return render(request, 'vendor_busroots.html', context)
         
     return  render(request, 'vendor_busroots.html')
@@ -497,7 +525,8 @@ def vendor_deletebusroot(request):
                 vendor = Vendor.objects.filter(email=email).first()
                 bus = Bus.objects.filter(email=email, bus_code=bus_code).first()
                 roots = BusRoots.objects.filter(bus_code=bus_code)
-                context = {'bus': bus,'vendor': vendor,'roots':roots}
+                bus_Terminals = Bus_Terminal.objects.all()
+                context = {'bus': bus,'vendor': vendor,'roots':roots,'bus_Terminals': bus_Terminals}
                 return render(request, 'vendor_busroots.html', context)
             
 
@@ -541,7 +570,8 @@ def vendor_editbusroot(request):
             vendor = Vendor.objects.filter(email=email).first()
             bus = Bus.objects.filter(email=email, bus_code=bus_code).first()
             roots = BusRoots.objects.filter(bus_code=bus_code)
-            context = {'bus': bus,'vendor': vendor,'roots':roots}
+            bus_Terminals = Bus_Terminal.objects.all()
+            context = {'bus': bus,'vendor': vendor,'roots':roots,'bus_Terminals': bus_Terminals}
             return render(request,'vendor_busroots.html', context)
         else:
             return render(request,'vendor_errorpage.html')
@@ -556,30 +586,46 @@ def vendor_addairline(request):
         if 'email' in request.session:
             email = request.session['email']
             vendor = Vendor.objects.filter(email=email).first()
-            return render(request,'vendor_addairline.html',{'vendor': vendor})
+            airline_classes = Airline_class.objects.all()
+            airports = Airport.objects.all()
+            context ={
+                'airline_classes': airline_classes,
+                'vendor': vendor,
+                'airports': airports,
+            }
+            return render(request,'vendor_addairline.html',context)
 
     if request.method == "POST":
         name = request.POST.get('name')
-        code = request.POST.get('code')
-        sit_number = request.POST.get('sit_number')
+        airline_code = ''.join(random.choices('0123456789', k=9))
         airline_from = request.POST.get('airline_from')
         airline_to = request.POST.get('airline_to')
         price = request.POST.get('price')
         status = request.POST.get('status')
         description = request.POST.get('description')
+        airline_date = request.POST.get('airline_date')
+        airline_class = request.POST.get('airline_class')
+        
+
         email = request.session['email']
-        airline_picture = request.FILES.get('airline_picture')
+
+        airline_picture_1 = request.FILES.get('airline_picture_1')
+        airline_picture_2 = request.FILES.get('airline_picture_2')
+        airline_picture_3 = request.FILES.get('airline_picture_3')
 
         airline = Airline(
             name=name,
-            code=code,
-            sit_number=sit_number,
+            airline_code=airline_code,
             airline_from=airline_from,
             airline_to=airline_to,
             price=price,
             status=status,
             description=description,
-            airline_picture=airline_picture,
+            airline_date=airline_date,
+            airline_class = airline_class,
+            airline_picture_1=airline_picture_1,
+            airline_picture_2=airline_picture_2,
+            airline_picture_3=airline_picture_3,
             email=email
         )
         
@@ -597,55 +643,76 @@ def vendor_editairline(request):
         email = request.session['email']
 
     if request.method == 'GET':
-        code = request.GET.get('code')
-        pcode = code
-        airline = get_object_or_404(Airline, email=email, code=code)
+        airline_code = request.GET.get('code')
+        airline = get_object_or_404(Airline, email=email, airline_code=airline_code)
         vendor = Vendor.objects.filter(email=email).first()
-        print(email,pcode,code)
-        context = {'airline':airline , 'vendor':vendor}
+        airline_classes = Airline_class.objects.all()
+        airports = Airport.objects.all()
+        context = {
+            'airline':airline,
+            'vendor':vendor,
+            'airline_classes': airline_classes,
+            'airports': airports
+            }
         return render(request, 'vendor_editairline.html', context)
     
     
 
     if request.method == 'POST':
         name = request.POST.get('name')
-        sit_number = request.POST.get('sit_number')
+        airline_code = request.POST.get('airline_code')
+        airline_from = request.POST.get('airline_from')
+        airline_to = request.POST.get('airline_to')
         price = request.POST.get('price')
         status = request.POST.get('status')
         description = request.POST.get('description')
-        code = request.POST.get('code')
-        airline_picture = request.FILES.get('airline_picture', None)
+        airline_date = request.POST.get('airline_date')
+        airline_class = request.POST.get('airline_class')
+        
+
+        email = request.session['email']
+
+        airline_picture_1 = request.FILES.get('airline_picture_1')
+        airline_picture_2 = request.FILES.get('airline_picture_2')
+        airline_picture_3 = request.FILES.get('airline_picture_3')
 
         if email is not None:
             vendor = Vendor.objects.filter(email=email).first()
-            airline = get_object_or_404(Airline, email=email, code=code)
-            print(email,pcode,code)
+            airline = get_object_or_404(Airline, email=email, airline_code=airline_code)
 
-            if 'password' in request.POST:
-                password = request.POST.get('password')
-                if password == vendor.password:
-                    airline.name = name
-                    airline.sit_number = sit_number
-                    airline.price = price
-                    airline.status = status
-                    airline.description = description
-                    if airline_picture:
-                        airline.airline_picture = airline_picture
-                    airline.save()
-                    return redirect(vendor_home)
-                else:
-                    return redirect(vendor_wrongpassword)
+            if airline is not None:
+                airline.name = name
+                airline.airline_code = airline_code
+                airline.airline_from = airline_from
+                airline.airline_to = airline_to
+                airline.price = price
+                airline.status = status
+                airline.description = description
+                airline.airline_date = airline_date
+                airline.airline_class = airline_class
+
+                if airline_picture_1:
+                    airline.airline_picture_1 = airline_picture_1
+                if airline_picture_2:
+                    airline.airline_picture_2 = airline_picture_2
+                if airline_picture_3:
+                    airline.airline_picture_3 = airline_picture_3
+
+                airline.save()
+                return redirect(vendor_home)
             else:
-                return redirect(vendor_errorpage)
+                return redirect(vendor_wrongpassword)
+        else:
+            return redirect(vendor_errorpage)
 
     return render(request, 'vendor_editairline.html')
 
 def vendor_deleteairline(request):
     if request.method == 'GET':
-        code = request.GET.get('code') 
+        airline_code = request.GET.get('code') 
         if 'email' in request.session:
             email = request.session['email']
-            airline = Airline.objects.filter(email=email,code=code).first()
+            airline = Airline.objects.filter(email=email,airline_code=airline_code).first()
             airline.delete()
             return redirect(vendor_home)
         else:
@@ -663,27 +730,26 @@ def vendor_addtrain(request):
 
     if request.method == "POST":
         name = request.POST.get('name')
-        code = request.POST.get('code')
-        sit_number = request.POST.get('sit_number')
-        train_from = request.POST.get('train_from')
-        train_to = request.POST.get('train_to')
-        price = request.POST.get('price')
+        email = request.session['email']
+        train_code = ''.join(random.choices('0123456789', k=9))
         status = request.POST.get('status')
         description = request.POST.get('description')
-        email = request.session['email']
-        train_picture = request.FILES.get('train_picture')
+        train_date = request.POST.get('train_date')
+        
+        train_picture_1 = request.FILES.get('train_picture_1')
+        train_picture_2 = request.FILES.get('train_picture_2')
+        train_picture_3 = request.FILES.get('train_picture_3')
 
         train = Train(
             name=name,
-            code=code,
-            sit_number=sit_number,
-            train_from=train_from,
-            train_to=train_to,
-            price=price,
+            email=email,
+            train_code=train_code,
             status=status,
             description=description,
-            train_picture=train_picture,
-            email=email
+            train_date =train_date,
+            train_picture_1=train_picture_1,
+            train_picture_2=train_picture_2,
+            train_picture_3=train_picture_3
         )
         
         train.save()
@@ -700,59 +766,349 @@ def vendor_edittrain(request):
         email = request.session['email']
 
     if request.method == 'GET':
-        code = request.GET.get('code')
-        pcode = code
-        train = get_object_or_404(Train, email=email, code=code)
+        train_code = request.GET.get('code')
+        pcode = train_code
+        train = get_object_or_404(Train, email=email, train_code=train_code)
         vendor = Vendor.objects.filter(email=email).first()
-        print(email,pcode,code)
+        print(email,pcode,train_code)
         context = {'train':train,'vendor':vendor}
         return render(request, 'vendor_edittrain.html', context)
     
     
     if request.method == 'POST':
         name = request.POST.get('name')
-        sit_number = request.POST.get('sit_number')
-        price = request.POST.get('price')
         status = request.POST.get('status')
         description = request.POST.get('description')
-        code = request.POST.get('code')
-        train_picture = request.FILES.get('train_picture', None)
+        train_code = request.POST.get('train_code')
+        train_date = request.POST.get('train_date')
+        train_picture_1 = request.FILES.get('train_picture_1', None)
+        train_picture_2 = request.FILES.get('train_picture_2', None)
+        train_picture_3 = request.FILES.get('train_picture_3', None)
 
         if email is not None:
             vendor = Vendor.objects.filter(email=email).first()
-            train = get_object_or_404(Train, email=email, code=code)
-            print(email,pcode,code)
+            train = get_object_or_404(Train, email=email, train_code=train_code)
+            print(email,pcode,train_code)
 
-            if 'password' in request.POST:
-                password = request.POST.get('password')
-                if password == vendor.password:
-                    train.name = name
-                    train.sit_number = sit_number
-                    train.price = price
-                    train.status = status
-                    train.description = description
-                    if train_picture:
-                        train.train_picture = train_picture
-                    train.save()
-                    return redirect(vendor_home)
-                else:
-                    return redirect(vendor_wrongpassword)
+            
+            if train is not None:
+                train.name = name
+                train.status = status
+                train.description = description
+                train.train_date = train_date
+
+                if train_picture_1:
+                    train.train_picture_1 = train_picture_1
+                if train_picture_2:
+                    train.train_picture_2 = train_picture_2
+                if train_picture_3:
+                    train.train_picture_3 = train_picture_3
+                train.save()
+                return redirect(vendor_home)
             else:
-                return redirect(vendor_errorpage)
+                return redirect(vendor_wrongpassword)
+           
 
     return render(request, 'vendor_edittrain.html')
 
 def vendor_deletetrain(request):
     if request.method == 'GET':
-        code = request.GET.get('code') 
+        train_code = request.GET.get('code') 
         if 'email' in request.session:
             email = request.session['email']
-            train = Train.objects.filter(email=email,code=code).first()
+            train = Train.objects.filter(email=email,train_code=train_code).first()
             train.delete()
             return redirect(vendor_home)
         else:
             return redirect(vendor_errorpage)
+
+
+def vendor_trainpanel(request):
+    email = None
+    train_code = None
+    if 'email' in request.session:
+        email = request.session['email']
+
+    if request.method == 'GET':
+        train_code = request.GET.get('code')
+        print("get area")
+        print(train_code,email)
+        vendor = Vendor.objects.filter(email=email).first()
+        train = Train.objects.filter(email=email,train_code=train_code).first()
+        roots = TrainRoots.objects.filter(train_code=train_code)
+        train_stations = Train_station.objects.all()
+        train_classes = Train_Classes.objects.all()
+        coachs = Train_CoachF.objects.filter(train_code=train_code)
+        context = {
+        'train': train,
+        'vendor': vendor,
+        'train_stations': train_stations,
+        'roots':roots,
+        'coachs':coachs,
+        'train_classes': train_classes
+        }
+        return render(request, 'vendor_trainpanel.html', context)
+
+    if request.method == 'POST':
+        root_code = ''.join(random.choices('0123456789', k=9))
+        root_from = request.POST.get('root_from')
+        root_to = request.POST.get('root_to')
+        Distance = request.POST.get('Distance')
+        price = request.POST.get('price')
+        root_date = request.POST.get('root_date')
+        train_code = request.POST.get('train_code')
+        root_status = request.POST.get('root_status') 
+
+        train = Train.objects.filter(email=email, train_code=train_code).first()
+        root = TrainRoots.objects.filter(root_code=root_code, train_code=train_code).first()
+        train_stations = Train_station.objects.all()
+
+        if root is None:
+            rootdata = TrainRoots(
+                root_code = root_code,
+                root_from = root_from,
+                root_to = root_to,
+                Distance = Distance,
+                price = price,
+                root_date = root_date,
+                train_code = train_code,
+                root_status = root_status
+            )
+            print("prepare for save")
+            rootdata.save()
+            vendor = Vendor.objects.filter(email=email).first()
+            train = Train.objects.filter(email=email,train_code=train_code).first()
+            roots = TrainRoots.objects.filter(train_code=train_code)
+            train_stations = Train_station.objects.all()
+            train_classes = Train_Classes.objects.all()
+            coachs = Train_CoachF.objects.filter(train_code=train_code)
+            context = {
+            'train': train,
+            'vendor': vendor,
+            'train_stations': train_stations,
+            'roots':roots,
+            'coachs':coachs,
+            'train_classes': train_classes
+            }
+            return render(request, 'vendor_trainpanel.html', context)
+        else:
+            vendor = Vendor.objects.filter(email=email).first()
+            train = Train.objects.filter(email=email,train_code=train_code).first()
+            roots = TrainRoots.objects.filter(train_code=train_code)
+            train_stations = Train_station.objects.all()
+            train_classes = Train_Classes.objects.all()
+            coachs = Train_CoachF.objects.filter(train_code=train_code)
+            context = {
+            'train': train,
+            'vendor': vendor,
+            'train_stations': train_stations,
+            'roots':roots,
+            'coachs':coachs,
+            'train_classes': train_classes
+            }
+            return render(request, 'vendor_trainpanel.html', context)
         
+    return  render(request, 'vendor_busroots.html')
+
+def vendor_addtraincoach(request):
+    email = None
+    train_code = None
+    if 'email' in request.session:
+        email = request.session['email']
+
+    if request.method == 'GET':
+        train_code = request.GET.get('code')
+            
+    
+    if request.method == 'POST' :
+        train_code = request.POST.get('train_code')
+        coach_name = request.POST.get('coach_name')
+        coach_code = ''.join(random.choices('01234567f89', k=9))
+        train_class = request.POST.get('train_class')
+        coach_status = request.POST.get('coach_status')
+
+        train = Train.objects.filter(email=email, train_code=train_code).first()
+        coach = Train_CoachF.objects.filter(coach_code=coach_code, train_code=train_code).first()
+        print(train_code, train_class, coach_name, coach_status, train_class, coach_code)
+        if train is not None:
+            coach_data = Train_CoachF(
+                coach_code = coach_code,
+                train_code = train_code,
+                coach_name = coach_name,
+                train_class = train_class,
+                coach_status = coach_status
+            )
+            coach_data.save()
+            vendor = Vendor.objects.filter(email=email).first()
+            train = Train.objects.filter(email=email,train_code=train_code).first()
+            roots = TrainRoots.objects.filter(train_code=train_code)
+            train_stations = Train_station.objects.all()
+            train_classes = Train_Classes.objects.all()
+            coachs = Train_CoachF.objects.filter(train_code=train_code)
+            context = {
+            'train': train,
+            'vendor': vendor,
+            'train_stations': train_stations,
+            'roots':roots,
+            'coachs':coachs,
+            'train_classes': train_classes
+            }
+            return render(request, 'vendor_trainpanel.html', context)
+        else:
+            vendor = Vendor.objects.filter(email=email).first()
+            train = Train.objects.filter(email=email,train_code=train_code).first()
+            roots = TrainRoots.objects.filter(train_code=train_code)
+            train_stations = Train_station.objects.all()
+            train_classes = Train_Classes.objects.all()
+            coachs = Train_CoachF.objects.filter(train_code=train_code)
+            context = {
+            'train': train,
+            'vendor': vendor,
+            'train_stations': train_stations,
+            'roots':roots,
+            'coachs':coachs,
+            'train_classes': train_classes
+            }
+            return render(request, 'vendor_trainpanel.html', context)
+
+
+def vendor_traineditroot(request):
+    email = None
+    root_code = None
+
+    if request.method == 'GET':
+        train_code = request.GET.get('code')
+        
+    if 'email' in request.session:
+        email = request.session['email']
+        vendor = Vendor.objects.filter(email=email).first()
+        train = Train.objects.filter(email=email,train_code=train_code).first()
+        roots = TrainRoots.objects.filter(train_code=train_code)
+        train_stations = Train_station.objects.all()
+        train_classes = Train_Classes.objects.all()
+        coachs = Train_CoachF.objects.filter(train_code=train_code)
+        context = {
+        'train': train,
+        'vendor': vendor,
+        'train_stations': train_stations,
+        'roots':roots,
+        'coachs':coachs,
+        'train_classes': train_classes
+        }
+        return render(request, 'vendor_trainpanel.html', context)
+   
+    if request.method == 'POST':
+        root_code = request.POST.get('root_code')
+        root_from = request.POST.get('root_from')
+        root_to = request.POST.get('root_to')
+        Distance = request.POST.get('Distance')
+        price = request.POST.get('price')
+        root_date = request.POST.get('root_date')
+        train_code = request.POST.get('bus-code')
+        root_status = request.POST.get('root-status')
+        
+        
+        train = Train.objects.filter(email=email, train_code=train_code).first()
+        root = TrainRoots.objects.filter(root_code=root_code, train_code=train_code).first()
+
+        if train and root:
+            root.train_code = train_code
+            root.root_code = root_code
+            root.root_from = root_from
+            root.root_to = root_to
+            root.Distance = Distance
+            root.price = price
+            root.root_date = root_date
+            root.root_status = root_status
+
+            root.save()
+
+            vendor = Vendor.objects.filter(email=email).first()
+            train = Train.objects.filter(email=email,train_code=train_code).first()
+            roots = TrainRoots.objects.filter(train_code=train_code)
+            train_stations = Train_station.objects.all()
+            train_classes = Train_Classes.objects.all()
+            coachs = Train_CoachF.objects.filter(train_code=train_code)
+            context = {
+            'train': train,
+            'vendor': vendor,
+            'train_stations': train_stations,
+            'roots':roots,
+            'coachs':coachs,
+            'train_classes': train_classes
+            }
+            return render(request, 'vendor_trainpanel.html', context)
+            
+        else:
+            return render(request,'vendor_errorpage.html')   
+
+def vendor_deletetraincoach(request):
+    email = None
+    if request.method == 'GET':
+        train_code = request.GET.get('code') 
+        coach_code = request.GET.get('coach_code')
+        
+        if 'email' in request.session:
+            email = request.session['email']
+            print(coach_code,train_code)
+            data = Train_CoachF.objects.filter(train_code=train_code, coach_code=coach_code).first()
+            print(data)
+            
+            
+            # Check if both the bus and root objects exist
+            if data is not None:
+                data.delete()
+
+                vendor = Vendor.objects.filter(email=email).first()
+                train = Train.objects.filter(email=email,train_code=train_code).first()
+                roots = TrainRoots.objects.filter(train_code=train_code)
+                train_stations = Train_station.objects.all()
+                train_classes = Train_Classes.objects.all()
+                coachs = Train_CoachF.objects.filter(train_code=train_code)
+                context = {
+                'train': train,
+                'vendor': vendor,
+                'train_stations': train_stations,
+                'roots':roots,
+                'coachs':coachs,
+                'train_classes': train_classes
+                }
+                return render(request, 'vendor_trainpanel.html', context)
+    
+def vendor_deletetrainroot(request):
+    email = None
+    if request.method == 'GET':
+        train_code = request.GET.get('code') 
+        root_code = request.GET.get('r_code')
+        
+        if 'email' in request.session:
+            email = request.session['email']
+            print(root_code,train_code)
+            data = TrainRoots.objects.filter(train_code=train_code, root_code=root_code).first()
+            print(data)
+            
+            
+            # Check if both the bus and root objects exist
+            if data is not None:
+                data.delete()
+
+                vendor = Vendor.objects.filter(email=email).first()
+                train = Train.objects.filter(email=email,train_code=train_code).first()
+                roots = TrainRoots.objects.filter(train_code=train_code)
+                train_stations = Train_station.objects.all()
+                train_classes = Train_Classes.objects.all()
+                coachs = Train_CoachF.objects.filter(train_code=train_code)
+                context = {
+                'train': train,
+                'vendor': vendor,
+                'train_stations': train_stations,
+                'roots':roots,
+                'coachs':coachs,
+                'train_classes': train_classes
+                }
+                return render(request, 'vendor_trainpanel.html', context)
+
+
 def vendor_faqs(request):
     if request.method == 'GET' :
         if 'email' in request.session:

@@ -34,7 +34,15 @@ urlpatterns=[
     path('vendor_busroots/',vendor_busroots,name='vendor_busroots'),
     path('vendor_deletebusroot/',vendor_deletebusroot,name='vendor_deletebusroot'),
     path('vendor_editbusroot/',vendor_editbusroot,name='vendor_editbusroot'),
+    path('vendor_trainpanel/',vendor_trainpanel,name='vendor_trainpanel'),
+    path('vendor_traineditroot/',vendor_traineditroot,name='vendor_traineditroot'),
+    path('vendor_deletetrainroot/',vendor_deletetrainroot,name='vendor_deletetrainroot'),
+    path('vendor_addtraincoach/',vendor_addtraincoach,name='vendor_addtraincoach'),
+    path('vendor_deletetraincoach/',vendor_deletetraincoach,name='vendor_deletetraincoach'),
 
+
+
+    
 ]
 
 if settings.DEBUG:

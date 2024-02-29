@@ -152,12 +152,20 @@
         
                                             <div class="mb-3">
                                                 <label for="root_from" class="form-label">From</label>
-                                                <input type="text" class="form-control" id="root_from" name="root_from" required>
+                                                <select class="form-select" id="root_from" name="root_from" required>
+                                                    {% for bus_Terminal in bus_Terminals %}
+                                                    <option value="{{ bus_Terminal.bus_terminal }}">{{ bus_Terminal.bus_terminal }}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
         
                                             <div class="mb-3">
                                                 <label for="root_to" class="form-label">To</label>
-                                                <input type="text" class="form-control" id="root_to" name="root_to" required>
+                                                <select class="form-select" id="root_to" name="root_to" required>
+                                                    {% for bus_Terminal in bus_Terminals %}
+                                                    <option value="{{ bus_Terminal.bus_terminal }}">{{ bus_Terminal.bus_terminal }}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col">
@@ -225,12 +233,20 @@
         
                                             <div class="mb-3">
                                                 <label for="root_from" class="form-label">From</label>
-                                                <input type="text" class="form-control" id="root_from" name="root_from" required>
+                                                <select class="form-select" id="root_from" name="root_from" required>
+                                                    {% for bus_Terminal in bus_Terminals %}
+                                                    <option value="{{ bus_Terminal.bus_Terminal }}">{{ bus_Terminal.bus_terminal }}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
         
                                             <div class="mb-3">
                                                 <label for="root_to" class="form-label">To</label>
-                                                <input type="text" class="form-control" id="root_to" name="root_to" required>
+                                                <select class="form-select" id="root_to" name="root_to" required>
+                                                    {% for bus_Terminal in bus_Terminals %}
+                                                    <option value="{{ bus_Terminal.bus_Terminal }}">{{ bus_Terminal.bus_terminal }}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col">

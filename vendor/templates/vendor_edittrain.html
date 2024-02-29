@@ -23,7 +23,15 @@
 
     <link href="{% static 'assets/mainfilecss/css/bootstrap-icons.css' %}" rel="stylesheet">
 
+    
     <link href="{% static 'assets/mainfilecss/css/templatemo-topic-listing.css' %}" rel="stylesheet">
+    <style>
+        .img-preview {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+        }
+    </style>
 </head>
 
 <body id="top">
@@ -46,75 +54,76 @@
         </section>
         <section class="section-padding section-bg d-flex justify-content-center align-items-center">
             <div class="container">
-                <div class="custom-block bg-white shadow-lg">
-                    <form method="POST" action="{% url 'vendor_edittrain' %}?code={{ train.code }}"
-                        enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">Name : {{train.name}}</label>
-                                    <input type="text" class="form-control" id="name" name="name" required>
-                                </div>
+                <div class="row">
+                    <div class="custom-block bg-white shadow-lg">
+                        <form method="POST" action="{% url 'vendor_edittrain' %}?code={{train.train_code}}"
+                            enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Name : {{train.name}}</label>
+                                        <input type="text" class="form-control" id="name" name="name"
+                                            required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="status" class="form-label">Status : {{ train.status }}</label>
+                                        <select class="form-select" id="status" name="status" 
+                                            required>
+                                            <option value="True">Active</option>
+                                            <option value="False">Inactive</option>
+                                        </select>
+                                    </div>
 
-                                <div class="mb-3">
-                                    <label for="sit_number" class="form-label">Sit Number : {{train.sit_number}}</label>
-                                    <input type="text" class="form-control" id="sit_number" name="sit_number" required>
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">Description</label>
+                                        <textarea class="form-control" id="description" rows="3" name="description"
+                                           placeholder="{{ train.description }}" required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="train_date" class="form-label">Date : {{train.train_date}}</label>
+                                        <input type="date" class="form-control" id="train_date" name="train_date"
+                                        required></input>
+                                        <input type="hidden" class="form-control" id="train_code" name="train_code"
+                                            value="{{train.train_code}}">
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="train_from" class="form-label">Train From {{train.train_from}}</label>
-                                    <input type="text" class="form-control" id="train_from" name="train_from" required>
-                                </div>
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col">
+                                            <img id="preview-image-1" class="img-preview" alt="Image 1"
+                                                src="{{  train.train_picture_1.url }}" style="margin: 20px;">
+                                        </div>
+                                        <div class="col">
+                                            <img id="preview-image-2" class="img-preview" alt="Image 2"
+                                                src="{{  train.train_picture_2.url }}" style="margin: 20px;">
+                                        </div>
+                                    </div>
 
-                                <div class="mb-3">
-                                    <label for="train_to" class="form-label">Train To {{train.train_to}}</label>
-                                    <input type="text" class="form-control" id="train_to" name="train_to" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="price" class="form-label">Price {{train.price}}</label>
-                                    <input type="number" class="form-control" id="price" name="price" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="status" class="form-label">Status {{train.status}}</label>
-                                    <select class="form-select" id="status" name="status" required>
-                                        <option value="True">Active</option>
-                                        <option value="False">Inactive</option>
-                                    </select>
-                                </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <img id="preview-image-3" class="img-preview" alt="Image 3"
+                                                src="{{ train.train_picture_3.url }}" style="margin: 20px;">
+                                        </div>
+                                        <div class="col">
+                                            <div class="img-preview d-flex justify-content-center align-items-center">
+                                                <div class="container">
+                                                    <input type="file" class="form-control" id="train_picture_1"
+                                                        name="train_picture_1" required onchange="previewImage(event, 1)">
+                                                    <input type="file" class="form-control" id="train_picture_2"
+                                                        name="train_picture_2" required onchange="previewImage(event, 2)">
+                                                    <input type="file" class="form-control" id="train_picture_3"
+                                                        name="train_picture_3" required onchange="previewImage(event, 3)">
+                                                </div>
 
-
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn custom-btn">Save changes</button>
                             </div>
-
-                            <div class="col">
-                               
-                               
-                               
-                                
-
-                                <div class="mb-3">
-                                    <label for="description" class="form-label">Description</label>
-                                    <textarea class="form-control" id="description" name="description" rows="3"
-                                        placeholder="{{train.description}}" required></textarea>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="train_picture" class="form-label">Bus Picture</label>
-                                    <img src="{{ train.train_picture.url }}" class="img-thumbnail"
-                                        style="height: 200px; width: 200px;" alt="{{train.name}}">
-                                    <input type="file" class="form-control" id="train_picture" name="train_picture" required>
-                                    <input type="hidden" name="code" value="{{ train.code }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" required>
-                                </div>
-
-
-                                
-                            </div>
-                            <button type="submit" class="btn custom-btn">Register</button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>
@@ -122,6 +131,25 @@
     {% include 'vendor_footer.html'%}
 
     <!-- JAVASCRIPT FILES -->
+    <script>
+        function previewImage(event, index) {
+            const input = event.target;
+            const previewImage = document.getElementById(`preview-image-${index}`);
+            const addButton = document.getElementById(`add-button-${index}`);
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    addButton.style.display = "none";
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                previewImage.src = "123.jpg";
+                addButton.style.display = "block";
+            }
+        }
+    </script>
     <script src="{% static 'assets/mainfilecss/js/jquery.min.js' %}"></script>
     <script src="{% static 'assets/mainfilecss/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'assets/mainfilecss/js/jquery.sticky.js' %}"></script>

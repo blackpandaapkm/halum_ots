@@ -64,12 +64,6 @@
                                         <label for="name" class="form-label">Name</label>
                                         <input type="text" class="form-control" id="name" name="name" required>
                                     </div>
-
-                                    <div class="mb-3">
-                                        <label for="bus_code" class="form-label">Bus Code</label>
-                                        <input type="text" class="form-control" id="bus_code" name="bus_code" required>
-                                    </div>
-
                                     <div class="mb-3">
                                         <label for="address" class="form-label">Number-plate</label>
                                         <input type="text" class="form-control" id="address" name="address" required>
@@ -78,9 +72,9 @@
                                     <div class="mb-3">
                                         <label for="bus_class" class="form-label">Bus Class</label>
                                         <select class="form-select" id="bus_class" name="bus_class" required>
-                                            <option value="Standard">Standard</option>
-                                            <option value="Premium">Premium</option>
-                                            <option value="VIP">VIP</option>
+                                            {% for bus_class in bus_classes %}
+                                            <option value="{{ bus_class.bus_class }}">{{ bus_class.bus_class }}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                     <div class="mb-3">
@@ -95,6 +89,10 @@
                                         <label for="description" class="form-label">Description</label>
                                         <textarea class="form-control" id="description" rows="3" name="description"
                                             required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="bus_date" class="form-label">Date</label>
+                                        <input type="date" class="form-control" id="bus_date" name="bus_date" required>
                                     </div>
                                 </div>
                                 <div class="col" >

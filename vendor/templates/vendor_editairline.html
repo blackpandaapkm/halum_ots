@@ -24,6 +24,13 @@
     <link href="{% static 'assets/mainfilecss/css/bootstrap-icons.css' %}" rel="stylesheet">
 
     <link href="{% static 'assets/mainfilecss/css/templatemo-topic-listing.css' %}" rel="stylesheet">
+    <style>
+        .img-preview {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+        }
+    </style>
 </head>
 
 <body id="top">
@@ -48,35 +55,42 @@
         <section class="section-padding section-bg d-flex justify-content-center align-items-center">
             <div class="container">
                 <div class="custom-block bg-white shadow-lg">
-                    <form method="POST" action="{% url 'vendor_editairline' %}?code={{ airline.code }}"
+                    <form method="POST" action="{% url 'vendor_editairline' %}?code={{ airline.alrline_code }}"
                         enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="row">
                             <div class="col">
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">Name : {{airline.name}}</label>
-                                    <input type="text" class="form-control" id="name" name="name" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="sit_number" class="form-label">Sit Number :
-                                        {{airline.sit_number}}</label>
-                                    <input type="text" class="form-control" id="sit_number" name="sit_number" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="airline_from" class="form-label">Airline From
-                                        {{airline.airline_from}}</label>
-                                    <input type="text" class="form-control" id="airline_from" name="airline_from" required>
+                                    <label for="name" class="form-label">Name </label>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="{{airline.name}}" required>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="airline_to" class="form-label">Airline To {{airline.airline_to}}</label>
-                                    <input type="text" class="form-control" id="airline_to" name="airline_to" required>
+                                    <label for="airline_class" class="form-label">Class : {{airline.airline_class}}</label>
+                                    <select class="form-select" id="airline_class" name="airline_class"  required>
+                                        {% for airline_class in airline_classes %}
+                                        <option value="{{ airline_class.airline_class }}">{{ airline_class.airline_class }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="airline_from" class="form-label">From : {{airline.airline_from}}</label>
+                                    <select class="form-select" id="airline_from" name="airline_from" required>
+                                        {% for airport in airports %}
+                                        <option value="{{ airport.airport }}">{{ airport.airport }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="price" class="form-label">Price {{airline.price}}</label>
-                                    <input type="number" class="form-control" id="price" name="price" required>
+                                 <div class="mb-3">
+                                    <label for="airline_to" class="form-label">To : {{airline.airline_to}}</label>
+                                    <select class="form-select" id="airline_to" name="airline_to" required>
+                                        {% for airport in airports %}
+                                        <option value="{{ airport.airport }}">{{ airport.airport }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
+
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status : {{airline.status}}</label>
                                     <select class="form-select" id="status" name="status" required>
@@ -84,31 +98,56 @@
                                         <option value="False">Inactive</option>
                                     </select>
                                 </div>
-                            </div>
-
-                            <div class="col">
-                                
 
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Description</label>
-                                    <textarea class="form-control" id="description" name="description" rows="3"
-                                        placeholder="{{airline.description}}" required></textarea>
-                                </div>
-
-                                <div class="mb-3">
-                                    <img src="{{ airline.airline_picture.url }}" class="img-thumbnail"
-                                        style="height: 200px; width: 200px; justify-content: center;" alt="{{airline.name}}">
-                                    <input type="file" class="form-control" id="airline_picture" name="airline_picture" required>
-                                    <input type="hidden" name="code" value="{{ airline.code }}">
+                                    <textarea class="form-control" id="description" rows="3" name="description" placeholder="{{airline.description}}" 
+                                        required></textarea>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" required>
+                                    <label for="airline_date" class="form-label">Date : {{airline.airline_date}}</label>
+                                    <input type="date" class="form-control" id="airline_date" name="airline_date"
+                                        required></input>
+                                    <input type="hidden" class="form-control" id="airline_code" name="airline_code" value="{{airline.airline_code}}" required></input>
                                 </div>
-
-                                
                             </div>
-                            <button type="submit" class="btn custom-btn">EDIT DATA</button>
+                            <div class="col" >
+                                <div class="row">
+                                    <div class="col">
+                                        <img id="preview-image-1" class="img-preview" alt="Image 1"
+                                            src="{{ airline.airline_picture_1.url }}" style="margin: 20px;">
+                                    </div>
+                                    <div class="col">
+                                        <img id="preview-image-2" class="img-preview" alt="Image 2"
+                                            src="{{ airline.airline_picture_2.url }}" style="margin: 20px;">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <img id="preview-image-3" class="img-preview" alt="Image 3"
+                                            src="{{ airline.airline_picture_3.url }}" style="margin: 20px;">
+                                    </div>
+                                    <div class="col">
+                                        <div class="img-preview d-flex justify-content-center align-items-center">
+                                            <div class="container">
+                                                <input type="file" class="form-control" id="airline_picture_1"
+                                                    name="airline_picture_1" required onchange="previewImage(event, 1)">
+                                                <input type="file" class="form-control" id="airline_picture_2"
+                                                    name="airline_picture_2" required onchange="previewImage(event, 2)">
+                                                <input type="file" class="form-control" id="airline_picture_3"
+                                                    name="airline_picture_3" required onchange="previewImage(event, 3)">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">Price : {{airline.price }}</label>
+                                    <input type="number" class="form-control" id="price" name="price"
+                                        required></input>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn custom-btn">Save changes</button>
                         </div>
                     </form>
                 </div>
