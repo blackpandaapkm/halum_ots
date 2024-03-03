@@ -4,6 +4,10 @@ from django.contrib.auth import authenticate,login
 from vendor.models import *
 from userpanelapp.models import *
 from django.core.paginator import Paginator
+from django import template
+register = template.Library()
+
+@register.filter
 
 
 # Create your views here.
@@ -18,7 +22,9 @@ def index(request):
     bus_Terminals = Bus_Terminal.objects.all()
     airline_classes = Airline_class.objects.all()
     busClasses = BusClasses.objects.all()
-    
+    train_Classes = Train_Classes.objects.all()
+    train_stations = Train_station.objects.all()
+
 
     context = {
         'hotels': hotels,
@@ -30,6 +36,8 @@ def index(request):
         'citys':citys,
         'bus_Terminals':bus_Terminals,
         'busClasses':busClasses,
+        'train_Classes':train_Classes,
+        'train_stations':train_stations,
         'airline_classes':airline_classes
         }
         
@@ -38,17 +46,19 @@ def index(request):
             usermail = request.session['usermail']
             user = Person.objects.filter(usermail=usermail).first()
             context = {
-                'hotels': hotels,
-                'buss':buss,
-                'trains':trains,
-                'airlines':airlines,
-                'roots':roots,
-                'airports':airports,
-                'citys':citys,
-                'bus_Terminals':bus_Terminals,
-                'busClasses':busClasses,
-                'airline_classes':airline_classes
-                }
+            'hotels': hotels,
+            'buss':buss,
+            'trains':trains,
+            'airlines':airlines,
+            'roots':roots,
+            'airports':airports,
+            'citys':citys,
+            'bus_Terminals':bus_Terminals,
+            'busClasses':busClasses,
+            'train_Classes':train_Classes,
+            'train_stations':train_stations,
+            'airline_classes':airline_classes
+            }
             return render(request, 'index.html', context)
     return render(request,'index.html',context)
         
@@ -234,6 +244,11 @@ def searchresult(request):
         bus_date = request.POST.get('bus_date')
         bus_class = request.POST.get('bus_class')
 
+        train_from = request.POST.get('train_from')
+        train_to = request.POST.get('train_to')
+        train_date = request.POST.get('train_date')
+        train_class = request.POST.get('train_class')
+
         persons = request.POST.get('persons')
 
 
@@ -259,9 +274,23 @@ def searchresult(request):
                 }
             
             return render(request,'searchresult.html', context)
-        elif type == 'trains':
-            trains = Train.objects.filter(name__icontains=sit_type)
-            return render(request,'searchresult.html', {'trains': trains})
+        elif type == 'Train':
+            train = Train.objects.filter(train_code__in=TrainRoots.objects.filter(root_from=train_from, root_to=train_to).values_list('train_code', flat=True) , train_class=train_class )
+         
+            type = 'Train'
+            train_paginator = Paginator(train,6)
+            page_number = request.GET.get('page')
+            trains = train_paginator.get_page(page_number)
+            totaltrainpage = trains.paginator.num_pages
+
+            context = {
+                'trains': trains,
+                'type': type,
+                'totaltrainpage':totaltrainpage,
+                'totalbuspagelist':[n+1 for n in range(totaltrainpage)]
+                }
+            
+            return render(request,'searchresult.html', context)
         elif type == 'Airline':
             airline = Airline.objects.filter(airline_from=airline_from,airline_to=airline_to,airline_class=airline_class)
             type = 'Airline'
@@ -271,10 +300,98 @@ def searchresult(request):
             airlines = airline_paginator.get_page(page_number)
             totalairlinepage = airlines.paginator.num_pages
 
+          
+
             context = {
                 'airlines': airlines,
                 'type': type,
+                'persons': persons,
                 'totalairlinepage':totalairlinepage,
                 'totalairlinepagelist':[n+1 for n in range(totalairlinepage)]
                 }
             return render(request,'searchresult.html', context)
+
+def range_filter(n):
+    return ["%d" % i for i in range(1,n+1)]
+
+def selectticket(request):
+    if request.method == 'GET':
+
+        type = request.GET.get('type')
+        persons = request.GET.get('person')
+        airline_code = request.GET.get('code')
+        print(type, persons, airline_code)
+
+
+
+        if type == 'hotels':
+            hotels = Hotel.objects.filter(name__icontains=sit_type)
+            return render(request,'searchresult.html', {'hotels': hotels})
+        elif type == 'Bus':
+            bus = Bus.objects.filter(bus_code__in=BusRoots.objects.filter(root_from=bus_from, root_to=bus_to).values_list('bus_code', flat=True) , bus_class=bus_class )
+            print(bus_from,bus_to,bus_class)
+            print(bus)
+            type = 'Bus'
+            bus_paginator = Paginator(bus,6)
+            page_number = request.GET.get('page')
+            buss = bus_paginator.get_page(page_number)
+            totalbuspage = buss.paginator.num_pages
+
+            context = {
+                'buss': buss,
+                'type': type,
+                'totalbuspage':totalbuspage,
+                'totalbuspagelist':[n+1 for n in range(totalbuspage)]
+                }
+            
+            return render(request,'searchresult.html', context)
+        elif type == 'Train':
+            train = Train.objects.filter(train_code__in=TrainRoots.objects.filter(root_from=train_from, root_to=train_to).values_list('train_code', flat=True) , train_class=train_class )
+        
+            type = 'Train'
+            train_paginator = Paginator(train,6)
+            page_number = request.GET.get('page')
+            trains = train_paginator.get_page(page_number)
+            totaltrainpage = trains.paginator.num_pages
+
+            context = {
+                'trains': trains,
+                'type': type,
+                'totaltrainpage':totaltrainpage,
+                'totalbuspagelist':[n+1 for n in range(totaltrainpage)]
+                }
+            
+            return render(request,'searchresult.html', context)
+        elif type == 'Airline':
+            airline = Airline.objects.filter(airline_code=airline_code).first()
+            airline_class = airline.airline_class
+            type = 'Airline'
+
+            # airline_paginator = Paginator(airline,6)
+            # page_number = request.GET.get('page')
+            # airlines = airline_paginator.get_page(page_number)
+            # totalairlinepage = airlines.paginator.num_pages
+
+            airline_class_obj = Airline_class.objects.filter(airline_class=airline_class).first()
+            total_sits_n = airline_class_obj.total_sit
+            total_sits = range_filter(total_sits_n)
+            print(total_sits)
+            print(type, persons, airline_code)
+
+            context = {
+                'airline': airline,
+                'type': type,
+                'persons': persons,
+                'total_sits': total_sits,
+                }
+            return render(request,'selectticket.html', context)
+    return render(request,'selectticket.html')
+
+
+def addinfodata(request):
+    if request.method == 'GET':
+        if 'usermail' in request.session:
+            usermail = request.session['usermail']
+            user = Person.objects.filter(usermail=usermail).first()
+            return render(request,'addinfodata.html', {'user': user})
+    return render(request,'addinfodata.html')

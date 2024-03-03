@@ -18,6 +18,8 @@ urlpatterns=[
     path('changepassword/', changepassword, name='changepassword'),
     path('wrongpassword/', wrongpassword, name='wrongpassword'),
     path('searchresult/', searchresult, name='searchresult'),
+    path('selectticket/', selectticket, name='selectticket'),
+    path('addinfodata/', addinfodata, name='addinfodata'),
 
 
     

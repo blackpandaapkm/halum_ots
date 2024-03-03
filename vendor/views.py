@@ -974,44 +974,43 @@ def vendor_addtraincoach(request):
 
 def vendor_traineditroot(request):
     email = None
-    root_code = None
 
     if request.method == 'GET':
         train_code = request.GET.get('code')
         
-    if 'email' in request.session:
-        email = request.session['email']
-        vendor = Vendor.objects.filter(email=email).first()
-        train = Train.objects.filter(email=email,train_code=train_code).first()
-        roots = TrainRoots.objects.filter(train_code=train_code)
-        train_stations = Train_station.objects.all()
-        train_classes = Train_Classes.objects.all()
-        coachs = Train_CoachF.objects.filter(train_code=train_code)
-        context = {
-        'train': train,
-        'vendor': vendor,
-        'train_stations': train_stations,
-        'roots':roots,
-        'coachs':coachs,
-        'train_classes': train_classes
-        }
-        return render(request, 'vendor_trainpanel.html', context)
+        if 'email' in request.session:
+            email = request.session['email']
+            vendor = Vendor.objects.filter(email=email).first()
+            train = Train.objects.filter(email=email,train_code=train_code).first()
+            roots = TrainRoots.objects.filter(train_code=train_code)
+            train_stations = Train_station.objects.all()
+            train_classes = Train_Classes.objects.all()
+            coachs = Train_CoachF.objects.filter(train_code=train_code)
+            context = {
+            'train': train,
+            'vendor': vendor,
+            'train_stations': train_stations,
+            'roots':roots,
+            'coachs':coachs,
+            'train_classes': train_classes
+            }
+            return render(request, 'vendor_trainpanel.html', context)
    
     if request.method == 'POST':
-        root_code = request.POST.get('root_code')
+        root_code = request.POST.get('root-code')
         root_from = request.POST.get('root_from')
         root_to = request.POST.get('root_to')
         Distance = request.POST.get('Distance')
         price = request.POST.get('price')
         root_date = request.POST.get('root_date')
-        train_code = request.POST.get('bus-code')
         root_status = request.POST.get('root-status')
+        train_code = request.POST.get('train-code')
         
         
-        train = Train.objects.filter(email=email, train_code=train_code).first()
+       
         root = TrainRoots.objects.filter(root_code=root_code, train_code=train_code).first()
 
-        if train and root:
+        if root:
             root.train_code = train_code
             root.root_code = root_code
             root.root_from = root_from
@@ -1022,6 +1021,9 @@ def vendor_traineditroot(request):
             root.root_status = root_status
 
             root.save()
+
+            if 'email' in request.session:
+                email = request.session['email']
 
             vendor = Vendor.objects.filter(email=email).first()
             train = Train.objects.filter(email=email,train_code=train_code).first()
@@ -1040,8 +1042,78 @@ def vendor_traineditroot(request):
             return render(request, 'vendor_trainpanel.html', context)
             
         else:
-            return render(request,'vendor_errorpage.html')   
+            return render(request,'vendor_errorpage.html')
 
+def vendor_edittraincoach(request):
+    email = None
+    train_code = None
+    coach_code = None
+
+    if request.method == 'GET':
+        train_code = request.GET.get('code') 
+        coach_code = request.GET.get('coach_code')
+        
+        if 'email' in request.session:
+            email = request.session['email']
+            vendor = Vendor.objects.filter(email=email).first()
+            train = Train.objects.filter(email=email,train_code=train_code).first()
+            roots = TrainRoots.objects.filter(train_code=train_code)
+            train_stations = Train_station.objects.all()
+            train_classes = Train_Classes.objects.all()
+            coachs = Train_CoachF.objects.filter(train_code=train_code,coach_code=coach_code)
+            print(coach_code,train_code,coachs)
+            context = {
+            'train': train,
+            'vendor': vendor,
+            'train_stations': train_stations,
+            'roots':roots,
+            'coachs':coachs,
+            'train_classes': train_classes
+            }
+            return render(request, 'vendor_trainpanel.html', context)
+   
+    if request.method == 'POST' :
+        
+        coach_name = request.POST.get('coach_name')
+        coach_code = request.POST.get('coach-code')
+        train_class = request.POST.get('train_class')
+        coach_status = request.POST.get('coach_status')
+        train_code = request.POST.get('train_code')
+        
+        
+        coach_data  = Train_CoachF.objects.filter(coach_code=coach_code, train_code=train_code).first()
+
+        if coach_data:
+            coach_data.train_code = train_code
+            coach_data.coach_name = coach_name
+            coach_data.coach_code = coach_code
+            coach_data.train_class = train_class
+            coach_data.coach_status = coach_status
+            print(coach_code,train_code)
+          
+
+            coach_data.save()
+
+            if 'email' in request.session:
+                email = request.session['email']
+
+            vendor = Vendor.objects.filter(email=email).first()
+            train = Train.objects.filter(email=email,train_code=train_code).first()
+            roots = TrainRoots.objects.filter(train_code=train_code)
+            train_stations = Train_station.objects.all()
+            train_classes = Train_Classes.objects.all()
+            coachs = Train_CoachF.objects.filter(train_code=train_code)
+            context = {
+            'train': train,
+            'vendor': vendor,
+            'train_stations': train_stations,
+            'roots':roots,
+            'coachs':coachs,
+            'train_classes': train_classes
+            }
+            return render(request, 'vendor_trainpanel.html', context)
+            
+         
 def vendor_deletetraincoach(request):
     email = None
     if request.method == 'GET':

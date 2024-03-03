@@ -145,7 +145,7 @@
                                         <h5 class="mt-3 fs-6 fw-bold">Status : {{ coach.coach_status }}</h5>
                                     </div>
                                     <div class="serv-info ms-4">
-                                        <a  type="button" class="btn btn-danger edit-button" id="edit-button" data-bs-toggle="modal" data-bs-target="#editroot" data-root-code="{{root.root_code}}" data-train-code="{{train.train_code}}">Edit</a>
+                                        <a href="{% url 'vendor_edittraincoach' %}?coach_code={{coach.coach_code}}&code={{train.train_code}}" type="button" class="btn btn-danger edit-button" id="edit-button" data-bs-toggle="modal" data-bs-target="#editcoach" data-coach-code="{{coach.coach_code}}" data-train-code="{{train.train_code}}">Edit</a>
                                         <a href="{% url 'vendor_deletetraincoach' %}?coach_code={{coach.coach_code}}&code={{train.train_code}}" type="button" class="btn btn-danger">Delete</a>
                                     </div>
                                 </div>
@@ -285,7 +285,7 @@
       
             <!-- Modal Header -->
             <div class="modal-header">
-              <h4 class="modal-title">Edit Bus Root</h4>
+              <h4 class="modal-title">Edit train Root</h4>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
       
@@ -434,7 +434,7 @@
           
                 <!-- Modal Header -->
                 <div class="modal-header">
-                  <h4 class="modal-title">Edit coach</h4>
+                  <h4 class="modal-title">Edit train coach</h4>
                   <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
           
@@ -444,18 +444,24 @@
                         <div class="container">
                             <div class="row">
                                 <div class="custom-block bg-white shadow-lg">
-                                    <form method="POST" action="{% url 'vendor_addtraincoach' %}" enctype="multipart/form-data">
+                                    <form method="POST" action="{% url 'vendor_edittraincoach' %}" enctype="multipart/form-data">
                                         {% csrf_token %}
                                         <div class="row">
                                             <div class="col">
                                                 <div class="mb-3">
-                                                    <label for="coach_name" class="form-label">Choch name</label>
+                                                    <label for="coach-code" class="form-label">coach Code</label>
+                                                    <input type="text" class="form-control" id="coach-code" name="coach-code" readonly>
+                                                    <label for="train-code" class="form-label">Train Code</label>
+                                                    <input type="text" class="form-control" id="train_code" name="train_code" value="{{train.train_code}}" readonly>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="coach_name" class="form-label">Choch name :{{coachs.coach_name}}</label>
                                                     <input type="text" class="form-control" id="coach_name" name="coach_name" required>
-                                                    <input type="hidden" class="form-control" id="train_code" name="train_code" value="{{train.train_code}}" required>
+                                                      
                                                 </div>
                                                 
                                                 <div class="mb-3">
-                                                    <label for="train_class" class="form-label">Train class</label>
+                                                    <label for="train_class" class="form-label">Train class : {{coachs.train_class}} </label>
                                                     <select class="form-select" id="train_class" name="train_class" required>
                                                         {% for train_class in train_classes %}
                                                         <option value="{{ train_class.train_class }}">{{ train_class.train_class }}</option>
@@ -465,7 +471,7 @@
             
                                                 
                                                 <div class="mb-3">
-                                                    <label for="coach_status" class="form-label">Status</label>
+                                                    <label for="coach_status" class="form-label">Status {{coachs.coach_status}}</label>
                                                     <select class="form-select" id="coach_status" name="coach_status" required>
                                                         <option value="True">Active</option>
                                                         <option value="False">Inactive</option>
@@ -493,23 +499,26 @@
 
 
     {% include 'vendor_footer.html'%}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const editButtons = document.querySelectorAll('.edit-button');
-    const rootCodeInput = document.getElementById('root-code');
-    const trainCodeInput = document.getElementById('train-code');
-
-    editButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const rootCode = this.getAttribute('data-root-code');
-            const trainCode = this.getAttribute('data-train-code');
-
-            rootCodeInput.value = rootCode;
-            trainCodeInput.value = trainCode;
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const editButtons = document.querySelectorAll('.edit-button');
+            const rootCodeInput = document.getElementById('root-code');
+            const trainCodeInput = document.getElementById('train-code');
+            const coachCodeInput = document.getElementById('coach-code');
+        
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const rootCode = this.getAttribute('data-root-code');
+                    const trainCode = this.getAttribute('data-train-code');
+                    const coachCode = this.getAttribute('data-coach-code');
+        
+                    rootCodeInput.value = rootCode;
+                    trainCodeInput.value = trainCode;
+                    coachCodeInput.value = coachCode;
+                });
+            });
         });
-    });
-});
-</script>
+        </script>
     
     <script src="{% static 'assets/mainfilecss/js/jquery.min.js' %}"></script>
     <script src="{% static 'assets/mainfilecss/js/bootstrap.bundle.min.js' %}"></script>

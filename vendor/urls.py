@@ -39,6 +39,7 @@ urlpatterns=[
     path('vendor_deletetrainroot/',vendor_deletetrainroot,name='vendor_deletetrainroot'),
     path('vendor_addtraincoach/',vendor_addtraincoach,name='vendor_addtraincoach'),
     path('vendor_deletetraincoach/',vendor_deletetraincoach,name='vendor_deletetraincoach'),
+    path('vendor_edittraincoach/',vendor_edittraincoach,name='vendor_edittraincoach'),
 
 
 

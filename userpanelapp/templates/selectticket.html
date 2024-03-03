@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 
@@ -37,7 +38,7 @@
                 <div class="row">
 
                     <div class="col-lg-8 col-12 mx-auto">
-                        <h1 class="text-white text-center">Search Result</h1>
+                        <h1 class="text-white text-center">Select Sit</h1>
 
                         <h6 class="text-center">platform for creatives around the world</h6>
                     </div>
@@ -45,6 +46,60 @@
                 </div>
             </div>
         </section>
+        <section class="section-padding section-bg">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-12 col-12">
+                        <h3 class="mb-4"><center>Trending Topics</center></h3>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12 mt-lg-3">
+                        <div class="custom-block custom-block-overlay">
+                            <div class="d-flex flex-column">
+                                <img src="{{ airline.airline_picture_3.url }}"
+                                    class="custom-block-image img-fluid" alt="" style="height: 400px;">
+                                <div class="container">
+                                    <div class="custom-block-overlay-text d-flex" >
+                                        
+                                    </div>
+
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                   
+
+                    <div class="col-lg-6 col-md-6 col-12 mt-lg-3">
+                        <div class="custom-block custom-block-overlay">
+                            <div class="d-flex flex-column h-100">
+                                <img src="{% static 'assets/mainfilecss/images/businesswoman-using-tablet-analysis.jpg' %}"
+                                    class="custom-block-image img-fluid" alt="">
+                                    {% for i in persons %}
+                                <div class="container">
+                                    <div class="custom-block-overlay-text d-flex" >
+                                        <ul class="social-icon" >
+                                            {% for i in total_sits %}
+                                              <li class="social-icon-item" style="margin-bottom: 10px;">
+                                                <a href="{% url 'addinfodata' %}?code={{ airline.airline_code }}" class="social-icon-link "  >{{ i }}</a>
+                                              </li>
+                                            {% endfor %}
+                                          </ul>
+                                    </div>
+
+                                  </div>
+                                {% endfor %}
+                                <div class="section-overlay"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
         {% if type == "Hotel" %}
         <section class="section-padding section-bg">
             <div id="Hotel" class="service px-4 bg-white py-5">
@@ -136,7 +191,7 @@
                                         <h5 class="mt-3 fs-6 fw-bold">From : {{airline.airline_from}}</h5>
                                         <h5 class="mt-3 fs-6 fw-bold">To : {{airline.airline_to}}</h5>
                                         <p>{{airline.description}}</p>
-                                        <a href="{% url 'selectticket' %}?code={{ airline.airline_code }}&person={{persons}}&type={{'Airline'}}" type="button"
+                                        <a href="{% url 'vendor_editairline' %}?code={{ airline.code }}" type="button"
                                             class="btn btn-primary">Book Now</a>
                                     </div>
                                 </div>
@@ -204,7 +259,7 @@
                                         <h5 class="mt-3 fs-6 fw-bold">Bus Class : {{bus.bus_class}}</h5>
                                         <h5 class="mt-3 fs-6 fw-bold">Status : {{bus.status}}</h5>
                                         <p>{{bus.description}}</p>
-                                        <a href="{% url 'selectticket' %}?code={{ bus.bus_code }}" type="button"
+                                        <a href="{% url 'vendor_editbus' %}?code={{ bus.bus_code }}" type="button"
                                             class="btn btn-primary">Book Now</a>
                                     </div>
                                 </div>
@@ -272,7 +327,7 @@
                                         <h5 class="mt-3 fs-6 fw-bold">Train Class : {{train.train_class}}</h5>
                                         <h5 class="mt-3 fs-6 fw-bold">Status : {{train.status}}</h5>
                                         <p>{{train.description}}</p>
-                                        <a href="{% url 'selectticket' %}?code={{ train.train_code }}" type="button"
+                                        <a href="{% url 'vendor_editbus' %}?code={{ train.train_code }}" type="button"
                                             class="btn btn-primary">Book Now</a>
                                     </div>
                                 </div>
