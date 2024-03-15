@@ -25,6 +25,65 @@
     <link href="{% static 'assets/mainfilecss/css/bootstrap-icons.css' %}" rel="stylesheet">
 
     <link href="{% static 'assets/mainfilecss/css/templatemo-topic-listing.css' %}" rel="stylesheet">
+    <style>
+      /* Custom checkbox styles */
+      .checkbox-container {
+          display: inline-block;
+          position: relative;
+          padding-left: 30px;
+          margin-bottom: 15px;
+          cursor: pointer;
+          font-size: 16px;
+          user-select: none;
+      }
+
+      .checkbox-container input {
+          position: absolute;
+          opacity: 0;
+          cursor: pointer;
+          height: 0;
+          width: 0;
+      }
+
+      .checkmark {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 20px;
+          width: 20px;
+          background-color: #eee;
+          border-radius: 5px;
+      }
+
+      .checkbox-container:hover input ~ .checkmark {
+          background-color: #ccc;
+      }
+
+      .checkbox-container input:checked ~ .checkmark {
+          background-color: #2196F3;
+      }
+
+      .checkmark:after {
+          content: "";
+          position: absolute;
+          display: none;
+      }
+
+      .checkbox-container input:checked ~ .checkmark:after {
+          display: block;
+      }
+
+      .checkbox-container .checkmark:after {
+          left: 7px;
+          top: 3px;
+          width: 5px;
+          height: 10px;
+          border: solid white;
+          border-width: 0 3px 3px 0;
+          transform: rotate(45deg);
+      }
+  </style>
+ 
 </head>
 
 <body id="top">
@@ -46,58 +105,17 @@
                 </div>
             </div>
         </section>
-        <section class="section-padding section-bg">
-            <div class="container">
-                <div class="row">
+        
 
-                    <div class="col-lg-12 col-12">
-                        <h3 class="mb-4"><center>Trending Topics</center></h3>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-12 mt-lg-3">
-                        <div class="custom-block custom-block-overlay">
-                            <div class="d-flex flex-column">
-                                <img src="{{ airline.airline_picture_3.url }}"
-                                    class="custom-block-image img-fluid" alt="" style="height: 400px;">
-                                <div class="container">
-                                    <div class="custom-block-overlay-text d-flex" >
-                                        
-                                    </div>
+       
+      
 
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
 
-                   
 
-                    <div class="col-lg-6 col-md-6 col-12 mt-lg-3">
-                        <div class="custom-block custom-block-overlay">
-                            <div class="d-flex flex-column h-100">
-                                <img src="{% static 'assets/mainfilecss/images/businesswoman-using-tablet-analysis.jpg' %}"
-                                    class="custom-block-image img-fluid" alt="">
-                                    {% for i in persons %}
-                                <div class="container">
-                                    <div class="custom-block-overlay-text d-flex" >
-                                        <ul class="social-icon" >
-                                            {% for i in total_sits %}
-                                              <li class="social-icon-item" style="margin-bottom: 10px;">
-                                                <a href="{% url 'addinfodata' %}?code={{ airline.airline_code }}" class="social-icon-link "  >{{ i }}</a>
-                                              </li>
-                                            {% endfor %}
-                                          </ul>
-                                    </div>
 
-                                  </div>
-                                {% endfor %}
-                                <div class="section-overlay"></div>
-                            </div>
-                        </div>
-                    </div>
 
-                </div>
-            </div>
-        </section>
+
+
 
 
         {% if type == "Hotel" %}
@@ -171,140 +189,210 @@
         </section>
         {% elif type == "Airline" %}
         <section class="section-padding section-bg">
-            <div id="Hotel" class="service px-4 bg-white py-5">
-                <div class="titie-row row mb-3">
-                    <h2 class="fw-bolder"><center> Available Flights Information</center></h2>
-                </div>
-                <div class="row mt-5" style="background-color:  #f9fafc;">
-                    {% for airline in airlines %}
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="d-flex align-items-center h-100">
-                            <div class="serv-cove shadow-md rounded bg-white text-center p-4 w-100">
-                                <div class="d-flex align-items-center">
-                                    <div class="serv-thumbnail">
-                                        <img src="{{ airline.airline_picture_1.url }}" class="img-thumbnail"
-                                            style="height: 200px; width: 200px;" alt="{{airline.name}}">
-                                    </div>
-                                    <div class="serv-info ms-4">
-                                        <h5 class="mt-3 fs-6 fw-bold">{{airline.name}}</h5>
-                                        <h5 class="mt-3 fs-6 fw-bold">Price : {{airline.price}}</h5>
-                                        <h5 class="mt-3 fs-6 fw-bold">From : {{airline.airline_from}}</h5>
-                                        <h5 class="mt-3 fs-6 fw-bold">To : {{airline.airline_to}}</h5>
-                                        <p>{{airline.description}}</p>
-                                        <a href="{% url 'vendor_editairline' %}?code={{ airline.code }}" type="button"
-                                            class="btn btn-primary">Book Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="col-lg-12 col-12">
-                    <nav aria-label="Page navigation example">
-                      <ul class="pagination justify-content-center mb-0">
-                        {% if airlines.has_previous %}
-                        <li class="page-item">
-                            <a class="page-link" href="/searchresult/?page=1" aria-label="First">
-                              <span aria-hidden="true"><<</span>
-                            </a>
-                          </li>
-                        <li class="page-item">
-                          <a class="page-link" href="/searchresult/?page={{airlines.previous_page_number}}" aria-label="Previous">
-                            <span aria-hidden="true">Prev</span>
-                          </a>
-                        </li>
-                        {% endif %}
-                        {% for i in totalairlinepagelist %}
-                        <li class="page-item " aria-current="page">
-                          <a class="page-link" href="/searchresult/?page={{i}}">{{i}}</a>
-                        </li>
-                        {% endfor %}
-                        {% if airlines.has_next %}
-                        <li class="page-item">
-                          <a class="page-link" href="/searchresult/?page={{airlines.next_page_number}}" aria-label="Next">
-                            <span aria-hidden="true">Next</span>
-                          </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="/searchresult/?page={{totalairlinepage}}" aria-label="Last">
-                              <span aria-hidden="true">>></span>
-                            </a>
-                          </li>
-                          {% endif %}
-                      </ul>
-                    </nav>
+          <div class="container">
+              <div class="row">
+
+                  <div class="col-lg-12 col-12">
+                      <h3 class="mb-4"><center>Select your sit</center></h3>
                   </div>
-            </div>
-        </section>
+                  <div class="col-lg-6 col-md-6 col-12 mt-lg-3">
+                      <div class="custom-block custom-block-overlay">
+                          <div class="d-flex flex-column">
+                              <img src="{{ airline.airline_picture_3.url }}"
+                                  class="custom-block-image img-fluid" alt="" style="height: 400px;">
+                              <div class="container">
+                                  <div class="custom-block-overlay-text d-flex" >
+                                      
+                                  </div>
+
+                              </div>
+                              
+                          </div>
+                      </div>
+                  </div>
+
+                 
+
+                  <div class="col-lg-6 col-md-6 col-12 mt-lg-3">
+                      <div class="custom-block custom-block-overlay">
+                          <div class="d-flex flex-column h-100">
+                              <img src="{% static 'assets/mainfilecss/images/businesswoman-using-tablet-analysis.jpg' %}"
+                                  class="custom-block-image img-fluid" alt="">
+                                  <div class="container">
+                                    <div class="custom-block-overlay-text d-flex">
+                                        <ul class="social-icon">
+                                            {% for sit in total_sits %}
+                                            <li class="social-icon-item" style="margin-bottom: 10px;">
+                                              <label class="checkbox-container">
+                                                <input type="checkbox" class="sit-checkbox" value="{{ sit }}"> {{ sit }}
+                                                <span class="checkmark"></span>
+                                              </label>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+          
+                                        <a href="" type="button" id="save-btn"
+                                          class="btn btn-primary">Save</a>
+                                    </div>
+                                    
+                                  </div>
+                                  
+                                  
+                              <div class="section-overlay"></div>
+                          </div>
+                      </div>
+                  </div>
+                  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                  <script>
+                    $(document).ready(function(){
+                        $("#save-btn").click(function(){
+                            var selectedSits = [];
+                            $(".sit-checkbox:checked").each(function(){
+                                selectedSits.push($(this).val());
+                            });
+                
+                            var minTickets = 1;  // Minimum number of tickets allowed
+                            var maxTickets = parseInt("{{ persons }}");
+                            var airlineCode = "{{airline.airline_code}}"; 
+                            var type = "{{type}}";
+                
+                            if (selectedSits.length < minTickets) {
+                                alert('Please select at least ' + minTickets + ' sit(s)!');
+                                return;
+                            }
+                
+                            if (selectedSits.length > maxTickets) {
+                                alert('You can select maximum ' + maxTickets + ' sit(s)!');
+                                return;
+                            }
+                
+                            $.ajax({
+                                type: 'POST',
+                                url: '/selectticket/',
+                                data: {
+                                    'selected_sits': JSON.stringify(selectedSits),
+                                    'persons': maxTickets,
+                                    'airline_code': airlineCode,
+                                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                                },
+                                success: function(response){
+                                    // Redirect to addinfodata view
+                                    window.location.href = "{% url 'addinfodata' %}" + '?selected_sits=' + selectedSits.join(',') + '&airline_code=' + airlineCode + '&persons=' + maxTickets + '&type=' + type;
+                                },
+                                error: function(xhr, errmsg, err){
+                                    alert('Error occurred while saving sits');
+                                }
+                            });
+                        });
+                    });
+                </script>
+              </div>
+          </div>
+      </section>
         {% elif type == "Bus" %}
         <section class="section-padding section-bg">
-            <div id="Hotel" class="service px-4 bg-white py-5">
-                <div class="titie-row row mb-3">
-                    <h2 class="fw-bolder"><center> Available BUSes Information</center></h2>
-                </div>
-                <div class="row mt-5" style="background-color:  #f9fafc;">
-                    {% for bus in buss %}
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="d-flex align-items-center h-100">
-                            <div class="serv-cove shadow-md rounded bg-white text-center p-4 w-100">
-                                <div class="d-flex align-items-center">
-                                    <div class="serv-thumbnail">
-                                        <img src="{{ bus.bus_picture_1.url }}" class="img-thumbnail"
-                                            style="height: 200px; width: 200px;" alt="{{bus.name}}">
-                                    </div>
-                                    <div class="serv-info ms-4">
-                                        <h5 class="mt-3 fs-6 fw-bold">{{bus.name}}</h5>
-                                        <h5 class="mt-3 fs-6 fw-bold">Bus Code : {{bus.bus_code}}</h5>
-                                        <h5 class="mt-3 fs-6 fw-bold">Bus Class : {{bus.bus_class}}</h5>
-                                        <h5 class="mt-3 fs-6 fw-bold">Status : {{bus.status}}</h5>
-                                        <p>{{bus.description}}</p>
-                                        <a href="{% url 'vendor_editbus' %}?code={{ bus.bus_code }}" type="button"
-                                            class="btn btn-primary">Book Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="col-lg-12 col-12">
-                    <nav aria-label="Page navigation example">
-                      <ul class="pagination justify-content-center mb-0">
-                        {% if buss.has_previous %}
-                        <li class="page-item">
-                            <a class="page-link" href="/vendor_home/?page=1" aria-label="First">
-                              <span aria-hidden="true"><<</span>
-                            </a>
-                          </li>
-                        <li class="page-item">
-                          <a class="page-link" href="/vendor_home/?page={{buss.previous_page_number}}" aria-label="Previous">
-                            <span aria-hidden="true">Prev</span>
-                          </a>
-                        </li>
-                        {% endif %}
-                        {% for i in totalbuspagelist %}
-                        <li class="page-item " aria-current="page">
-                          <a class="page-link" href="/vendor_home/?page={{i}}">{{i}}</a>
-                        </li>
-                        {% endfor %}
-                        {% if buss.has_next %}
-                        <li class="page-item">
-                          <a class="page-link" href="/vendor_home/?page={{buss.next_page_number}}" aria-label="Next">
-                            <span aria-hidden="true">Next</span>
-                          </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="/vendor_home/?page={{totalbuspage}}" aria-label="Last">
-                              <span aria-hidden="true">>></span>
-                            </a>
-                          </li>
-                          {% endif %}
-                      </ul>
-                    </nav>
+          <div class="container">
+              <div class="row">
+
+                  <div class="col-lg-12 col-12">
+                      <h3 class="mb-4"><center>Select your sit  </center></h3>
                   </div>
-            </div>
-        </section>
+                  <div class="col-lg-6 col-md-6 col-12 mt-lg-3">
+                      <div class="custom-block custom-block-overlay">
+                          <div class="d-flex flex-column">
+                              <img src="{{ bus.bus_picture_3.url }}"
+                                  class="custom-block-image img-fluid" alt="" style="height: 400px;">
+                              <div class="container">
+                                  <div class="custom-block-overlay-text d-flex" >
+                                      
+                                  </div>
+
+                              </div>
+                              
+                          </div>
+                      </div>
+                  </div>
+
+                 
+
+                  <div class="col-lg-6 col-md-6 col-12 mt-lg-3">
+                      <div class="custom-block custom-block-overlay">
+                          <div class="d-flex flex-column h-100">
+                              <img src="{% static 'assets/mainfilecss/images/businesswoman-using-tablet-analysis.jpg' %}"
+                                  class="custom-block-image img-fluid" alt="">
+                                  <div class="container">
+                                    <div class="custom-block-overlay-text d-flex">
+                                        <ul class="social-icon">
+                                            {% for sit in total_sits %}
+                                            <li class="social-icon-item" style="margin-bottom: 10px;">
+                                              <label class="checkbox-container">
+                                                <input type="checkbox" class="sit-checkbox" value="{{ sit }}"> {{ sit }}
+                                                <span class="checkmark"></span>
+                                              </label>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+          
+                                        <a href="" type="button" id="save-btn-bus"
+                                          class="btn btn-primary">Save</a>
+                                    </div>
+                                    
+                                  </div>
+                                  
+                                  
+                              <div class="section-overlay"></div>
+                          </div>
+                      </div>
+                  </div>
+                  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                  <script>
+                    $(document).ready(function(){
+                        $("#save-btn-bus").click(function(){
+                            var selectedSits = [];
+                            $(".sit-checkbox:checked").each(function(){
+                                selectedSits.push($(this).val());
+                            });
+                
+                            var minTickets = 1;  // Minimum number of tickets allowed
+                            var maxTickets = parseInt("{{ persons }}");
+                            var busCode = "{{bus.bus_code}}"; 
+                            var type = "{{type}}";
+                            var rootCode = "{{root}}"; 
+                
+                            if (selectedSits.length < minTickets) {
+                                alert('Please select at least ' + minTickets + ' sit(s)!');
+                                return;
+                            }
+                
+                            if (selectedSits.length > maxTickets) {
+                                alert('You can select maximum ' + maxTickets + ' sit(s)!');
+                                return;
+                            }
+                
+                            $.ajax({
+                                type: 'POST',
+                                url: '/selectticket/',
+                                data: {
+                                    'selected_sits': JSON.stringify(selectedSits),
+                                    'persons': maxTickets,
+                                    'bus_code': busCode,
+                                    'root' : rootCode,
+                                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                                },
+                                success: function(response){
+                                    // Redirect to addinfodata view
+                                    window.location.href = "{% url 'addinfodata' %}" + '?selected_sits=' + selectedSits.join(',') + '&bus_code=' + busCode + '&persons=' + maxTickets + '&type=' + type + '&root=' + rootCode;
+                                },
+                                error: function(xhr, errmsg, err){
+                                    alert('Error occurred while saving sits');
+                                }
+                            });
+                        });
+                    });
+                </script>
+              </div>
+          </div>
+      </section>
         {% elif type == "Train" %}
         <section class="section-padding section-bg">
             <div id="Hotel" class="service px-4 bg-white py-5">
@@ -379,6 +467,7 @@
     {% include 'footer.html'%}
 
     <!-- JAVASCRIPT FILES -->
+    
     <script src="{% static 'assets/mainfilecss/js/jquery.min.js' %}"></script>
     <script src="{% static 'assets/mainfilecss/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'assets/mainfilecss/js/jquery.sticky.js' %}"></script>

@@ -20,6 +20,9 @@ urlpatterns=[
     path('searchresult/', searchresult, name='searchresult'),
     path('selectticket/', selectticket, name='selectticket'),
     path('addinfodata/', addinfodata, name='addinfodata'),
+    path('payment/', payment, name='payment'),
+    path('addticketdata/', addticketdata, name='addticketdata'),
+    path('transation/', transation, name='transation'),
 
 
     

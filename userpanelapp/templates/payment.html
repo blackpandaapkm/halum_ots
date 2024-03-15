@@ -1,0 +1,245 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>HALUM OTS</title>
+
+    <!-- CSS FILES -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap"
+        rel="stylesheet">
+
+    <link href="{% static 'assets/mainfilecss/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'assets/mainfilecss/css/bootstrap-icons.css' %}" rel="stylesheet">
+
+    <link href="{% static 'assets/mainfilecss/css/templatemo-topic-listing.css' %}" rel="stylesheet">
+</head>
+
+<body id="top">
+
+    <main>
+
+        {% include 'navbar.html'%}
+
+        <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-8 col-12 mx-auto">
+                        <h1 class="text-white text-center">Select Sit</h1>
+
+                        <h6 class="text-center">platform for creatives around the world</h6>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        {% if payment_status == 'None' %}
+        <section class="section-padding section-bg">
+            <div class="container">
+                <div class="row ">
+
+                    <div class="col-lg-12 col-12">
+                        <h3 class="mb-4"><center>Your Tickets</center></h3>
+                    </div>
+                  
+                    
+                      <div class="col-lg-6 col-md-6 col-12 mt-3 mb-4 mb-lg-0 ">
+                          <div class="custom-block bg-white shadow-lg ">
+                              <a href="">
+                                  <div class="d-flex ">
+                                      <div>
+                                        {% for ticket in ticket_data.values %}
+                                          
+                                          <p class="lead text-bg-dark text-center">Ticket code {{ ticket.ticket_code }}  =   {{ price }}</p>
+                                          {% endfor %}
+                                      </div>
+                                  </div>
+                              </a>
+                          </div>
+                          
+                      </div>
+                     
+                      <p class="lead text-bg-dark text-center">total price    = {{ total_price }}</p>
+                      <div class="col text-center">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paynow">
+                            Pay Now
+                          </button>
+                      </div>
+                </div>
+            </div>
+        </section>
+        {% elif payment_status == 'success' %}
+        <section class="section-padding section-bg">
+            <div class="container">
+                <div class="row ">
+
+                    <div class="col-lg-12 col-12">
+                        <h3 class="mb-4"><center>Download your ticket</center></h3>
+                    </div>
+                  
+                    
+                      <div class="col-lg-6 col-md-6 col-12 mt-3 mb-4 mb-lg-0 ">
+                          <div class="custom-block bg-white shadow-lg ">
+                              <a href="">
+                                  <div class="d-flex ">
+                                      <div>
+                                        {% for ticket in ticket_data.values %}
+                                          
+                                          <p class="lead text-bg-dark text-center">Ticket code {{ ticket.ticket_code }}  =   {{ price }}</p>
+                                          {% endfor %}
+                                      </div>
+                                  </div>
+                              </a>
+                          </div>
+                          
+                      </div>
+                     
+                      <p class="lead text-bg-dark text-center">total price    = {{ total_price }}</p>
+                      <div class="col text-center">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paynow">
+                            Pay Now
+                          </button>
+                      </div>
+                </div>
+            </div>
+        </section>
+        {% else %}
+        <section class="section-padding section-bg">
+            <div class="container">
+                <div class="row ">
+
+                    <div class="col-lg-12 col-12">
+                        <h3 class="mb-4"><center>Your Tickets</center></h3>
+                    </div>
+                  
+                    
+                      <div class="col-lg-6 col-md-6 col-12 mt-3 mb-4 mb-lg-0 ">
+                          <div class="custom-block bg-white shadow-lg ">
+                            <div class="col-lg-12 col-12">
+                                <h3 class="mb-4"><center>Payment Failed</center></h3>
+                            </div>
+                              <a href="">
+                                  <div class="d-flex ">
+                                      <div>
+                                        {% for ticket in ticket_data.values %}
+                                          
+                                          <p class="lead text-bg-dark text-center">Ticket code {{ ticket.ticket_code }}  =   {{ price }}</p>
+                                          {% endfor %}
+                                      </div>
+                                  </div>
+                              </a>
+                          </div>
+                          
+                      </div>
+                     
+                      <p class="lead text-bg-dark text-center">total price    = {{ total_price }}</p>
+                      <div class="col text-center">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paynow">
+                            Try again
+                          </button>
+                      </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+
+            <!-- The Modal  Add Root-->
+    <div class="modal" id="paynow">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title-center"> Payment</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+                <section class=" section-bg d-flex justify-content-center align-items-center">
+                    <div class="container">
+                        <div class="row">
+                            <div class="custom-block bg-white shadow-lg">
+                                <form method="POST" action="{% url 'transation' %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="mb-3">
+                                                <label for="root_code" class="form-label">You need to pay {{ total_price }} at Number </label>
+                                            </div>
+                                        <div class="col">
+                                            <div class="mb-3">
+                                                <label for="phone" class="form-label">Enter your Mobile Number </label>
+                                                <input type="number" class="form-control" id="otpphone" name="otpphone" required>
+                                                <input type="hidden" class="form-control" id="airline_code" name="airline_code" value="{{airline_code}}" required>
+                                                <input type="hidden" class="form-control" id="ticket_data" name="ticket_data" value="{{ticket_data}}" required>
+                                                <input type="hidden" class="form-control" id="total_price" name="total_price" value="{{total_price}}" required>
+                                                <input type="hidden" class="form-control" id="price" name="price" value="{{price}}" required>
+                                                <input type="hidden" class="form-control" id="type" name="type" value="{{type}}" required>
+                                                {% if type == 'Bus' %}
+                                                 <input type="hidden" class="form-control" id="root" name="root" value="{{root}}" required>
+                                                {% endif %}
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="gender" class="form-label">Payment type </label>
+                                                <select class="form-select" id="paytype" name="paytype" required>
+                                                    <option value="Halumpay">Halumpay</option>
+                                                    <option value="Roket">Roket</option>
+                                                    <option value="Bkash">Bkash</option>
+                                                    <option value="Nagad">Nagad</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="text" class="form-label">Transation ID</label>
+                                                <input type="number" class="form-control" id="transation_id" name="transation_id" required>
+                                            </div>
+    
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn custom-btn">Send OTP</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+             
+            </div>
+      
+          </div>
+        </div>
+    </div>
+
+    </main>
+
+    {% include 'footer.html'%}
+
+    <!-- JAVASCRIPT FILES -->
+    <script src="{% static 'assets/mainfilecss/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/jquery.sticky.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/click-scroll.js' %}"></script>
+    <script src="{% static 'assets/mainfilecss/js/custom.js ' %}"></script>
+</body>
+
+</html>

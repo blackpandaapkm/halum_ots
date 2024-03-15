@@ -29,6 +29,8 @@ class Bus_Ticket(models.Model):
     bus_date = models.DateTimeField()
     address = models.CharField(max_length=100)
     gender = models.CharField(max_length=10)
+    payment_status = models.CharField(max_length=10,null=True)
+    payment_date = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.bus_ticket_code
@@ -47,6 +49,8 @@ class Airline_Ticket(models.Model):
     gender = models.CharField(max_length=10)
     birthday = models.DateTimeField()
     nid_number = models.CharField(max_length = 50)
+    payment_status = models.CharField(max_length=10,null=True)
+    payment_date = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.airline_ticket_code
@@ -66,6 +70,13 @@ class Train_Ticket(models.Model):
     address = models.CharField(max_length=100)
     gender = models.CharField(max_length=10)
     nid_number = models.CharField(max_length = 50)
+    payment_status = models.CharField(max_length=10,null=True)
+    payment_date = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.train_ticket_code
+    
+
+
+
+    

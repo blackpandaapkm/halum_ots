@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="custom-block-overlay-text d-flex" >
+        <ul class="social-icon" >
+            {% for sit in total_sits %}
+            {% if sit == "7" %}
+              <li class="social-icon-item" style="margin-bottom: 10px;">
+                <a href="" class="social-icon-link hi" style="pointer-events: none ; background-color: red;" >{{ sit }}</a>
+              </li>
+            {% else %}
+             <li class="social-icon-item" style="margin-bottom: 10px;">
+              <a href="{% url 'addinfodata' %}?code={{ airline.airline_code }}&sit_number={{ sit }}" class="social-icon-link hi" >{{ sit }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="container">
+  <div class="custom-block-overlay-text d-flex" >
+      <ul class="social-icon" >
+          {% for sit in total_sits %}
+          
+           <li class="social-icon-item" style="margin-bottom: 10px;">
+            <a href="{% url 'addinfodata' %}?code={{ airline.airline_code }}&sit_number={{ sit }}" class="social-icon-link hi" >{{ sit }}</a>
+          </li>
+          {% endif %}
+          {% endfor %}
+      </ul>
+  </div>
+</div>
