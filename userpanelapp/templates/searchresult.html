@@ -272,7 +272,7 @@
                                         <h5 class="mt-3 fs-6 fw-bold">Train Class : {{train.train_class}}</h5>
                                         <h5 class="mt-3 fs-6 fw-bold">Status : {{train.status}}</h5>
                                         <p>{{train.description}}</p>
-                                        <a href="{% url 'selectticket' %}?code={{ train.train_code }}" type="button"
+                                        <a href="{% url 'selectticket' %}?code={{ train.train_code }}&person={{persons}}&type={{type}}&train_to={{train_to}}&train_from={{train_from}}&train_class={{train_class}}" type="button"
                                             class="btn btn-primary">Book Now</a>
                                     </div>
                                 </div>

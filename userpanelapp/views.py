@@ -284,7 +284,14 @@ def searchresult(request):
             
             return render(request,'searchresult.html', context)
         elif type == 'Train':
-            train = Train.objects.filter(train_code__in=TrainRoots.objects.filter(root_from=train_from, root_to=train_to).values_list('train_code', flat=True) , train_class=train_class )
+            Train_root = Train.objects.filter(train_code__in=TrainRoots.objects.filter(root_from=train_from, root_to=train_to).values_list('train_code', flat=True))
+            Train_Coach = Train.objects.filter(train_code__in=Train_CoachF.objects.filter(train_class=train_class).values_list('train_code', flat=True))
+            print(Train_root,Train_Coach)
+
+            train = Train_root.intersection(Train_Coach)
+            print(train)
+            # train = Train_root
+
          
             type = 'Train'
             train_paginator = Paginator(train,6)
@@ -295,7 +302,11 @@ def searchresult(request):
             context = {
                 'trains': trains,
                 'type': type,
+                'persons': persons,
                 'totaltrainpage':totaltrainpage,
+                'train_from': train_from,
+                'train_to': train_to,
+                'train_class':train_class,
                 'totalbuspagelist':[n+1 for n in range(totaltrainpage)]
                 }
             
@@ -332,6 +343,10 @@ def selectticket(request):
         bus_code = request.GET.get('code')
         bus_from = request.GET.get('bus_from')
         bus_to = request.GET.get('bus_to')
+        train_code = request.GET.get('code')
+        train_from = request.GET.get('train_from')
+        train_to = request.GET.get('train_to')
+        train_class = request.GET.get('train_class')
         print(type, persons, airline_code)
         print(bus_code)
 
@@ -366,22 +381,30 @@ def selectticket(request):
             
             return render(request,'selectticket.html', context)
         elif type == 'Train':
-            train = Train.objects.filter(train_code__in=TrainRoots.objects.filter(root_from=train_from, root_to=train_to).values_list('train_code', flat=True) , train_class=train_class )
-        
+            train = Train.objects.filter(train_code = train_code).first()
+            root = TrainRoots.objects.filter(root_from=train_from, root_to=train_to, train_code = train_code).first()
+            coach = Train_CoachF.objects.filter(train_class=train_class,train_code = train_code).first()
+
+            coach = coach.coach_code
+
+            train_class_obj = Train_Classes.objects.filter(train_class=train_class).first()
+            total_sits_n = train_class_obj.total_seat
+            total_sits = range_filter(total_sits_n)
+            print(total_sits)
+            print(type, persons, train_code)
+            print('jamela')
+            print(coach)
             type = 'Train'
-            train_paginator = Paginator(train,6)
-            page_number = request.GET.get('page')
-            trains = train_paginator.get_page(page_number)
-            totaltrainpage = trains.paginator.num_pages
 
             context = {
-                'trains': trains,
+                'train': train,
                 'type': type,
-                'totaltrainpage':totaltrainpage,
-                'totalbuspagelist':[n+1 for n in range(totaltrainpage)]
-                }
-            
-            return render(request,'searchresult.html', context)
+                'persons': persons,
+                'total_sits': total_sits,
+                'root' : root,
+                'coach' : coach
+            }
+            return render(request,'selectticket.html', context)
         elif type == 'Airline':
             airline = Airline.objects.filter(airline_code=airline_code).first()
             airline_class = airline.airline_class
@@ -422,9 +445,12 @@ def addinfodata(request):
     selected_sits = request.GET.get('selected_sits')
     airline_code = request.GET.get('airline_code')
     bus_code = request.GET.get('bus_code')
+    train_code = request.GET.get('train_code')
     person = int(request.GET.get('persons'))
     persons = range_filter(person)
     root = request.GET.get('root')
+    coach = request.GET.get('coach')
+
     
     # Process your data and render the template with the necessary context
     print("addinfodata")
@@ -481,7 +507,37 @@ def addinfodata(request):
             print("addinfodata ok to go bus")
             return render(request, 'addinfodata.html', context)
     elif type == 'Train':
-        pass
+        for person, selected_sits in zip(persons, selected_sits_list):
+            ticket_data[person] = {
+                    'passenger_email': email,
+                    'passenger_phone': phone,
+                    'passenger_address': address,
+                    'passenger_gender': gender,
+                    'passenger_birthday': birthday,
+                    'passenger_nid_number': nid_number,
+
+
+                    'train_code': train_code,
+                    'person': person,
+                    'ticket_code': ticket_code,
+                    'passenger_name': passenger_name,
+                    'selected_sits': selected_sits
+                }
+
+        # Print the airline_data dictionary
+        print(ticket_data)
+
+        context = {
+            'ticket_data': ticket_data,
+            'train_code': train_code,
+            'type': type,
+            'root': root,
+            'coach': coach
+        }
+        if(context==context):
+            print("addinfodata ok to go Train")
+            print(coach)
+            return render(request, 'addinfodata.html', context)
     elif type == 'Airline':
         # Iterate over the ticket_codes and persons lists simultaneously using zip()
         for person, selected_sits in zip(persons, selected_sits_list):
@@ -540,11 +596,14 @@ def addticketdata(request):
         bus_code = request.POST.get('bus_code')
         root = request.POST.get('root')
 
-        print("addairlineticketdata")
+        train_code = request.POST.get('train_code')
+        coach = request.POST.get('coach')
+
+        print("addTrainticketdata")
         print(airline_code, seat_number, name, email, phone, address, gender, birthday, nid_number)
         print(type)
-        print(bus_code)
-        print(root)
+        print(train_code)
+        print(coach)
 
 
         # ticket_codes = []
@@ -593,7 +652,43 @@ def addticketdata(request):
                 print("addinfodata ok to go ")
                 return render(request, 'addinfodata.html', context)
         elif type == 'Train':
-            pass
+            random_code = ''.join(random.choices('0123456789', k=4))
+            ticket_code = f"{train_code}{random_code}{seat_number}"
+
+
+            for ticket in ticket_data.values():
+                if ticket['selected_sits'] == seat_number:
+                    person = ticket['person']
+
+
+
+            ticket_data[person] = {
+                'passenger_email': email,
+                'passenger_phone': phone,
+                'passenger_address': address,
+                'passenger_gender': gender,
+                'passenger_birthday': birthday,
+                'passenger_nid_number': nid_number,
+
+
+                'train_code': train_code,
+                'person': person,
+                'ticket_code': ticket_code,
+                'passenger_name': name,
+                'selected_sits': seat_number
+            }
+
+            context = {
+                'ticket_data': ticket_data,
+                'train_code': train_code,
+                'type': type,
+                'root':root,
+                'coach': coach
+            }
+            if(context==context):
+                print("addinfodata ok to go Train Station ")
+                print(context)
+                return render(request, 'addinfodata.html', context) 
         elif type == 'Bus':
             random_code = ''.join(random.choices('0123456789', k=4))
             ticket_code = f"{bus_code}{random_code}{seat_number}"
@@ -647,6 +742,7 @@ def payment(request):
         ticket_data = eval(ticket_data)
         type = request.GET.get('type')
         root = request.GET.get('root')
+        coach = request.GET.get('coach')
 
         if type == 'Airline':
             # Extract the airline_code for each ticket
@@ -681,7 +777,38 @@ def payment(request):
 
             return render(request, 'payment.html', context)
         elif type == 'Train':
-            pass
+            for ticket in ticket_data.values():
+                train_code = ticket['train_code']
+                person = ticket['person']
+                
+            
+            # Print the ticket_data dictionary
+            times = int(person)
+            print(ticket_data)
+            print("payment")
+            print(root)
+            root_data = TrainRoots.objects.filter(root_code=root).first()
+            price = root_data.price
+            print(price)
+            print(times)
+            total_price = price * times
+            print(total_price)
+            print(coach)
+
+            otp_verfication = "False"
+            payment_status = "None"
+
+            context = {
+                'ticket_data': ticket_data,
+                'total_price': total_price,
+                'price': price,
+                'otp_verfication' : otp_verfication,
+                'payment_status' : payment_status,
+                'type':type,
+                'root':root,
+                'coach':coach
+            }
+            return render(request, 'payment.html', context)
         elif type == 'Bus':
             for ticket in ticket_data.values():
                 bus_code = ticket['bus_code']
@@ -731,16 +858,15 @@ def transation(request):
 
         type = request.POST.get('type')
         root = request.POST.get('root')
-        
 
+        coach = request.POST.get('coach')
+        print(coach)
+        
         otp_code =  ''.join(random.choices('0123456789', k=4))
         otp_verfication = "True"
-
         payment_status = "success"
         payment_date = timezone.now().date()
-
         print(otp_code)
-
         if type == 'Airline':
 
             for person, data in ticket_data.items():
@@ -759,9 +885,6 @@ def transation(request):
 
                 airline = Airline.objects.filter(airline_code=airline_code).first()
 
-
-
-                
                 print(email, phone, address, gender, birthday, nid_number, airline_code, person, ticket_code, passenger_name, selected_sits)
                 passenger = Airline_Ticket.objects.create(
                     name=passenger_name,
@@ -811,10 +934,6 @@ def transation(request):
 
                 bus = Bus.objects.filter(bus_code=bus_code).first()
                 
-
-
-
-                
                 print(email, phone, address, gender, birthday, nid_number, bus_code, person, ticket_code, passenger_name, selected_sits)
                 passenger = Bus_Ticket.objects.create(
                     name=passenger_name,
@@ -851,6 +970,56 @@ def transation(request):
         # elif type == 'Hotels':
             pass
         elif type == 'Train':
-            pass
+            root = TrainRoots.objects.filter(root_code = root).first()
+            coach = Train_CoachF.objects.filter(coach_code = coach).first()
+            for person, data in ticket_data.items():
+                email = data['passenger_email']
+                phone = data['passenger_phone']
+                address = data['passenger_address']
+                gender = data['passenger_gender']
+                birthday = data['passenger_birthday']
+                nid_number = data['passenger_nid_number']
 
+                train_code = data['train_code']
+                person = data['person']
+                ticket_code = data['ticket_code']
+                passenger_name = data['passenger_name']
+                selected_sits = data['selected_sits']
+
+                train = Train.objects.filter(train_code=train_code).first()
+                
+                print(email, phone, address, gender, birthday, nid_number, train_code, person, ticket_code, passenger_name, selected_sits,coach)
+                passenger = Train_Ticket.objects.create(
+                    name=passenger_name,
+                    train_ticket_code=ticket_code,
+                    train_class = coach.train_class,
+                    train_from = root.root_from,
+                    train_to = root.root_to,
+                    phone=phone, 
+                    email=email, 
+                    seat_number=selected_sits,
+                    train_date = root.root_date,
+                    address=address, 
+                    gender=gender,
+                    payment_status = payment_status,
+                    payment_date = payment_date,
+                    coach=coach.coach_name
+                    )
+                passenger.save()
+
+
+                context = {
+                    'ticket_data': ticket_data,
+                    'total_price': total_price,
+                    'price': price,
+                    'otp_verfication' : otp_verfication,
+                    'payment_status' : payment_status,
+                    'type':type,
+                    'root':root
+                }
+                print("ok to  create")
+                print(root)
+                print(type)
+
+            return render(request, 'payment.html', context)
 

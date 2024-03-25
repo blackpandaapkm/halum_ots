@@ -194,6 +194,9 @@
                                                 <input type="hidden" class="form-control" id="type" name="type" value="{{type}}" required>
                                                 {% if type == 'Bus' %}
                                                  <input type="hidden" class="form-control" id="root" name="root" value="{{root}}" required>
+                                                {% elif type == 'Train' %}
+                                                 <input type="hidden" class="form-control" id="root" name="root" value="{{root}}" required>
+                                                 <input type="hidden" class="form-control" id="coach" name="coach" value="{{coach}}" required>
                                                 {% endif %}
                                             </div>
 

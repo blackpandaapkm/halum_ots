@@ -72,6 +72,7 @@ class Train_Ticket(models.Model):
     nid_number = models.CharField(max_length = 50)
     payment_status = models.CharField(max_length=10,null=True)
     payment_date = models.DateTimeField(null=True)
+    coach = models.CharField(max_length=50,null=True)
 
     def __str__(self):
         return self.train_ticket_code
