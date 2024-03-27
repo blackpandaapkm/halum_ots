@@ -284,7 +284,7 @@ def searchresult(request):
             
             return render(request,'searchresult.html', context)
         elif type == 'Train':
-            Train_root = Train.objects.filter(train_code__in=TrainRoots.objects.filter(root_from=train_from, root_to=train_to).values_list('train_code', flat=True))
+            Train_root = Train.objects.filter(train_code__in=TrainRoots.objects.filter(root_from=train_from, root_to=train_to).values_list('train_code', flat=True),train_date=train_date)
             Train_Coach = Train.objects.filter(train_code__in=Train_CoachF.objects.filter(train_class=train_class).values_list('train_code', flat=True))
             print(Train_root,Train_Coach)
 
@@ -307,6 +307,7 @@ def searchresult(request):
                 'train_from': train_from,
                 'train_to': train_to,
                 'train_class':train_class,
+                'train_date':train_date,
                 'totalbuspagelist':[n+1 for n in range(totaltrainpage)]
                 }
             
@@ -347,6 +348,7 @@ def selectticket(request):
         train_from = request.GET.get('train_from')
         train_to = request.GET.get('train_to')
         train_class = request.GET.get('train_class')
+        train_date = request.GET.get('train_date')
         print(type, persons, airline_code)
         print(bus_code)
 
@@ -387,6 +389,8 @@ def selectticket(request):
 
             coach = coach.coach_code
 
+            sold_tickets = Train_Ticket.objects.filter(train_from=train_from,train_to=train_to,train_date=train_date,train_class=train_class).values_list('seat_number', flat=True)
+
             train_class_obj = Train_Classes.objects.filter(train_class=train_class).first()
             total_sits_n = train_class_obj.total_seat
             total_sits = range_filter(total_sits_n)
@@ -394,6 +398,9 @@ def selectticket(request):
             print(type, persons, train_code)
             print('jamela')
             print(coach)
+            print(sold_tickets)
+            sold_tickets = list(sold_tickets)
+            print(sold_tickets)
             type = 'Train'
 
             context = {
@@ -402,6 +409,7 @@ def selectticket(request):
                 'persons': persons,
                 'total_sits': total_sits,
                 'root' : root,
+                'sold_tickets' : sold_tickets,
                 'coach' : coach
             }
             return render(request,'selectticket.html', context)
@@ -998,7 +1006,7 @@ def transation(request):
                     phone=phone, 
                     email=email, 
                     seat_number=selected_sits,
-                    train_date = root.root_date,
+                    train_date = train.train_date,
                     address=address, 
                     gender=gender,
                     payment_status = payment_status,

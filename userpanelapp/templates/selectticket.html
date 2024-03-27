@@ -324,13 +324,23 @@
                                     <div class="custom-block-overlay-text d-flex">
                                         <ul class="social-icon">
                                             {% for sit in total_sits %}
-                                            <li class="social-icon-item" style="margin-bottom: 10px;">
-                                              <label class="checkbox-container">
-                                                <input type="checkbox" class="sit-checkbox" value="{{ sit }}"> {{ sit }}
-                                                <span class="checkmark"></span>
-                                              </label>
-                                            </li>
-                                            {% endfor %}
+                                            {% if sit not in sold_tickets %}
+                                                <li class="social-icon-item" style="margin-bottom: 10px;">
+                                                    <label class="checkbox-container">
+                                                        <input type="checkbox" class="sit-checkbox" value="{{ sit }}"> {{ sit }}
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </li>
+                                            {% elif something_else %} <!-- Add condition after elif -->
+                                                <li class="social-icon-item" style="margin-bottom: 10px;">
+                                                    <label class="checkbox-container">
+                                                        <input type="checkbox" class="sit-checkbox"  value="{{ sit }}"> {{ sit }}
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        
                                         </ul>
           
                                         <a href="" type="button" id="save-btn-bus"
@@ -427,14 +437,23 @@
                                     <div class="container">
                                       <div class="custom-block-overlay-text d-flex">
                                           <ul class="social-icon">
-                                              {% for sit in total_sits %}
-                                              <li class="social-icon-item" style="margin-bottom: 10px;">
-                                                <label class="checkbox-container">
-                                                  <input type="checkbox" class="sit-checkbox" value="{{ sit }}"> {{ sit }}
-                                                  <span class="checkmark"></span>
-                                                </label>
-                                              </li>
-                                              {% endfor %}
+                                            {% for sit in total_sits %}
+                                            {% if sit not in sold_tickets %}
+                                                <li class="social-icon-item" style="margin-bottom: 10px;">
+                                                    <label class="checkbox-container">
+                                                        <input type="checkbox" class="sit-checkbox" value="{{ sit }}"> {{ sit }}
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </li>
+                                            {% elif something_else %}
+                                                <li class="social-icon-item" style="margin-bottom: 10px; ">
+                                                    <label class="checkbox-container">
+                                                        <input type="checkbox" class="sit-checkbox" value="{{ sit }}"> {{ sit }}
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
                                           </ul>
             
                                           <a href="" type="button" id="save-btn-bus"
